@@ -15,7 +15,7 @@ import java.util.Random;
  * <p/>
  * This source borrows <b>heavily</b> from <a href="http://www.javaexchange.com/aboutRandomGUID.html">RandomGUID</a>.
  * <p/>
- * For usage examples please refer to the test case UUIDTest.
+ * For java usage examples please refer to the test case UUIDTest.
  *
  * @author Tom Villars 21-March-07
  */
