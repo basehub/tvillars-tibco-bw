@@ -11,7 +11,7 @@ import java.util.Random;
  * Use to make pseudo randomly generated GUIDs.
  * <p/>
  * This class could be replaced if Java 1.5 is available as this version of Java has its own UUIDGenerator implementation.
- * The methods are a subset of the Java 1.5 <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/UUIDGenerator.html">java.util.UUIDGenerator class</a>.
+ * The methods are a subset of the Java 1.5 <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/UUIDGenerator.html">http://java.sun.com/j2se/1.5.0/docs/api/java/util/UUID.html class</a>.
  * <p/>
  * This source borrows <b>heavily</b> from <a href="http://www.javaexchange.com/aboutRandomGUID.html">RandomGUID</a>.
  * <p/>
