@@ -10,15 +10,18 @@ import java.util.Random;
 /**
  * Use to make pseudo randomly generated GUIDs.
  * <p/>
- * This class could be replaced if Java 1.5 is available as this version of Java has its own UUIDGenerator implementation.
- * The methods are a subset of the Java 1.5 <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/UUIDGenerator.html">http://java.sun.com/j2se/1.5.0/docs/api/java/util/UUID.html class</a>.
+ * This class could be replaced if Java 1.5 is available as this version of Java has its own
+ * GUID generator implementation <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/util/UUID.html">java.util.UUID</a>.
+ * The methods for this class are a subset of the java 1.5 class.
  * <p/>
  * This source borrows <b>heavily</b> from <a href="http://www.javaexchange.com/aboutRandomGUID.html">RandomGUID</a>.
  * <p/>
- * For java usage examples please refer to the test case UUIDTest.
+ * TODO For java usage examples please refer to the test case XXX 
+ * TODO For BizWorks usage examples please refer to XXX
  *
  * @author Tom Villars 21-March-07
  */
+
 public class GUID implements Comparable {
 
   // one-way function algorthym used to help make the secure
