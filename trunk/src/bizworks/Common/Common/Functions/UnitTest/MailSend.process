@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns3="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file">
+    <pd:name>Common/Functions/UnitTest/MailSend.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>37</pd:startX>
+    <pd:startY>50</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>598</pd:endX>
+    <pd:endY>172</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Create File To Test With">
+        <pd:type>com.tibco.plugin.file.FileCreateActivity</pd:type>
+        <pd:resourceType>ae.activities.FileCreateActivity</pd:resourceType>
+        <pd:x>49</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <createMissingDirectories>true</createMissingDirectories>
+            <overwrite>true</overwrite>
+        </config>
+        <pd:inputBindings>
+            <ns2:CreateActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Constants/Technical/TempDir,&#xA;'/MailSend.Tes')"/>
+                </fileName>
+            </ns2:CreateActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send A File and XML Attachment To One Recepient">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>336</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/Common/Functions/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <SendMail>
+                <ns3:MailActivity>
+                    <from>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </from>
+                    <to>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </to>
+                    <subject>
+                        <xsl:value-of select="'MailSend Unit Test XML &amp; File Attachment'"/>
+                    </subject>
+                    <bodyText>
+                        <xsl:value-of select="'This is the body of the test message'"/>
+                    </bodyText>
+                    <FileAttachments>
+                        <file>
+                            <xsl:value-of select="$Create-File-To-Test-With/ns2:CreateActivityOutputClass/fileInfo/fullName"/>
+                        </file>
+                    </FileAttachments>
+                    <XMLAttachment>
+                        <xsl:attribute name="description">
+                            <xsl:value-of select="'Test XML Attachment'"/>
+                        </xsl:attribute>
+                        <xsl:copy-of select="$_processContext/ns1:ProcessContext"/>
+                    </XMLAttachment>
+                </ns3:MailActivity>
+                <pfx:RetryOptions>
+                    <pfx:TryForever/>
+                </pfx:RetryOptions>
+            </SendMail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send an Email with no attachments">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>60</pd:y>
+        <config>
+            <processName>/Common/Functions/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <SendMail>
+                <ns3:MailActivity>
+                    <from>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </from>
+                    <to>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </to>
+                    <subject>
+                        <xsl:value-of select="'MailSend Unit Test No Attachments'"/>
+                    </subject>
+                    <bodyText>
+                        <xsl:value-of select="'Test1'"/>
+                    </bodyText>
+                    <bodyText>
+                        <xsl:value-of select="'Test2'"/>
+                    </bodyText>
+                </ns3:MailActivity>
+                <pfx:RetryOptions>
+                    <pfx:TryForever/>
+                </pfx:RetryOptions>
+            </SendMail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send an Email with Text Attachment">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>191</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <processName>/Common/Functions/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <SendMail>
+                <ns3:MailActivity>
+                    <from>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </from>
+                    <to>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </to>
+                    <subject>
+                        <xsl:value-of select="'MailSend Unit Test Text Attachment'"/>
+                    </subject>
+                    <bodyText>
+                        <xsl:value-of select="'Test1'"/>
+                    </bodyText>
+                    <bodyText>
+                        <xsl:value-of select="'Test2'"/>
+                    </bodyText>
+                    <TextAttachments>
+                        <attachmentName>
+                            <xsl:value-of select="'text.txt'"/>
+                        </attachmentName>
+                        <textContent>
+                            <xsl:value-of select="'dfliuofgeropifu erpfuerpf uer'"/>
+                        </textContent>
+                    </TextAttachments>
+                </ns3:MailActivity>
+                <pfx:RetryOptions>
+                    <pfx:TryForever/>
+                </pfx:RetryOptions>
+            </SendMail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send three File Attachments to three recepients">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>456</pd:x>
+        <pd:y>187</pd:y>
+        <config>
+            <processName>/Common/Functions/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <SendMail>
+                <ns3:MailActivity>
+                    <from>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </from>
+                    <!--can use ";" seperated addresses or multiple <to> elements-->
+                    <to>
+                        <xsl:value-of select="'tvillars@gmail.com;tvillars@gmail.com'"/>
+                    </to>
+                    <to>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </to>
+                    <cc>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </cc>
+                    <subject>
+                        <xsl:value-of select="'MailSend Unit Test 3  Attachments'"/>
+                    </subject>
+                    <bodyText>
+                        <xsl:value-of select="'This is the body of the test message'"/>
+                    </bodyText>
+                    <FileAttachments>
+                        <file>
+                            <xsl:value-of select="$Create-File-To-Test-With/ns2:CreateActivityOutputClass/fileInfo/fullName"/>
+                        </file>
+                        <file>
+                            <xsl:value-of select="$Create-File-To-Test-With/ns2:CreateActivityOutputClass/fileInfo/fullName"/>
+                        </file>
+                        <file>
+                            <xsl:value-of select="$Create-File-To-Test-With/ns2:CreateActivityOutputClass/fileInfo/fullName"/>
+                        </file>
+                    </FileAttachments>
+                </ns3:MailActivity>
+                <pfx:RetryOptions>
+                    <pfx:TryForever/>
+                </pfx:RetryOptions>
+            </SendMail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Send an Email with no attachments</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send A File and XML Attachment To One Recepient</pd:from>
+        <pd:to>Send three File Attachments to three recepients</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send three File Attachments to three recepients</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send an Email with Text Attachment</pd:from>
+        <pd:to>Send A File and XML Attachment To One Recepient</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send an Email with no attachments</pd:from>
+        <pd:to>Create File To Test With</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create File To Test With</pd:from>
+        <pd:to>Send an Email with Text Attachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

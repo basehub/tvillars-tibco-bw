@@ -1,0 +1,46 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ExpirationSecs</name>
+			<value>0</value>
+			<description>0 means never expire</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1178737560380</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Host</name>
+			<value>EUSMTP.BP.COM</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178560526174</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!wWgJgiwTvAq9kSoLOhC9NnAnkPdEXvyilceh7jvC5Uc=</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1178560526237</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Queue</name>
+			<value>Tech.EMail</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178650848573</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>tom.villars@bp.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178560526205</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

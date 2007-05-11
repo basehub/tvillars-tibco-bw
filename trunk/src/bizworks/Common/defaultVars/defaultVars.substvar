@@ -1,0 +1,46 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Deployment</name>
+			<value>Common</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1148582279226</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DirTrace</name>
+			<value>TIBCODesigner\logs</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178805438918</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Domain</name>
+			<value>domain</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1148582279179</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Environment</name>
+			<value>dev</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178821303692</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>VersionLabel</name>
+			<value>0.0.0</value>
+			<description>VersionLabel if one was specified during deployment</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1149373386129</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

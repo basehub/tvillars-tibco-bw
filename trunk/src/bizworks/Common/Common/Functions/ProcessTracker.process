@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:ns12="http://www.chicos.com/eai/TechServices/GEH/GEH" xmlns:ns2="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType">
+    <pd:name>Common/Functions/ProcessTracker.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="PEH">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="StepDescription" type="xsd:string" minOccurs="0"/>
+                    <xsd:choice>
+                        <xsd:element name="Started">
+                            <xsd:complexType>
+                                <xsd:sequence/>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="InProcess">
+                            <xsd:complexType>
+                                <xsd:sequence/>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Finished">
+                            <xsd:complexType>
+                                <xsd:sequence/>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Warning">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:any minOccurs="0" processContents="lax"/>
+                                </xsd:sequence>
+                                <xsd:attribute name="WarningMsg" type="xsd:string"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Error">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:any minOccurs="0" processContents="lax"/>
+                                </xsd:sequence>
+                                <xsd:attribute name="ErrorMsg" type="xsd:string"/>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:choice minOccurs="0">
+                        <xsd:element name="JMSCorrelationID" type="xsd:string"/>
+                        <xsd:element name="DataText" type="xsd:string"/>
+                        <xsd:element name="DataXML">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:any processContents="lax"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>28</pd:startX>
+    <pd:startY>206</pd:startY>
+    <pd:returnBindings>
+        <PEH>
+            <Step>
+                <xsl:value-of select="$Increment-Step-Count/Step/Count"/>
+            </Step>
+        </PEH>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="PEH">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="Step" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>542</pd:endX>
+    <pd:endY>206</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Do something clever like actually persist the process state data">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>409</pd:x>
+        <pd:y>236</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get Step Count">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>135</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <variableConfig>/Common/Functions/Subprocesses/PEH/StepCounter.jobsharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Increment Step Count">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <showResult>true</showResult>
+            <variableConfig>/Common/Functions/Subprocesses/PEH/StepCounter.jobsharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings>
+            <Step>
+                <Count>
+                    <xsl:value-of select="$Get-Step-Count/Step/Count + 1"/>
+                </Count>
+            </Step>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Step Count</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Step Count</pd:from>
+        <pd:to>Increment Step Count</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Increment Step Count</pd:from>
+        <pd:to>Do something clever like actually persist the process state data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Do something clever like actually persist the process state data</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Step counter context is per Job</pd:description>
+        <pd:x>203</pd:x>
+        <pd:y>161</pd:y>
+        <pd:width>189</pd:width>
+        <pd:height>34</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1) (1)</pd:name>
+        <pd:description>Allows tracking the progress of a process by storing state as the 
+process progresses through it's processing steps.  State is stored
+as either a:
+
+    * pointer to a JMS Message 
+    * direct storage of XML
+    * plain text.
+
+</pd:description>
+        <pd:x>199</pd:x>
+        <pd:y>63</pd:y>
+        <pd:width>396</pd:width>
+        <pd:height>124</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

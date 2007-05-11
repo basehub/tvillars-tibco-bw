@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>BizObjProcessor</name>
+			<value>/BizServices/Common/BizObjProcessorGeneric.process</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>true</serviceSettable>
+			<type>String</type>
+			<modTime>1178650848557</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Queue</name>
+			<value>BizService.Test.TargetSystem</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>true</serviceSettable>
+			<type>String</type>
+			<modTime>1178650848636</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

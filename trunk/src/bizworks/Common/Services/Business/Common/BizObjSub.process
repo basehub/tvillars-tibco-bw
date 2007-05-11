@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://www.chicos.com/eai/TechServices/SomeService" xmlns:ns3="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:ns0="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:pfx2="http://www.tibco.com/pe/CheckpointSchema" xmlns:pfx3="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.chicos.com/eai/TechServices/SomeService" schemaLocation="/TechServices/SomeService/Services/SomeService.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" schemaLocation="/Common/Schemas/BizObjEnvelope.xsd"/>
+    <pd:name>Services/Business/Common/BizObjSub.process</pd:name>
+    <pd:startName>BizServiceSub</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="BizServiceSub">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>49</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <acknowledgeMode>23</acknowledgeMode>
+                <destination>%%Services/Business/BizObjSub/Queue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx3:BizObjEnvelope"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>604</pd:endX>
+    <pd:endY>191</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="BizObj Processor">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <processName>/Services/Business/Common/BizObjProcessorGeneric.process</processName>
+            <processNameXPath>$_globalVariables/ns2:GlobalVariables/Services/Business/BizObjSub/BizObjProcessor</processNameXPath>
+        </config>
+        <pd:inputBindings>
+            <Processor>
+                <JMSCorrelationID>
+                    <xsl:value-of select="$BizServiceSub/ns1:ActivityOutput/JMSHeaders/ns1:JMSCorrelationID"/>
+                </JMSCorrelationID>
+                <xsl:copy-of select="$BizServiceSub/ns1:ActivityOutput/Body/pfx3:BizObjEnvelope"/>
+            </Processor>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Checkpoint">
+        <pd:type>com.tibco.pe.core.CheckpointActivity</pd:type>
+        <pd:resourceType>ae.process.checkpoint</pd:resourceType>
+        <pd:x>151</pd:x>
+        <pd:y>191</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <pfx2:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>191</pd:y>
+        <config>
+            <ConfirmEvent>BizServiceSub</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm - Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>49</pd:x>
+        <pd:y>383</pd:y>
+        <config>
+            <ConfirmEvent>BizServiceSub</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH - BizObj Processor">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>315</pd:y>
+        <config>
+            <processName>/Common/Functions/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                <ns3:Context>
+                    <ns3:ProcessInput>
+                        <xsl:copy-of select="$BizServiceSub/ns1:ActivityOutput"/>
+                    </ns3:ProcessInput>
+                </ns3:Context>
+            </GEH>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GEH - Invalid Msg">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>151</pd:x>
+        <pd:y>383</pd:y>
+        <config>
+            <processName>/Common/Functions/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+            </GEH>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="PEH - Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>497</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <processName>/Common/Functions/ProcessTracker.process</processName>
+        </config>
+        <pd:inputBindings>
+            <PEH>
+                <Error>
+                    <xsl:if test="$GEH---BizObj-Processor/GEH/GEHInput/DescShort">
+                        <xsl:attribute name="ErrorMsg">
+                            <xsl:value-of select="$GEH---BizObj-Processor/GEH/GEHInput/DescShort"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:copy-of select="$GEH---BizObj-Processor/GEH"/>
+                </Error>
+            </PEH>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>BizServiceSub</pd:from>
+        <pd:to>Confirm - Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm - Error</pd:from>
+        <pd:to>GEH - Invalid Msg</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH - Invalid Msg</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizServiceSub</pd:from>
+        <pd:to>Checkpoint</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH - BizObj Processor</pd:from>
+        <pd:to>PEH - Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checkpoint</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>PEH - Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj Processor</pd:from>
+        <pd:to>GEH - BizObj Processor</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>BizObj Processor</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj Processor</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>The follow process can be used by any project that includes the Common.projlib.
+There are two global service variables that will need to be set so the process
+subscribes to the correct queue. 
+
+BizServices\Common\Queue               = name of the queue
+BizServices\Common\MsgProcessor = name of the process that will process the BizObjEnvolope
+
+Note: Only queues are supported because of fail-over issues with EMS topics.  If
+the publisher is using topics, using bridging to map the messages to a queue.
+</pd:description>
+        <pd:x>286</pd:x>
+        <pd:y>79</pd:y>
+        <pd:width>570</pd:width>
+        <pd:height>156</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

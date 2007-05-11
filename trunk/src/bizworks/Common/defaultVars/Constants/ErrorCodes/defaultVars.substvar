@@ -1,0 +1,41 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>BE-0001</name>
+			<value>BE-0001</value>
+			<description>IllegalArguments - Use when the Biz Systems sends invalid data</description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178564851613</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>BE-0002</name>
+			<value>BE-0002</value>
+			<description>File Not Modified - use when a file that should have changed was not</description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178564851770</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>BE-0003</name>
+			<value>BE-0003</value>
+			<description>Timed out</description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178564851676</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>BE-0004</name>
+			<value>BE-0004</value>
+			<description>multiple instance of process not allowed</description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178564851723</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

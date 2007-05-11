@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>AS400</name>
+			<value>com.ibm.as400.access.AS400JDBCDriver</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178565273042</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DB2</name>
+			<value>COM.ibm.db2.jdbc.net.DB2Driver</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178565273105</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MSSQLServer2005</name>
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178565273230</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>MySQL</name>
+			<value>com.mysql.jdbc.Driver</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178565273074</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Oracle</name>
+			<value>oracle.jdbc.driver.OracleDriver</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178565273058</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

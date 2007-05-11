@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Services/Business/Common/UnitTest/BizObjSub.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>74</pd:startX>
+    <pd:startY>56</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>56</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="BizObj">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>187</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <element>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param" type="xsd:string"/>
+                            <xsd:element name="param1" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <param>
+                    <xsl:value-of select="1"/>
+                </param>
+                <param1>
+                    <xsl:value-of select="2"/>
+                </param1>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BizObjPub">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>317</pd:x>
+        <pd:y>55</pd:y>
+        <config>
+            <processName>/Services/Business/Common/BizObjPub.process</processName>
+        </config>
+        <pd:inputBindings>
+            <BizObjPub>
+                <Queue>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/Business/BizObjSub/Queue"/>
+                </Queue>
+                <ns2:BizObjEnvelope>
+                    <ns2:BizObjHeader>
+                        <ns2:System>
+                            <xsl:value-of select="'TIBCO'"/>
+                        </ns2:System>
+                        <ns2:Version>
+                            <xsl:value-of select="'xxxx'"/>
+                        </ns2:Version>
+                        <ns2:Type>
+                            <xsl:value-of select="'UnitTest'"/>
+                        </ns2:Type>
+                        <ns2:Id>
+                            <xsl:value-of select="1"/>
+                        </ns2:Id>
+                        <ns2:RevisionId>
+                            <xsl:value-of select="1"/>
+                        </ns2:RevisionId>
+                        <ns2:Action>
+                            <xsl:value-of select="'Test'"/>
+                        </ns2:Action>
+                    </ns2:BizObjHeader>
+                    <ns2:Payload>
+                        <xsl:copy-of select="$BizObj/root"/>
+                    </ns2:Payload>
+                </ns2:BizObjEnvelope>
+                <pfx:RetryOptions>
+                    <pfx:TryForever/>
+                </pfx:RetryOptions>
+            </BizObjPub>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>BizObjPub</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>BizObj</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj</pd:from>
+        <pd:to>BizObjPub</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

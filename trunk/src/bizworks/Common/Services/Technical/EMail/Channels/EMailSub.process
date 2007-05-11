@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.chicos.com/eai/TechServices/EMail" xmlns:pfx3="http://www.tibco.com/pe/CheckpointSchema">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.chicos.com/eai/Common/Functions/MailSend" schemaLocation="/Common/Functions/MailSend.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.chicos.com/eai/TechServices/EMail" schemaLocation="/Services/Technical/EMail/Services/EMail.xsd"/>
+    <pd:name>Services/Technical/EMail/Channels/EMailSub.process</pd:name>
+    <pd:startName>EMailSub</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="EMailSub">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>63</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>23</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/Technical/EMail/Queue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx2:EMail"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>762</pd:endX>
+    <pd:endY>194</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Checkpoint">
+        <pd:type>com.tibco.pe.core.CheckpointActivity</pd:type>
+        <pd:resourceType>ae.process.checkpoint</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>80</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <pfx3:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>437</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <ConfirmEvent>EMailSub</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm - Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>61</pd:x>
+        <pd:y>277</pd:y>
+        <config>
+            <ConfirmEvent>EMailSub</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH - Msg Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>277</pd:y>
+        <config>
+            <processName>/Common/Functions/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+            </GEH>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GEH - Service Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>202</pd:y>
+        <config>
+            <processName>/Common/Functions/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+            </GEH>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Finished">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>664</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Info%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="''"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Constants/Logging/Step/End"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>195</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Info%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($EMailSub/ns1:ActivityOutput,1,1)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Constants/Logging/Step/Start"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Mail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <processName>/Common/Functions/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <SendMail>
+                <pfx:MailActivity>
+                    <xsl:if test="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/from">
+                        <from>
+                            <xsl:value-of select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/from"/>
+                        </from>
+                    </xsl:if>
+                    <xsl:for-each select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/to">
+                        <to>
+                            <xsl:value-of select="."/>
+                        </to>
+                    </xsl:for-each>
+                    <xsl:for-each select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/cc">
+                        <cc>
+                            <xsl:value-of select="."/>
+                        </cc>
+                    </xsl:for-each>
+                    <subject>
+                        <xsl:value-of select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/subject"/>
+                    </subject>
+                    <xsl:if test="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/sentdate">
+                        <sentdate>
+                            <xsl:value-of select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/sentdate"/>
+                        </sentdate>
+                    </xsl:if>
+                    <xsl:for-each select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/bodyText">
+                        <bodyText>
+                            <xsl:value-of select="."/>
+                        </bodyText>
+                    </xsl:for-each>
+                    <xsl:copy-of select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/XMLAttachment"/>
+                    <xsl:copy-of select="$EMailSub/ns1:ActivityOutput/Body/pfx2:EMail/TextAttachments"/>
+                </pfx:MailActivity>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </SendMail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>EMailSub</pd:from>
+        <pd:to>Confirm - Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>EMailSub</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>Checkpoint</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Finished</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm - Error</pd:from>
+        <pd:to>GEH - Msg Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH - Msg Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>Send Mail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Mail</pd:from>
+        <pd:to>Log - Finished</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Mail</pd:from>
+        <pd:to>GEH - Service Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH - Service Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checkpoint</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Very simple service that decouples sending emails from a process.</pd:description>
+        <pd:x>209</pd:x>
+        <pd:y>17</pd:y>
+        <pd:width>399</pd:width>
+        <pd:height>33</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

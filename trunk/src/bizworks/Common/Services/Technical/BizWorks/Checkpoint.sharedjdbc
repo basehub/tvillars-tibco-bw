@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Checkpoint</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>%%Constants/Technical/Databases/JDBCDrivers/MSSQLServer2005%%</driver>
+        <maxConnections>%%Constants/Technical/Databases/MaxConnections%%</maxConnections>
+        <loginTimeout>%%Constants/Technical/Databases/LoginTimeOutsSecs%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <password>%%Services/Technical/CheckpointDB/Password%%</password>
+        <user>%%Services/Technical/CheckpointDB/UserName%%</user>
+        <location>%%Services/Technical/CheckpointDB/DatabaseURL%%</location>
+    </config>
+</BWSharedResource>

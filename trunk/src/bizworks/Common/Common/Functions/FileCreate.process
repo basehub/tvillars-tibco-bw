@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx2="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns0="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:pfx="http://schemas.tibco.com/bw/plugins/file/5.0/fileExceptions" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+    <pd:name>Common/Functions/FileCreate.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="FileCreate">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FullFileName" type="xsd:string"/>
+                    <xsd:element ref="pfx2:RetryOptions"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>30</pd:startX>
+    <pd:startY>84</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>661</pd:endX>
+    <pd:endY>103</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="pfx2:TechError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:group name="Create A File">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>102</pd:x>
+        <pd:y>42</pd:y>
+        <pd:width>283</pd:width>
+        <pd:height>276</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <serializable>false</serializable>
+            <pd:indexSlot>retryCount</pd:indexSlot>
+            <pd:errorCondition>false()</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Create File</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GEH</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>gave up</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create File</pd:from>
+            <pd:to>GEH</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="GEH">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>238</pd:x>
+            <pd:y>245</pd:y>
+            <config>
+                <processName>/Common/Functions/GEH.process</processName>
+            </config>
+            <pd:inputBindings>
+                <GEH>
+                    <xsl:copy-of select="$_error/ns2:ErrorReport"/>
+                    <ns0:Context>
+                        <ns0:ProcessInput>
+                            <xsl:copy-of select="$Start/FileCreate"/>
+                        </ns0:ProcessInput>
+                    </ns0:Context>
+                    <Retry>
+                        <RetryCount>
+                            <xsl:value-of select="$retryCount"/>
+                        </RetryCount>
+                        <xsl:copy-of select="$Start/FileCreate/pfx2:RetryOptions"/>
+                    </Retry>
+                </GEH>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Create File">
+            <pd:type>com.tibco.plugin.file.FileCreateActivity</pd:type>
+            <pd:resourceType>ae.activities.FileCreateActivity</pd:resourceType>
+            <pd:x>241</pd:x>
+            <pd:y>105</pd:y>
+            <config>
+                <createMissingDirectories>true</createMissingDirectories>
+                <overwrite>true</overwrite>
+            </config>
+            <pd:inputBindings>
+                <ns3:CreateActivityInputClass>
+                    <fileName>
+                        <xsl:value-of select="$Start/FileCreate/FullFileName"/>
+                    </fileName>
+                </ns3:CreateActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Create File (TechError)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>536</pd:x>
+        <pd:y>280</pd:y>
+        <config>
+            <faultName>TechError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <data>
+                    <pfx2:TechError>
+                        <ns0:Context>
+                            <ns0:ProcessInput>
+                                <xsl:copy-of select="$Start/FileCreate"/>
+                            </ns0:ProcessInput>
+                        </ns0:Context>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </pfx2:DescShort>
+                        <pfx2:ErrorReport>
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/@*"/>
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/node()"/>
+                        </pfx2:ErrorReport>
+                        <pfx2:Retry>
+                            <pfx2:RetryCount>
+                                <xsl:value-of select="$retryCount"/>
+                            </pfx2:RetryCount>
+                            <xsl:copy-of select="$Start/FileCreate/pfx2:RetryOptions"/>
+                        </pfx2:Retry>
+                    </pfx2:TechError>
+                </data>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Finished">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>536</pd:x>
+        <pd:y>103</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Create-File/ns3:CreateActivityOutputClass, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/Step/End"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>35</pd:x>
+        <pd:y>186</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Start/FileCreate, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/Step/Start"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Create A File</pd:from>
+        <pd:to>Log - Finished</pd:to>
+        <pd:xpathDescription>sucess</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>Create A File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Finished</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Create A File</pd:from>
+        <pd:to>Create File (TechError)</pd:to>
+        <pd:xpathDescription>gave up</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GEH/GEH/GiveUp</pd:xpath>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Creates a file.  If the file already exists, it is overwritten.  If the sub-directory does not exist, it is created.
+</pd:description>
+        <pd:x>293</pd:x>
+        <pd:y>28</pd:y>
+        <pd:width>584</pd:width>
+        <pd:height>38</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

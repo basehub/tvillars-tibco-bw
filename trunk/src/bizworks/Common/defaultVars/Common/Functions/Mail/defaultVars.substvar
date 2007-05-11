@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Host</name>
+			<value>EUSMTP.BP.COM</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178560526174</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!/CKjydYq2yWpH15T2e8tib1bjLPzG7aSBlf4qdJBw8c=</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1178560526237</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>tom.villars@bp.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1178560526205</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx21="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.chicos.com/eai/TechServices/EMail" xmlns:pfx3="http://www.chicos.com/eai/Common/Functions/GEH">
+    <xsd:import namespace="http://www.chicos.com/eai/Common/Schemas/Common" schemaLocation="/Common/Schemas/Common.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="/Common/Schemas/BizWorks/EngineTypes.xsd"/>
+    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+    <pd:name>Common/Functions/Subprocesses/Notify/Notify.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Notify">
+            <xsd:complexType>
+                <xsd:choice>
+                    <xsd:element ref="pfx3:DataInfo"/>
+                    <xsd:element ref="pfx3:DataWarn"/>
+                    <xsd:element ref="pfx3:TechInfo"/>
+                    <xsd:element ref="pfx3:TechWarn"/>
+                    <xsd:element ref="pfx3:DataError"/>
+                    <xsd:element ref="pfx3:TechError"/>
+                    <xsd:element ref="pfx3:Error"/>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>91</pd:startX>
+    <pd:startY>180</pd:startY>
+    <pd:returnBindings>
+        <Notify>
+            <message>
+                <xsl:value-of select="tib:render-xml($Start/Notify/*, 1,1)"/>
+            </message>
+            <xsl:if test="($Start/Notify//MsgCode)[last()]">
+                <msgCode>
+                    <xsl:value-of select="($Start/Notify//MsgCode)[last()]"/>
+                </msgCode>
+            </xsl:if>
+            <NotifyInput>
+                <xsl:copy-of select="$Start/Notify/ancestor-or-self::*/namespace::node()"/>
+                <xsl:copy-of select="$Start/Notify/@*"/>
+                <xsl:copy-of select="$Start/Notify/node()"/>
+            </NotifyInput>
+        </Notify>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Notify">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="message" type="xsd:string"/>
+                    <xsd:element name="msgCode" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="NotifyInput">
+                        <xsd:complexType>
+                            <xsd:choice>
+                                <xsd:element ref="pfx3:DataInfo"/>
+                                <xsd:element ref="pfx3:DataWarn"/>
+                                <xsd:element ref="pfx3:TechInfo"/>
+                                <xsd:element ref="pfx3:TechWarn"/>
+                                <xsd:element ref="pfx3:DataError"/>
+                                <xsd:element ref="pfx3:TechError"/>
+                                <xsd:element ref="pfx3:Error"/>
+                            </xsd:choice>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>597</pd:endX>
+    <pd:endY>70</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="EMail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>597</pd:x>
+        <pd:y>181</pd:y>
+        <config>
+            <processName>/Common/Functions/MailSend.process</processName>
+        </config>
+        <pd:inputBindings>
+            <SendMail>
+                <ns:MailActivity>
+                    <from>
+                        <xsl:value-of select="concat(&#xA;$_globalVariables/ns1:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/pfx21:ProcessContext/EngineName&#xA;,'@chicos.com')"/>
+                    </from>
+                    <xsl:choose>
+                        <!--Data Issue-->
+                        <xsl:when test="exists($Start/Notify/pfx3:DataInfo)&#xA;or&#xA;exists($Start/Notify/pfx3:DataWarn)">
+                            <xsl:for-each select="$Get-Email-Recipient-List/root/Data">
+                                <to>
+                                    <xsl:value-of select="."/>
+                                </to>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <!--Technical Issue-->
+                        <xsl:when test="exists($Start/Notify/pfx3:TechInfo)&#xA;or&#xA;exists($Start/Notify/pfx3:TechWarn)">
+                            <xsl:for-each select="$Get-Email-Recipient-List/root/Tech">
+                                <to>
+                                    <xsl:value-of select="."/>
+                                </to>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <!--Unknown Issue (should never go here)-->
+                        <xsl:otherwise>
+                            <xsl:for-each select="$Get-Email-Recipient-List/root/Tibco">
+                                <to>
+                                    <xsl:value-of select="."/>
+                                </to>
+                            </xsl:for-each>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <subject>
+                        <xsl:value-of select="concat(&#xA;local-name($Start/Notify/*[1])&#xA;,' - '&#xA;,$Start/Notify/*[1]/pfx3:DescShort)"/>
+                    </subject>
+                    <!--add location of log file-->
+                    <bodyText>
+                        <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;&#xA;,&quot;&#xD;&#xA;&quot;&#xA;,'Log File: '&#xA;,'\\',$ServerInfo/ServerInfo/HostName, '\', $_globalVariables/ns1:GlobalVariables/DirTrace,'\', $_processContext/pfx21:ProcessContext/EngineName,'.log')"/>
+                    </bodyText>
+                    <xsl:for-each select="$Start/Notify//pfx3:DescLong">
+                        <bodyText>
+                            <xsl:value-of select="."/>
+                        </bodyText>
+                    </xsl:for-each>
+                    <!--Seperate from main error text with a blank line-->
+                    <xsl:if test="count($Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc/ErrorReportDesc)>0">
+                        <bodyText>
+                            <xsl:value-of select="''"/>
+                        </bodyText>
+                        <bodyText>
+                            <xsl:value-of select="'Biz Works ErrorReport'"/>
+                        </bodyText>
+                        <bodyText>
+                            <xsl:value-of select="'---------------------'"/>
+                        </bodyText>
+                        <xsl:for-each select="$Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc/ErrorReportDesc">
+                            <bodyText>
+                                <xsl:value-of select="."/>
+                            </bodyText>
+                        </xsl:for-each>
+                    </xsl:if>
+                    <!--ErrorReport-->
+                    <xsl:if test="exists($Start/Notify//pfx3:ErrorReport)">
+                        <XMLAttachment>
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="'ErrorReport'"/>
+                            </xsl:attribute>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataWarn/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:TechWarn/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:DataError/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:TechError/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:Error/pfx3:ErrorReport"/>
+                        </XMLAttachment>
+                    </xsl:if>
+                    <!--Turn all Context info into XML attachments-->
+                    <xsl:for-each select="$Map-Context-Into-XML-Attachments/XMLAttachments/pfx2:UntypedData">
+                        <XMLAttachment>
+                            <xsl:if test="@description">
+                                <xsl:attribute name="description">
+                                    <xsl:value-of select="@description"/>
+                                </xsl:attribute>
+                            </xsl:if>
+                            <xsl:copy-of select="*"/>
+                        </XMLAttachment>
+                    </xsl:for-each>
+                    <!--Global Vars-->
+                    <xsl:if test="exists($Get-GlobalVars-Minus-Passwords/GetGlobalVarsMinusPasswords)">
+                        <XMLAttachment>
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="'GlobalVars'"/>
+                            </xsl:attribute>
+                            <xsl:copy-of select="$Get-GlobalVars-Minus-Passwords/GetGlobalVarsMinusPasswords"/>
+                        </XMLAttachment>
+                    </xsl:if>
+                </ns:MailActivity>
+                <pfx3:RetryOptions>
+                    <pfx3:TryForever/>
+                </pfx3:RetryOptions>
+            </SendMail>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Email Recipient List">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>267</pd:x>
+        <pd:y>103</pd:y>
+        <config>
+            <processName>/Common/Functions/Subprocesses/Notify/GetEMailRecipientList.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get GlobalVars Minus Passwords">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>94</pd:x>
+        <pd:y>473</pd:y>
+        <config>
+            <processName>/Common/Functions/Subprocesses/Notify/GetGlobalVarsMinusPasswords.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Map Context Into XML Attachments">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>267</pd:x>
+        <pd:y>293</pd:y>
+        <config>
+            <element>
+                <xsd:element name="XMLAttachments">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="pfx2:UntypedData" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <XMLAttachments>
+                <xsl:for-each select="$Start/Notify/*/*/pfx2:ProcessInput">
+                    <pfx2:UntypedData>
+                        <xsl:if test="@description">
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="@description"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:copy-of select="*"/>
+                    </pfx2:UntypedData>
+                </xsl:for-each>
+                <xsl:for-each select="$Start/Notify/*/*/pfx2:ActivityInput">
+                    <pfx2:UntypedData>
+                        <xsl:if test="@description">
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="@description"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:copy-of select="*"/>
+                    </pfx2:UntypedData>
+                </xsl:for-each>
+                <xsl:for-each select="$Start/Notify/*/*/pfx2:ActivityOutputs">
+                    <pfx2:UntypedData>
+                        <xsl:if test="@description">
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="@description"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:copy-of select="*"/>
+                    </pfx2:UntypedData>
+                </xsl:for-each>
+                <xsl:for-each select="$Start/Notify/*/*/pfx2:ExternalSystem">
+                    <pfx2:UntypedData>
+                        <xsl:attribute name="description">
+                            <xsl:value-of select="'ExternalSystem'"/>
+                        </xsl:attribute>
+                        <xsl:copy-of select="*"/>
+                    </pfx2:UntypedData>
+                </xsl:for-each>
+            </XMLAttachments>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map ErrorReport To Human Readable Description">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>195</pd:y>
+        <config>
+            <processName>/Common/Functions/Subprocesses/Notify/MapErrorReportToDesc.process</processName>
+        </config>
+        <pd:inputBindings>
+            <MapErrorReportToDesc>
+                <xsl:choose>
+                    <xsl:when test="exists($Start/Notify/pfx3:DataWarn)">
+                        <pfx21:ErrorReport>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataWarn/pfx3:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataWarn/pfx3:ErrorReport/@*"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataWarn/pfx3:ErrorReport/node()"/>
+                        </pfx21:ErrorReport>
+                    </xsl:when>
+                    <xsl:when test="exists($Start/Notify/pfx3:TechWarn)">
+                        <pfx21:ErrorReport>
+                            <xsl:copy-of select="$Start/Notify/pfx3:TechWarn/pfx3:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:TechWarn/pfx3:ErrorReport/@*"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:TechWarn/pfx3:ErrorReport/node()"/>
+                        </pfx21:ErrorReport>
+                    </xsl:when>
+                    <xsl:when test="exists($Start/Notify/pfx3:DataError)">
+                        <pfx21:ErrorReport>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataError/pfx3:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataError/pfx3:ErrorReport/@*"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:DataError/pfx3:ErrorReport/node()"/>
+                        </pfx21:ErrorReport>
+                    </xsl:when>
+                    <xsl:when test="exists($Start/Notify/pfx3:TechError)">
+                        <pfx21:ErrorReport>
+                            <xsl:copy-of select="$Start/Notify/pfx3:TechError/pfx3:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:TechError/pfx3:ErrorReport/@*"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:TechError/pfx3:ErrorReport/node()"/>
+                        </pfx21:ErrorReport>
+                    </xsl:when>
+                    <xsl:when test="exists($Start/Notify/pfx3:Error)">
+                        <pfx21:ErrorReport>
+                            <xsl:copy-of select="$Start/Notify/pfx3:Error/pfx3:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:Error/pfx3:ErrorReport/@*"/>
+                            <xsl:copy-of select="$Start/Notify/pfx3:Error/pfx3:ErrorReport/node()"/>
+                        </pfx21:ErrorReport>
+                    </xsl:when>
+                </xsl:choose>
+            </MapErrorReportToDesc>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ServerInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>267</pd:x>
+        <pd:y>375</pd:y>
+        <config>
+            <processName>/Common/Functions/ServerInfo.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Email Recipient List</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get GlobalVars Minus Passwords</pd:to>
+        <pd:xpathDescription>Is Error</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/Notify/pfx3:Error)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Email Recipient List</pd:from>
+        <pd:to>EMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get GlobalVars Minus Passwords</pd:from>
+        <pd:to>EMail</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>EMail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Context Into XML Attachments</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map ErrorReport To Human Readable Description</pd:to>
+        <pd:xpathDescription>Has ErrorReport</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/Notify//pfx3:ErrorReport)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map ErrorReport To Human Readable Description</pd:from>
+        <pd:to>EMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Context Into XML Attachments</pd:from>
+        <pd:to>EMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ServerInfo</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ServerInfo</pd:from>
+        <pd:to>EMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Common/Functions/Subprocesses/Notify/Notify</pd:description>
+        <pd:x>211</pd:x>
+        <pd:y>18</pd:y>
+        <pd:width>421</pd:width>
+        <pd:height>34</pd:height>
+        <pd:fontName>Arial-bold-14</pd:fontName>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>This is a private process and should NOT be directly called
+by a BizService app.</pd:description>
+        <pd:x>199</pd:x>
+        <pd:y>54</pd:y>
+        <pd:width>397</pd:width>
+        <pd:height>51</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

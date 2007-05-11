@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" xmlns:ns="http://www.tibco.com/pe/SignalInActivitySchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns3="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" schemaLocation="/Common/Schemas/BizObjEnvelope.xsd"/>
+    <pd:name>Services/Business/Common/UnitTest/BizObjPub.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>38</pd:startX>
+    <pd:startY>148</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>865</pd:endX>
+    <pd:endY>56</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:group name="Get Two Message Ds">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>560</pd:x>
+        <pd:y>403</pd:y>
+        <pd:width>186</pd:width>
+        <pd:height>155</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <serializable>false</serializable>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>$i=2</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Wait for JMS Queue Message D</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Wait for JMS Queue Message D</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Wait for JMS Queue Message D">
+            <pd:type>com.tibco.plugin.jms.JMSQueueSignalInActivity</pd:type>
+            <pd:resourceType>ae.activities.JMSQueueSignalInActivity</pd:resourceType>
+            <pd:x>659</pd:x>
+            <pd:y>482</pd:y>
+            <config>
+                <_eventTimeout>60000</_eventTimeout>
+                <PermittedMessageType>XML Text</PermittedMessageType>
+                <SessionAttributes>
+                    <transacted>false</transacted>
+                    <acknowledgeMode>1</acknowledgeMode>
+                    <maxSessions>-1</maxSessions>
+                    <destination>Prefix.D.Suffix</destination>
+                </SessionAttributes>
+                <ConfigurableHeaders>
+                    <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                    <JMSExpiration>0</JMSExpiration>
+                    <JMSPriority>4</JMSPriority>
+                </ConfigurableHeaders>
+                <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+                <OutDataxsdString ref="pfx:BizObjEnvelope"/>
+            </config>
+            <pd:inputBindings>
+                <ns:input/>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="BizObj">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>156</pd:x>
+        <pd:y>148</pd:y>
+        <config>
+            <element>
+                <xsd:element name="BizObj">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="param" type="xsd:string"/>
+                            <xsd:element name="param1" type="xsd:string"/>
+                            <xsd:element name="param2" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <BizObj>
+                <param>
+                    <xsl:value-of select="1"/>
+                </param>
+                <param1>
+                    <xsl:value-of select="2"/>
+                </param1>
+                <param2>
+                    <xsl:value-of select="3"/>
+                </param2>
+            </BizObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BizObjPub Multiple Comma Seperate Queues">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>302</pd:x>
+        <pd:y>456</pd:y>
+        <config>
+            <processName>/Services/Business/Common/BizObjPub.process</processName>
+        </config>
+        <pd:inputBindings>
+            <BizObjPub>
+                <MultipleQueues>
+                    <prefix>
+                        <xsl:value-of select="'Prefix'"/>
+                    </prefix>
+                    <QueueCommaSep>
+                        <xsl:value-of select="'C,D,D'"/>
+                    </QueueCommaSep>
+                    <suffix>
+                        <xsl:value-of select="'Suffix'"/>
+                    </suffix>
+                </MultipleQueues>
+                <pfx:BizObjEnvelope>
+                    <pfx:BizObjHeader>
+                        <pfx:System>
+                            <xsl:value-of select="'BizWoks'"/>
+                        </pfx:System>
+                        <pfx:Version>
+                            <xsl:value-of select="'5.3.2'"/>
+                        </pfx:Version>
+                        <pfx:Type>
+                            <xsl:value-of select="'UnitTest'"/>
+                        </pfx:Type>
+                        <pfx:Id>
+                            <xsl:value-of select="'BizObjPub'"/>
+                        </pfx:Id>
+                        <pfx:Action>
+                            <xsl:value-of select="'Test'"/>
+                        </pfx:Action>
+                    </pfx:BizObjHeader>
+                    <pfx:Payload>
+                        <xsl:copy-of select="$BizObj/BizObj"/>
+                    </pfx:Payload>
+                </pfx:BizObjEnvelope>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </BizObjPub>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BizObjPub Multiple Queues">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>302</pd:x>
+        <pd:y>248</pd:y>
+        <config>
+            <processName>/Services/Business/Common/BizObjPub.process</processName>
+        </config>
+        <pd:inputBindings>
+            <BizObjPub>
+                <MultipleQueues>
+                    <prefix>
+                        <xsl:value-of select="'Prefix'"/>
+                    </prefix>
+                    <Queue>
+                        <xsl:value-of select="'A'"/>
+                    </Queue>
+                    <Queue>
+                        <xsl:value-of select="'B'"/>
+                    </Queue>
+                    <suffix>
+                        <xsl:value-of select="'Suffix'"/>
+                    </suffix>
+                </MultipleQueues>
+                <pfx:BizObjEnvelope>
+                    <pfx:BizObjHeader>
+                        <pfx:System>
+                            <xsl:value-of select="'BizWoks'"/>
+                        </pfx:System>
+                        <pfx:Version>
+                            <xsl:value-of select="'5.3.2'"/>
+                        </pfx:Version>
+                        <pfx:Type>
+                            <xsl:value-of select="'UnitTest'"/>
+                        </pfx:Type>
+                        <pfx:Id>
+                            <xsl:value-of select="'BizObjPub'"/>
+                        </pfx:Id>
+                        <pfx:Action>
+                            <xsl:value-of select="'Test'"/>
+                        </pfx:Action>
+                    </pfx:BizObjHeader>
+                    <pfx:Payload>
+                        <xsl:copy-of select="$BizObj/BizObj"/>
+                    </pfx:Payload>
+                </pfx:BizObjEnvelope>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </BizObjPub>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BizObjPub Queue">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>302</pd:x>
+        <pd:y>148</pd:y>
+        <config>
+            <processName>/Services/Business/Common/BizObjPub.process</processName>
+        </config>
+        <pd:inputBindings>
+            <BizObjPub>
+                <Queue>
+                    <xsl:value-of select="'BizObjPub.Test'"/>
+                </Queue>
+                <pfx:BizObjEnvelope>
+                    <pfx:BizObjHeader>
+                        <pfx:System>
+                            <xsl:value-of select="'BizWoks'"/>
+                        </pfx:System>
+                        <pfx:Version>
+                            <xsl:value-of select="'5.3.2'"/>
+                        </pfx:Version>
+                        <pfx:Type>
+                            <xsl:value-of select="'UnitTest'"/>
+                        </pfx:Type>
+                        <pfx:Id>
+                            <xsl:value-of select="'BizObjPub'"/>
+                        </pfx:Id>
+                        <pfx:Action>
+                            <xsl:value-of select="'Test'"/>
+                        </pfx:Action>
+                    </pfx:BizObjHeader>
+                    <pfx:Payload>
+                        <xsl:copy-of select="$BizObj/BizObj"/>
+                    </pfx:Payload>
+                </pfx:BizObjEnvelope>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </BizObjPub>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BizObjPub Topic">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>302</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <processName>/Services/Business/Common/BizObjPub.process</processName>
+        </config>
+        <pd:inputBindings>
+            <BizObjPub>
+                <Topic>
+                    <xsl:value-of select="'BizObjPub.Test'"/>
+                </Topic>
+                <pfx:BizObjEnvelope>
+                    <pfx:BizObjHeader>
+                        <pfx:System>
+                            <xsl:value-of select="'BizWoks'"/>
+                        </pfx:System>
+                        <pfx:Version>
+                            <xsl:value-of select="'5.3.2'"/>
+                        </pfx:Version>
+                        <pfx:Type>
+                            <xsl:value-of select="'UnitTest'"/>
+                        </pfx:Type>
+                        <pfx:Id>
+                            <xsl:value-of select="'BizObjPub'"/>
+                        </pfx:Id>
+                        <pfx:Action>
+                            <xsl:value-of select="'Test'"/>
+                        </pfx:Action>
+                    </pfx:BizObjHeader>
+                    <pfx:Payload>
+                        <xsl:copy-of select="$BizObj/BizObj"/>
+                    </pfx:Payload>
+                </pfx:BizObjEnvelope>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </BizObjPub>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Wait for JMS Queue Message">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSignalInActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSignalInActivity</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>157</pd:y>
+        <config>
+            <_eventTimeout>60000</_eventTimeout>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>-1</maxSessions>
+                <destination>BizObjPub.Test</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:BizObjEnvelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Wait for JMS Queue Message A">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSignalInActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSignalInActivity</pd:resourceType>
+        <pd:x>536</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <_eventTimeout>60000</_eventTimeout>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>-1</maxSessions>
+                <destination>Prefix.A.Suffix</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:BizObjEnvelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Wait for JMS Queue Message B">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSignalInActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSignalInActivity</pd:resourceType>
+        <pd:x>536</pd:x>
+        <pd:y>296</pd:y>
+        <config>
+            <_eventTimeout>60000</_eventTimeout>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>-1</maxSessions>
+                <destination>Prefix.B.Suffix</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:BizObjEnvelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Wait for JMS Queue Message C">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSignalInActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSignalInActivity</pd:resourceType>
+        <pd:x>645</pd:x>
+        <pd:y>351</pd:y>
+        <config>
+            <_eventTimeout>60000</_eventTimeout>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>-1</maxSessions>
+                <destination>Prefix.C.Suffix</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:BizObjEnvelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Wait for JMS Topic Message">
+        <pd:type>com.tibco.plugin.jms.JMSTopicSignalInActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSTopicSignalInActivity</pd:resourceType>
+        <pd:x>445</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <_eventTimeout>3000</_eventTimeout>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <topicSIacknowledgeMode>1</topicSIacknowledgeMode>
+                <destination>BizObjPub.Test</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx:BizObjEnvelope"/>
+        </config>
+        <pd:inputBindings>
+            <ns:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>BizObj</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Wait for JMS Topic Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj</pd:from>
+        <pd:to>BizObjPub Topic</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObjPub Topic</pd:from>
+        <pd:to>Wait for JMS Topic Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj</pd:from>
+        <pd:to>BizObjPub Queue</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObjPub Queue</pd:from>
+        <pd:to>Wait for JMS Queue Message</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Wait for JMS Queue Message</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj</pd:from>
+        <pd:to>BizObjPub Multiple Queues</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObjPub Multiple Queues</pd:from>
+        <pd:to>Wait for JMS Queue Message A</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObjPub Multiple Queues</pd:from>
+        <pd:to>Wait for JMS Queue Message B</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Wait for JMS Queue Message A</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Wait for JMS Queue Message B</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObj</pd:from>
+        <pd:to>BizObjPub Multiple Comma Seperate Queues</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObjPub Multiple Comma Seperate Queues</pd:from>
+        <pd:to>Wait for JMS Queue Message C</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Wait for JMS Queue Message C</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizObjPub Multiple Comma Seperate Queues</pd:from>
+        <pd:to>Get Two Message Ds</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Two Message Ds</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
