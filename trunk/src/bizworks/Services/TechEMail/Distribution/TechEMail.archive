@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>tom.villars</authorProperty>
+        </sharedArchive>
+        <processArchive name="TechEMail">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>tom.villars@gmail.com</authorProperty>
+            <processProperty>/Services/Technical/EMail/Channels/EMailSub.process</processProperty>
+        </processArchive>
+        <versionProperty>6</versionProperty>
+        <authorProperty>tom.villars</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>TechEMail</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>C:\Documents and Settings\villt1\eclipse\tvillars-tibco-bw\dist\bw\.ear\TechEmail.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

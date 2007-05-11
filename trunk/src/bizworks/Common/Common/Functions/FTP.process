@@ -194,8 +194,8 @@
         <pd:group name="Execute Operation">
             <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
             <pd:resourceType>ae.process.group</pd:resourceType>
-            <pd:x>82</pd:x>
-            <pd:y>119</pd:y>
+            <pd:x>89</pd:x>
+            <pd:y>118</pd:y>
             <pd:width>227</pd:width>
             <pd:height>373</pd:height>
             <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -219,21 +219,21 @@
             </pd:transition>
             <pd:transition>
                 <pd:from>start</pd:from>
-                <pd:to>FTP Rename</pd:to>
-                <pd:xpathDescription>RENAME</pd:xpathDescription>
-                <pd:lineType>Default</pd:lineType>
-                <pd:lineColor>-16777216</pd:lineColor>
-                <pd:conditionType>xpath</pd:conditionType>
-                <pd:xpath>exists($Start/FTP/Rename)</pd:xpath>
-            </pd:transition>
-            <pd:transition>
-                <pd:from>start</pd:from>
                 <pd:to>FTP Get</pd:to>
                 <pd:xpathDescription>GET</pd:xpathDescription>
                 <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>xpath</pd:conditionType>
                 <pd:xpath>exists($Start/FTP/Get)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>FTP Rename</pd:to>
+                <pd:xpathDescription>RENAME</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Start/FTP/Rename)</pd:xpath>
             </pd:transition>
             <pd:transition>
                 <pd:from>start</pd:from>
@@ -245,9 +245,9 @@
                 <pd:xpath>exists($Start/FTP/Put)</pd:xpath>
             </pd:transition>
             <pd:transition>
-                <pd:from>FTP Put</pd:from>
+                <pd:from>FTP Get</pd:from>
                 <pd:to>end</pd:to>
-                <pd:lineType>Straight</pd:lineType>
+                <pd:lineType>Default</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
@@ -259,9 +259,9 @@
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
             <pd:transition>
-                <pd:from>FTP Get</pd:from>
+                <pd:from>FTP Put</pd:from>
                 <pd:to>end</pd:to>
-                <pd:lineType>Default</pd:lineType>
+                <pd:lineType>Straight</pd:lineType>
                 <pd:lineColor>-16777216</pd:lineColor>
                 <pd:conditionType>always</pd:conditionType>
             </pd:transition>
@@ -275,8 +275,8 @@
             <pd:activity name="FTP Dir">
                 <pd:type>com.tibco.plugin.ftp.FTPDirActivity</pd:type>
                 <pd:resourceType>ae.activities.FTPDirActivityUI</pd:resourceType>
-                <pd:x>199</pd:x>
-                <pd:y>181</pd:y>
+                <pd:x>203</pd:x>
+                <pd:y>176</pd:y>
                 <config>
                     <SharedUserData>/Common/Functions/Dummy FTP Connection.sharedftp</SharedUserData>
                     <NLST>true</NLST>
@@ -304,8 +304,8 @@
             <pd:activity name="FTP Get">
                 <pd:type>com.tibco.plugin.ftp.FTPGetActivity</pd:type>
                 <pd:resourceType>ae.activities.FTPGetActivityUI</pd:resourceType>
-                <pd:x>200</pd:x>
-                <pd:y>261</pd:y>
+                <pd:x>203</pd:x>
+                <pd:y>256</pd:y>
                 <config>
                     <Timeout>120000</Timeout>
                     <isBinary>false</isBinary>
@@ -336,8 +336,8 @@
             <pd:activity name="FTP Put">
                 <pd:type>com.tibco.plugin.ftp.FTPPutActivity</pd:type>
                 <pd:resourceType>ae.activities.FTPPutActivityUI</pd:resourceType>
-                <pd:x>199</pd:x>
-                <pd:y>340</pd:y>
+                <pd:x>203</pd:x>
+                <pd:y>336</pd:y>
                 <config>
                     <Timeout>120000</Timeout>
                     <FireWall>false</FireWall>
@@ -373,9 +373,11 @@
             <pd:activity name="FTP Rename">
                 <pd:type>com.tibco.plugin.ftp.FTPRenameActivity</pd:type>
                 <pd:resourceType>ae.activities.FTPRenameActivityUI</pd:resourceType>
-                <pd:x>201</pd:x>
-                <pd:y>416</pd:y>
-                <config/>
+                <pd:x>203</pd:x>
+                <pd:y>411</pd:y>
+                <config>
+                    <SharedUserData>/Common/Functions/Dummy FTP Connection.sharedftp</SharedUserData>
+                </config>
                 <pd:inputBindings>
                     <Input>
                         <Host>

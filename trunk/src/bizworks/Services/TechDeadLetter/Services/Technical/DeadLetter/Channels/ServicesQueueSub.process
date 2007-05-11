@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema">
+    <pd:name>Services/Technical/DeadLetter/Channels/ServicesQueueSub.process</pd:name>
+    <pd:startName>JMS Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="JMS Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>108</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/Technical/DeadLetter/Topic%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>335</pd:endX>
+    <pd:endY>107</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Log - Dead Letter">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>208</pd:x>
+        <pd:y>107</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/TechError%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($JMS-Queue-Receiver/ns:ActivityOutput)"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>JMS Queue Receiver</pd:from>
+        <pd:to>Log - Dead Letter</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Dead Letter</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Impliments a fairly standard Dead Letter Channel pattern.  For
+further details reffer to Enterprise Integration Patterns website
+at http://www.enterpriseintegrationpatterns.com</pd:description>
+        <pd:x>211</pd:x>
+        <pd:y>33</pd:y>
+        <pd:width>420</pd:width>
+        <pd:height>65</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

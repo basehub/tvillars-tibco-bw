@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH">
+    <pd:name>Services/Technical/EMSHeartbeat/Services/HeartbeatPub.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>39</pd:startX>
+    <pd:startY>159</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>578</pd:endX>
+    <pd:endY>159</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>304</pd:x>
+        <pd:y>278</pd:y>
+        <config>
+            <PermittedMessageType>Simple</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/Technical/EMSHeartbeat/Queue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>RELIABLE_DELIVERY</JMSDeliveryMode>
+                <JMSExpiration/>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <JMSExpiration>
+                    <xsl:value-of select="($_globalVariables/ns:GlobalVariables/Services/Technical/EMSHeartbeat/PublisherTimerIntervalMilliSecs div 1000 ) * 5"/>
+                </JMSExpiration>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS Topic Publisher">
+        <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+        <pd:x>297</pd:x>
+        <pd:y>48</pd:y>
+        <config>
+            <PermittedMessageType>Simple</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services/Technical/EMSHeartbeat/Topic%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>RELIABLE_DELIVERY</JMSDeliveryMode>
+                <JMSExpiration/>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <JMSExpiration>
+                    <xsl:value-of select="($_globalVariables/ns:GlobalVariables/Services/Technical/EMSHeartbeat/PublisherTimerIntervalMilliSecs div 1000 ) * 5"/>
+                </JMSExpiration>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Finished">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>446</pd:x>
+        <pd:y>159</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="'Message Publisher Finished'"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/Step/End"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>158</pd:x>
+        <pd:y>159</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="'Message Publisher Started'"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/Step/Start"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Log - Finished</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Topic Publisher</pd:from>
+        <pd:to>Log - Finished</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>JMS Topic Publisher</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>JMS Queue Sender</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS Queue Sender</pd:from>
+        <pd:to>Log - Finished</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
