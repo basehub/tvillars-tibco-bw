@@ -10,7 +10,7 @@
             <authorProperty>tom.villars@gmail.com</authorProperty>
             <processProperty>/Services/Technical/EMail/Channels/EMailSub.process</processProperty>
         </processArchive>
-        <versionProperty>6</versionProperty>
+        <versionProperty>7</versionProperty>
         <authorProperty>tom.villars</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>TechEMail</name>
@@ -19,6 +19,6 @@
             <fixedChildren/>
             <resourceDescriptions/>
         </designer>
-        <fileLocationProperty>C:\Documents and Settings\villt1\eclipse\tvillars-tibco-bw\dist\bw\.ear\TechEmail.ear</fileLocationProperty>
+        <fileLocationProperty>C:\Users\tvillars\workspace\tvillars-tibco-bw\dist\TechEmail.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

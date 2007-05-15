@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
     <name name="Common">
-        <version>57</version>
+        <version>59</version>
         <author>tom.villars</author>
-        <fileLocation>C:\Documents and Settings\villt1\eclipse\tvillars-tibco-bw\dist\bw\projlib\Common.projlib</fileLocation>
-        <resources>/Common/Functions/FTP.process,/Common/Functions/FileCopy.process,/Common/Functions/FileCopyUsingOS.process,/Common/Functions/FileCreate.process,/Common/Functions/FileDelUsingOS.process,/Common/Functions/FileMover.process,/Common/Functions/GEH.process,/Common/Functions/MailSend.process,/Common/Functions/Notify.process,/Common/Functions/ProcessTracker.process,/Common/Functions/ServerInfo.process,/Common/JavaExtension/dateUtilities.javaxpath,/Common/JavaExtension/makeGUID.javaxpath,/Services/Business/Common/BizObjPub.process,/Services/Technical/BizWorks/Checkpoint.sharedjdbc,/Services/Technical/EMail/Services/EMail.process,/Services/Technical/EMail/Channels/EMailSub.process,/Services/Technical/JMS/Channel.sharedjmscon,/Services/Technical/JMS/JMSService.sharedjndiconfig</resources>
+        <fileLocation>C:\Users\tvillars\workspace\tvillars-tibco-bw\dist\Common.projlib</fileLocation>
+        <resources>/Common/Functions/FTP.process,/Common/Functions/FileCopy.process,/Common/Functions/FileCopyUsingOS.process,/Common/Functions/FileCreate.process,/Common/Functions/FileDelUsingOS.process,/Common/Functions/FileMover.process,/Common/Functions/GEH.process,/Common/Functions/MailSend.process,/Common/Functions/Notify.process,/Common/Functions/ProcessTracker.process,/Common/Functions/ServerInfo.process,/Common/JavaExtension/dateUtilities.javaxpath,/Common/JavaExtension/makeGUID.javaxpath,/Services/Business/Common/BizObjPub.process,/Services/Technical/BizWorks/Checkpoint.sharedjdbc,/Services/Technical/EMail/Channels/EMailSub.process,/Services/Technical/EMail/Services/EMail.process,/Services/Technical/JMS/Channel.sharedjmscon,/Services/Technical/JMS/JMSService.sharedjndiconfig</resources>
     </name>
 </Repository:repository>

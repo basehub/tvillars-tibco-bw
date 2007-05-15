@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class GUID implements Comparable {
 
-  // one-way function algorthym used to help make the secure
+  // one-way function algorithm used to help make the secure
   static private final String ALGORITHM = "MD5";
 
   private static Random random;
