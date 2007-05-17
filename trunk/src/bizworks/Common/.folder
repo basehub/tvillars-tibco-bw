@@ -33,22 +33,22 @@ Before attempting to use this library in your own code, you'll need to configure
             <property key="ae.palette.jrmi.palette.version" value="5.3.0"/>
             <property key="r3.aer3adapter.palette.version" value="5.3.0.10"/>
             <property key="ae.palette.Filepalette.version" value="5.3.0"/>
-            <property key="ae.palette.FTPpalette.version" value="5.3.0"/>
             <property key="wsdlresource.palette.version" value="5.3.0"/>
+            <property key="ae.palette.FTPpalette.version" value="5.3.0"/>
             <property key="ae.process.palette.version" value="5.3.0"/>
-            <property key="ae.palette.JDBCpalette.version" value="5.3.0"/>
             <property key="httppalette.httpplugins.version" value="5.3.0"/>
+            <property key="ae.palette.JDBCpalette.version" value="5.3.0"/>
             <property key="ae.palette.parsepalette.version" value="5.3.0"/>
             <property key="ae.designerapp.version" value="5.5.0.1"/>
             <property key="ae.repo.palette.version" value="5.3.0"/>
             <property key="description" value="This is source for the project library Common.projlib.  Details on licensing can be found at: &#xA;Before attempting to use this library in your own code, you'll need to configure the following global vars for your environment:&#xA;&#xA;1) Common/Constants/Technical/Tools/PSExec/FullPathName&#xA;2) TechServices/BWCheckpoint&#xA;         DatabaseURL&#xA;         Password&#xA;         UserName&#xA;3) TechServices/JMS&#xA;         Password&#xA;         UserName&#xA;         &#xA;&#xA;"/>
-            <property key="ae.aepalette.ae.palette.version" value="5.3.0"/>
             <property key="turbo.palette.version" value="5.3.0"/>
+            <property key="ae.aepalette.ae.palette.version" value="5.3.0"/>
             <property key="ae.palette.Policy.version" value="5.3.0"/>
             <property key="ae.palette.java.palette.version" value="5.3.0"/>
-            <property key="ae.palette.transaction.palette.version" value="5.3.0"/>
-            <property key="palette.ae.metadata.version" value="5.3.0"/>
             <property key="ae.palette.GeneralPalette.version" value="5.3.0"/>
+            <property key="palette.ae.metadata.version" value="5.3.0"/>
+            <property key="ae.palette.transaction.palette.version" value="5.3.0"/>
             <property key="ae.palette.xml.palette.version" value="5.3.0"/>
         </projectProperties>
     </folder>
