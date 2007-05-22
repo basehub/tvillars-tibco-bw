@@ -22,7 +22,7 @@ import java.util.Random;
  * @author Tom Villars 21-March-07
  */
 
-public class GUID implements Comparable {
+public class GUID implements Comparable<GUID> {
 
   // one-way function algorithm used to help make the secure
   static private final String ALGORITHM = "MD5";
@@ -122,19 +122,16 @@ public class GUID implements Comparable {
    * than, equal to, or greater than the specified object.<p>
    * <p/>
    *
-   * @param obj the Object to be compared, must be a com.dteet.eai.model.common.UUIDGenerator
+   * @param guid the Object to be compared, must be a com.google.code.tvillars.tibco.bw.javacustfun.GUID
    * @return a negative integer, zero, or a positive integer as this object
    *         is less than, equal to, or greater than the specified object.
    * @throws ClassCastException if the specified object's type prevents it
    *                            from being compared to this Object.
    */
-  public int compareTo( Object obj ) {
-
-    // cast the obj to a com.dteet.eai.model.common.UUIDGenerator, also ensures the obj is a com.dteet.eai.model.common.UUIDGenerator
-    GUID uuIdToCompare = (GUID) obj;
+  public int compareTo( GUID guid ) {
 
     // delegate to compareTo method of String class
-    return valueAfterDigestor.compareTo(uuIdToCompare.valueAfterDigestor);
+    return valueAfterDigestor.compareTo(guid.valueAfterDigestor);
   }
 
   /**
@@ -147,8 +144,8 @@ public class GUID implements Comparable {
    * @see #hashCode()
    * @see java.util.Hashtable
    */
-  public boolean equals( Object obj ) {
-    // check if it is the same object or the com.dteet.eai.model.common.UUIDGenerator value is the same
+  public boolean equals( GUID obj ) {
+    // check if it is the same object or the com.google.code.tvillars.tibco.bw.javacustfun.GUID value is the same
     return this == obj || compareTo(obj) == 0;
   }
 
