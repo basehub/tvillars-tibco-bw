@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns4="http://www.chicos.com/eai/Common/Schemas/Common">
-    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" schemaLocation="/Common/Schemas/BizWorks/Cmd.xsd"/>
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/tibco/xsd/bw/Cmd.xsd" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns4="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/tibco/xsd/bw/Cmd.xsd" schemaLocation="/Common/Schemas/BizWorks/Cmd.xsd"/>
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/FileDelUsingOS.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -15,24 +15,24 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>65</pd:startX>
-    <pd:startY>98</pd:startY>
+    <pd:startX>36</pd:startX>
+    <pd:startY>67</pd:startY>
     <pd:returnBindings>
         <xsl:copy-of select="$DOS-Del/CmdOutputWithActivityOutput"/>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
     <pd:endType ref="pfx2:CmdOutputWithActivityOutput"/>
-    <pd:endX>694</pd:endX>
-    <pd:endY>144</pd:endY>
+    <pd:endX>665</pd:endX>
+    <pd:endY>113</pd:endY>
     <pd:errorSchemas>
         <TechError ref="pfx3:TechError"/>
     </pd:errorSchemas>
     <pd:processVariables/>
-    <pd:group name="Group">
+    <pd:group name="Del File Using DOS Del Command">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>137</pd:x>
-        <pd:y>70</pd:y>
+        <pd:x>108</pd:x>
+        <pd:y>39</pd:y>
         <pd:width>248</pd:width>
         <pd:height>266</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -79,8 +79,8 @@
         <pd:activity name="DOS Del">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>266</pd:x>
-            <pd:y>140</pd:y>
+            <pd:x>237</pd:x>
+            <pd:y>109</pd:y>
             <config>
                 <processName>/Common/Functions/Subprocesses/FileDelUsingOS/DOSDel.process</processName>
             </config>
@@ -100,8 +100,8 @@
         <pd:activity name="GEH">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>266</pd:x>
-            <pd:y>264</pd:y>
+            <pd:x>237</pd:x>
+            <pd:y>233</pd:y>
             <config>
                 <processName>/Common/Functions/GEH.process</processName>
             </config>
@@ -126,8 +126,8 @@
     <pd:activity name="Log - Finished">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>540</pd:x>
-        <pd:y>144</pd:y>
+        <pd:x>511</pd:x>
+        <pd:y>113</pd:y>
         <config>
             <role>%%Constants/Logging/Roles/Debug%%</role>
         </config>
@@ -145,8 +145,8 @@
     <pd:activity name="Log - Start">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>64</pd:x>
-        <pd:y>213</pd:y>
+        <pd:x>35</pd:x>
+        <pd:y>182</pd:y>
         <config>
             <role>%%Constants/Logging/Roles/Debug%%</role>
         </config>
@@ -164,8 +164,8 @@
     <pd:activity name="Raise Tech Error (DOS Del)">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>540</pd:x>
-        <pd:y>290</pd:y>
+        <pd:x>511</pd:x>
+        <pd:y>259</pd:y>
         <config>
             <faultName>TechError</faultName>
         </config>
@@ -203,7 +203,7 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Group</pd:from>
+        <pd:from>Del File Using DOS Del Command</pd:from>
         <pd:to>Log - Finished</pd:to>
         <pd:xpathDescription>success</pd:xpathDescription>
         <pd:lineType>Curved</pd:lineType>
@@ -211,7 +211,7 @@
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Group</pd:from>
+        <pd:from>Del File Using DOS Del Command</pd:from>
         <pd:to>Raise Tech Error (DOS Del)</pd:to>
         <pd:xpathDescription>give up</pd:xpathDescription>
         <pd:lineType>Curved</pd:lineType>
@@ -221,7 +221,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log - Start</pd:from>
-        <pd:to>Group</pd:to>
+        <pd:to>Del File Using DOS Del Command</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -237,7 +237,7 @@
         <pd:name>Label (1)</pd:name>
         <pd:description>Executes a DOS del command.  Wild carding is allowed</pd:description>
         <pd:x>184</pd:x>
-        <pd:y>35</pd:y>
+        <pd:y>22</pd:y>
         <pd:width>366</pd:width>
         <pd:height>42</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>

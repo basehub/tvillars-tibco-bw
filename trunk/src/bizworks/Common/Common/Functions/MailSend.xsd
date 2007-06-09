@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-	 xmlns:chsMailSend="http://www.chicos.com/eai/Common/Functions/MailSend"
-	 xmlns:chsCom="http://www.chicos.com/eai/Common/Schemas/Common"
-	 targetNamespace="http://www.chicos.com/eai/Common/Functions/MailSend"
+	 xmlns:chsMailSend="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend"
+	 xmlns:chsCom="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common"
+	 targetNamespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend"
 	 elementFormDefault="unqualified"
 	 attributeFormDefault="unqualified">
-	<import namespace="http://www.chicos.com/eai/Common/Schemas/Common" schemaLocation="../Schemas/Common.xsd"/>
+	<import namespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" schemaLocation="../Schemas/Common.xsd"/>
 	<element name="MailActivity" type="chsMailSend:MailActivity_Type"/>
 	<complexType name="MailActivity_Type">
 		<sequence>

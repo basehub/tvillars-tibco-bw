@@ -30,7 +30,7 @@
         <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
         <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
         <pd:x>159</pd:x>
-        <pd:y>101</pd:y>
+        <pd:y>100</pd:y>
         <config>
             <fileName>ServerInfoJavaCode</fileName>
             <packageName>Common.Functions.ServerInfo</packageName>
@@ -91,11 +91,11 @@ hostName = java.net.InetAddress.getLocalHost().getHostName();
     <pd:label>
         <pd:name>Label (1) (1)</pd:name>
         <pd:description>simple process for returning information
-about the server a process is running
+about the server the process is running on
 </pd:description>
-        <pd:x>126</pd:x>
+        <pd:x>130</pd:x>
         <pd:y>28</pd:y>
-        <pd:width>250</pd:width>
+        <pd:width>257</pd:width>
         <pd:height>52</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>
         <pd:color>-1</pd:color>

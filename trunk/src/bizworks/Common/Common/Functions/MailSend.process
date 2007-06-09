@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns2="http://xmlns.tibco.com/body" xmlns:ns22="http://xmlns.tibco.com/encodings/mime" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:pfx4="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns5="http://www.chicos.com/eai/Common/Schemas/Common">
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/MailSend" schemaLocation="/Common/Functions/MailSend.xsd"/>
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns2="http://xmlns.tibco.com/body" xmlns:ns22="http://xmlns.tibco.com/encodings/mime" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:pfx4="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns5="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common">
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" schemaLocation="/Common/Functions/MailSend.xsd"/>
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/MailSend.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -84,6 +84,7 @@
                 <authenticate>true</authenticate>
                 <username>%%Services/Technical/EMail/UserName%%</username>
                 <password>%%Services/Technical/EMail/Password%%</password>
+                <nonRFC822>false</nonRFC822>
                 <InputHeaders>
                     <xsd:element name="root">
                         <xsd:complexType>
@@ -104,7 +105,7 @@
                         </xsl:when>
                         <xsl:otherwise>
                             <from>
-                                <xsl:value-of select="concat(&#xA;$_globalVariables/ns4:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/ns:ProcessContext/EngineName&#xA;,'@chicos.com')"/>
+                                <xsl:value-of select="concat(&#xA;$_globalVariables/ns4:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/ns:ProcessContext/EngineName&#xA;,'@', $_globalVariables/ns4:GlobalVariables/Domain,'.com')"/>
                             </from>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -330,17 +331,18 @@ attachments, but can also send emails without attachments.</pd:description>
     <pd:label>
         <pd:name>Label (2)</pd:name>
         <pd:description>WARNING!!!
+
 If this process is called directly, it couples that process to 
 email system.  Therefore if the email service is down, the
 calling process gets stuck in a loop until the service is
 restored.
 
-To send an email asynchronisely (perfered method), use the
-Email service at Services/Technical/EMail/Services/EMail</pd:description>
+To send an email asynchronously, use the Email service
+at Services/Technical/EMail/Services/EMail</pd:description>
         <pd:x>546</pd:x>
-        <pd:y>69</pd:y>
+        <pd:y>78</pd:y>
         <pd:width>358</pd:width>
-        <pd:height>136</pd:height>
+        <pd:height>154</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>
         <pd:color>-52</pd:color>
         <pd:type>dash</pd:type>

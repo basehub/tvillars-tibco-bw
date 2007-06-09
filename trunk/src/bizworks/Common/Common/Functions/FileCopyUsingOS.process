@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" xmlns:ns0="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" xmlns:ns0="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema">
     <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" schemaLocation="/Common/Schemas/BizWorks/Cmd.xsd"/>
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/FileCopyUsingOS.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -16,8 +16,8 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>61</pd:startX>
-    <pd:startY>126</pd:startY>
+    <pd:startX>56</pd:startX>
+    <pd:startY>134</pd:startY>
     <pd:returnBindings>
         <FileCopyUsingOS>
             <xsl:copy-of select="$DOSCopy/CmdOutputWithActivityOutput"/>
@@ -43,9 +43,9 @@
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
         <pd:x>116</pd:x>
-        <pd:y>90</pd:y>
+        <pd:y>35</pd:y>
         <pd:width>323</pd:width>
-        <pd:height>273</pd:height>
+        <pd:height>398</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:joinToggle>inherit</pd:joinToggle>
@@ -159,8 +159,8 @@
     <pd:activity name="Log - Start">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>63</pd:x>
-        <pd:y>235</pd:y>
+        <pd:x>58</pd:x>
+        <pd:y>243</pd:y>
         <config>
             <role>%%Constants/Logging/Roles/Debug%%</role>
         </config>
@@ -243,7 +243,7 @@
         <pd:name>Label (1)</pd:name>
         <pd:description>Executes a DOS copy command.  Wild carding is allowed</pd:description>
         <pd:x>179</pd:x>
-        <pd:y>30</pd:y>
+        <pd:y>18</pd:y>
         <pd:width>357</pd:width>
         <pd:height>34</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>

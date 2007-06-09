@@ -2,28 +2,28 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
-			<name>Host</name>
-			<value>EUSMTP.BP.COM</value>
+			<name>DatabaseURL</name>
+			<value>jdbc:sqlserver://svr-tibdev-tst;databaseName=EAIChkPointDev</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1178560526174</modTime>
+			<modTime>1178650848542</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Password</name>
-			<value>#!HTbCHFnBceeKedQ1mDYboU/eNW2i7PMh55KSTdtpoGM=</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>tib.chkpoint</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
-			<type>Password</type>
-			<modTime>1178560526237</modTime>
+			<type>String</type>
+			<modTime>1178650848651</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>UserName</name>
-			<value>tom.villars@bp.com</value>
-			<deploymentSettable>true</deploymentSettable>
+			<value>tib.chkpoint</value>
+			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1178560526205</modTime>
+			<modTime>1178650848604</modTime>
 		</globalVariable>
 	</globalVariables>
 </repository>

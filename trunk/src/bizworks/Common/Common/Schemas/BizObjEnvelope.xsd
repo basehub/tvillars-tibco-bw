@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-	 xmlns:chsBOEnv="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope"
+	 xmlns:chsBOEnv="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope"
 	 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	 targetNamespace="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope"
+	 targetNamespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope"
 	 elementFormDefault="qualified"
 	 attributeFormDefault="unqualified">
 	<element name="BizObjEnvelope" type="chsBOEnv:BizObjEnvelope_Type"/>

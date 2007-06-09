@@ -3,11 +3,11 @@
 	<globalVariables>
 		<globalVariable>
 			<name>BizObjProcessor</name>
-			<value>/BizServices/Common/BizObjProcessorGeneric.process</value>
+			<value>/Services/Business/BizObjSub/BizObjProcessorGeneric.process</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>true</serviceSettable>
 			<type>String</type>
-			<modTime>1178650848557</modTime>
+			<modTime>1181147702274</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Queue</name>

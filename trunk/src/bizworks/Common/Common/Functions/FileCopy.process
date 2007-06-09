@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx2="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns0="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:pfx="http://schemas.tibco.com/bw/plugins/file/5.0/fileExceptions" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns0="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" xmlns:pfx="http://schemas.tibco.com/bw/plugins/file/5.0/fileExceptions" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/FileCopy.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -28,8 +28,8 @@
     <pd:group name="Copy A File">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>103</pd:x>
-        <pd:y>129</pd:y>
+        <pd:x>104</pd:x>
+        <pd:y>128</pd:y>
         <pd:width>283</pd:width>
         <pd:height>276</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -88,7 +88,7 @@ exists($_error_Copy-File/ActivityErrors/pfx:FileNotFoundException)</pd:xpath>
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
             <pd:x>138</pd:x>
-            <pd:y>326</pd:y>
+            <pd:y>325</pd:y>
             <config>
                 <processName>/Common/Functions/GEH.process</processName>
             </config>
@@ -104,7 +104,9 @@ exists($_error_Copy-File/ActivityErrors/pfx:FileNotFoundException)</pd:xpath>
                         <RetryCount>
                             <xsl:value-of select="$retryCount"/>
                         </RetryCount>
-                        <xsl:copy-of select="$Start/FileCopy/pfx2:RetryOptions"/>
+                        <pfx2:RetryOptions>
+                            <pfx2:TryForever/>
+                        </pfx2:RetryOptions>
                     </Retry>
                 </GEH>
             </pd:inputBindings>
@@ -113,7 +115,7 @@ exists($_error_Copy-File/ActivityErrors/pfx:FileNotFoundException)</pd:xpath>
             <pd:type>com.tibco.plugin.file.FileCopyActivity</pd:type>
             <pd:resourceType>ae.activities.FileCopyActivity</pd:resourceType>
             <pd:x>275</pd:x>
-            <pd:y>186</pd:y>
+            <pd:y>185</pd:y>
             <config>
                 <overwrite>true</overwrite>
                 <createMissingDirectories>true</createMissingDirectories>
@@ -134,7 +136,7 @@ exists($_error_Copy-File/ActivityErrors/pfx:FileNotFoundException)</pd:xpath>
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
             <pd:x>277</pd:x>
-            <pd:y>326</pd:y>
+            <pd:y>325</pd:y>
             <config/>
             <pd:inputBindings/>
         </pd:activity>

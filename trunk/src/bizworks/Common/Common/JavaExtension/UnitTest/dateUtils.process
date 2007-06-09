@@ -2,19 +2,19 @@
 <pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dateUtil="java://com.chicos.eai.common.functions.DateUtil">
     <pd:name>Common/JavaExtension/UnitTest/dateUtils.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>104</pd:startX>
-    <pd:startY>131</pd:startY>
+    <pd:startX>33</pd:startX>
+    <pd:startY>44</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>404</pd:endX>
-    <pd:endY>131</pd:endY>
+    <pd:endX>333</pd:endX>
+    <pd:endY>44</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:activity name="Map Data">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>244</pd:x>
-        <pd:y>131</pd:y>
+        <pd:x>173</pd:x>
+        <pd:y>44</pd:y>
         <config>
             <element>
                 <xsd:element name="root">

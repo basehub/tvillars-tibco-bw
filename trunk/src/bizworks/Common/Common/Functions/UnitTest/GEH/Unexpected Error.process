@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:guid="java://com.chicos.eai.common.functions.GUID" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.chicos.com/eai/Common/Schemas/Common">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:guid="java://com.chicos.eai.common.functions.GUID" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common">
     <pd:name>Common/Functions/UnitTest/GEH/Unexpected Error.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -11,19 +11,40 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>173</pd:startX>
-    <pd:startY>57</pd:startY>
+    <pd:startX>67</pd:startX>
+    <pd:startY>96</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>419</pd:endX>
-    <pd:endY>57</pd:endY>
+    <pd:endX>485</pd:endX>
+    <pd:endY>96</pd:endY>
     <pd:errorSchemas/>
-    <pd:processVariables/>
-    <pd:activity name="GEH">
+    <pd:processVariables>
+        <Schema0>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="x" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Schema0>
+    </pd:processVariables>
+    <pd:activity name="Catch All">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>219</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH - Unknown">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>296</pd:x>
-        <pd:y>182</pd:y>
+        <pd:x>485</pd:x>
+        <pd:y>219</pd:y>
         <config>
             <processName>/Common/Functions/GEH.process</processName>
         </config>
@@ -38,56 +59,105 @@
             </GEH>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Map Data">
-        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
-        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>296</pd:x>
-        <pd:y>57</pd:y>
+    <pd:activity name="Negative Number">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>350</pd:x>
+        <pd:y>165</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Positive Number">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>350</pd:x>
+        <pd:y>35</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="X = 0">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>96</pd:y>
         <config>
-            <element>
-                <xsd:element name="root">
-                    <xsd:complexType>
-                        <xsd:sequence>
-                            <xsd:element name="param" type="xsd:int"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-            </element>
+            <variableName>Schema0</variableName>
         </config>
         <pd:inputBindings>
             <root>
-                <param>
-                    <xsl:value-of select="guid:makeGUID()"/>
-                </param>
+                <x>
+                    <xsl:value-of select="0"/>
+                </x>
             </root>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>Map Data</pd:to>
+        <pd:to>X = 0</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Map Data</pd:from>
+        <pd:from>GEH - Unknown</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Map Data</pd:from>
-        <pd:to>GEH</pd:to>
+        <pd:from>Catch All</pd:from>
+        <pd:to>GEH - Unknown</pd:to>
         <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-65536</pd:lineColor>
-        <pd:conditionType>error</pd:conditionType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>GEH</pd:from>
+        <pd:from>X = 0</pd:from>
+        <pd:to>Negative Number</pd:to>
+        <pd:xpathDescription>negative</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Schema0/root/x &lt; -1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>X = 0</pd:from>
+        <pd:to>Positive Number</pd:to>
+        <pd:xpathDescription>postive</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Schema0/root/x &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Negative Number</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
+    <pd:transition>
+        <pd:from>Positive Number</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>If x is zero, then there is no transistion
+for the flow to take and an unexpected
+error is raised and caught by the
+Catch All activity.</pd:description>
+        <pd:x>124</pd:x>
+        <pd:y>171</pd:y>
+        <pd:width>228</pd:width>
+        <pd:height>81</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
 </pd:ProcessDefinition>

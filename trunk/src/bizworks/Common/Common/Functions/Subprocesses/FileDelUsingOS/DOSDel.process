@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns01="http://www.chicos.com/eai/Common/Schemas/Common">
-    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" schemaLocation="/Common/Schemas/BizWorks/Cmd.xsd"/>
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/tibco/xsd/bw/Cmd.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns01="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/tibco/xsd/bw/Cmd.xsd" schemaLocation="/Common/Schemas/BizWorks/Cmd.xsd"/>
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/Subprocesses/FileDelUsingOS/DOSDel.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -14,25 +14,25 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>61</pd:startX>
-    <pd:startY>221</pd:startY>
+    <pd:startX>27</pd:startX>
+    <pd:startY>145</pd:startY>
     <pd:returnBindings>
         <CmdOutputWithActivityOutput/>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
     <pd:endType ref="pfx:CmdOutputWithActivityOutput"/>
-    <pd:endX>569</pd:endX>
-    <pd:endY>114</pd:endY>
+    <pd:endX>535</pd:endX>
+    <pd:endY>38</pd:endY>
     <pd:errorSchemas>
-        <TechError ref="ns0:TechError"/>
         <DOSDelOutput ref="pfx:CmdOutputWithActivityOutput"/>
+        <TechError ref="ns0:TechError"/>
     </pd:errorSchemas>
     <pd:processVariables/>
-    <pd:group name="DOS Del, if error the log pause and retry forever">
+    <pd:group name="DOS Del, if error the log pause and retry">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>115</pd:x>
-        <pd:y>75</pd:y>
+        <pd:x>81</pd:x>
+        <pd:y>1</pd:y>
         <pd:width>308</pd:width>
         <pd:height>269</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -71,8 +71,8 @@
         <pd:activity name="DOS Del">
             <pd:type>com.tibco.plugin.cmdexec.CmdExecActivity</pd:type>
             <pd:resourceType>ae.activities.CmdExecActivity</pd:resourceType>
-            <pd:x>272</pd:x>
-            <pd:y>136</pd:y>
+            <pd:x>238</pd:x>
+            <pd:y>61</pd:y>
             <config>
                 <outputToString>true</outputToString>
                 <lineSplit>None</lineSplit>
@@ -93,8 +93,8 @@
         <pd:activity name="GEH">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>269</pd:x>
-            <pd:y>270</pd:y>
+            <pd:x>235</pd:x>
+            <pd:y>195</pd:y>
             <config>
                 <processName>/Common/Functions/GEH.process</processName>
             </config>
@@ -116,8 +116,8 @@
     <pd:activity name="DOS Del Error">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>569</pd:x>
-        <pd:y>311</pd:y>
+        <pd:x>535</pd:x>
+        <pd:y>235</pd:y>
         <config>
             <faultName>TechError</faultName>
         </config>
@@ -172,13 +172,13 @@
     </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>DOS Del, if error the log pause and retry forever</pd:to>
+        <pd:to>DOS Del, if error the log pause and retry</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>DOS Del, if error the log pause and retry forever</pd:from>
+        <pd:from>DOS Del, if error the log pause and retry</pd:from>
         <pd:to>End</pd:to>
         <pd:xpathDescription>sucess</pd:xpathDescription>
         <pd:lineType>Curved</pd:lineType>
@@ -186,7 +186,7 @@
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>DOS Del, if error the log pause and retry forever</pd:from>
+        <pd:from>DOS Del, if error the log pause and retry</pd:from>
         <pd:to>DOS Del Error</pd:to>
         <pd:xpathDescription>error</pd:xpathDescription>
         <pd:lineType>Curved</pd:lineType>

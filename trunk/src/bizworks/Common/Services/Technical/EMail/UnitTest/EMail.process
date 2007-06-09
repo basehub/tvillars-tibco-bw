@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns3="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns="http://www.chicos.com/eai/TechServices/EMail">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns="http://code.google.com/tvillars/tibco/bw/TechServices/EMail">
     <pd:name>Services/Technical/EMail/UnitTest/EMail.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>27</pd:startX>
@@ -16,7 +16,7 @@
         <pd:x>556</pd:x>
         <pd:y>62</pd:y>
         <config>
-            <processName>/Services/Technical/EMail/Services/EMail.process</processName>
+            <processName>/Services/Technical/EMail/Public/EMail.process</processName>
         </config>
         <pd:inputBindings>
             <ns:EMail>
@@ -56,7 +56,7 @@
         <pd:x>157</pd:x>
         <pd:y>56</pd:y>
         <config>
-            <processName>/Services/Technical/EMail/Services/EMail.process</processName>
+            <processName>/Services/Technical/EMail/Public/EMail.process</processName>
         </config>
         <pd:inputBindings>
             <ns:EMail>
@@ -84,7 +84,7 @@
         <pd:x>286</pd:x>
         <pd:y>55</pd:y>
         <config>
-            <processName>/Services/Technical/EMail/Services/EMail.process</processName>
+            <processName>/Services/Technical/EMail/Public/EMail.process</processName>
         </config>
         <pd:inputBindings>
             <ns:EMail>
@@ -120,7 +120,7 @@
         <pd:x>423</pd:x>
         <pd:y>63</pd:y>
         <config>
-            <processName>/Services/Technical/EMail/Services/EMail.process</processName>
+            <processName>/Services/Technical/EMail/Public/EMail.process</processName>
         </config>
         <pd:inputBindings>
             <ns:EMail>

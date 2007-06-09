@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:guid="java://com.chicos.eai.common.functions.GUID" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:ns32="http://www.tibco.com/namespaces/tnt/plugins/file/v2">
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:guid="java://com.chicos.eai.common.functions.GUID" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns32="http://www.tibco.com/namespaces/tnt/plugins/file/v2">
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/UnitTest/GEH/Handled TechError - Retry Forever.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -20,7 +20,7 @@
     <pd:endY>154</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:group name="read file - If error, log, pause and retry forever">
+    <pd:group name="read file - If error, log, pause and retry">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
         <pd:x>138</pd:x>
@@ -64,7 +64,7 @@
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
             <pd:x>292</pd:x>
-            <pd:y>208</pd:y>
+            <pd:y>210</pd:y>
             <config>
                 <processName>/Common/Functions/GEH.process</processName>
             </config>
@@ -122,7 +122,7 @@
         </pd:activity>
     </pd:group>
     <pd:transition>
-        <pd:from>read file - If error, log, pause and retry forever</pd:from>
+        <pd:from>read file - If error, log, pause and retry</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -130,7 +130,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>read file - If error, log, pause and retry forever</pd:to>
+        <pd:to>read file - If error, log, pause and retry</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

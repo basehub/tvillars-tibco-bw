@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx21="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.chicos.com/eai/TechServices/EMail" xmlns:pfx3="http://www.chicos.com/eai/Common/Functions/GEH">
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Schemas/Common" schemaLocation="/Common/Schemas/Common.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx21="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/TechServices/EMail" xmlns:pfx3="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH">
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" schemaLocation="/Common/Schemas/Common.xsd"/>
     <xsd:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="/Common/Schemas/BizWorks/EngineTypes.xsd"/>
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/Subprocesses/Notify/Notify.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -21,7 +21,7 @@
         </xsd:element>
     </pd:startType>
     <pd:startX>91</pd:startX>
-    <pd:startY>180</pd:startY>
+    <pd:startY>199</pd:startY>
     <pd:returnBindings>
         <Notify>
             <message>
@@ -64,119 +64,114 @@
         </xsd:element>
     </pd:endType>
     <pd:endX>597</pd:endX>
-    <pd:endY>70</pd:endY>
+    <pd:endY>89</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:activity name="EMail">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>597</pd:x>
-        <pd:y>181</pd:y>
+        <pd:y>199</pd:y>
         <config>
-            <processName>/Common/Functions/MailSend.process</processName>
+            <processName>/Services/Technical/EMail/Public/EMail.process</processName>
         </config>
         <pd:inputBindings>
-            <SendMail>
-                <ns:MailActivity>
-                    <from>
-                        <xsl:value-of select="concat(&#xA;$_globalVariables/ns1:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/pfx21:ProcessContext/EngineName&#xA;,'@chicos.com')"/>
-                    </from>
-                    <xsl:choose>
-                        <!--Data Issue-->
-                        <xsl:when test="exists($Start/Notify/pfx3:DataInfo)&#xA;or&#xA;exists($Start/Notify/pfx3:DataWarn)">
-                            <xsl:for-each select="$Get-Email-Recipient-List/root/Data">
-                                <to>
-                                    <xsl:value-of select="."/>
-                                </to>
-                            </xsl:for-each>
-                        </xsl:when>
-                        <!--Technical Issue-->
-                        <xsl:when test="exists($Start/Notify/pfx3:TechInfo)&#xA;or&#xA;exists($Start/Notify/pfx3:TechWarn)">
-                            <xsl:for-each select="$Get-Email-Recipient-List/root/Tech">
-                                <to>
-                                    <xsl:value-of select="."/>
-                                </to>
-                            </xsl:for-each>
-                        </xsl:when>
-                        <!--Unknown Issue (should never go here)-->
-                        <xsl:otherwise>
-                            <xsl:for-each select="$Get-Email-Recipient-List/root/Tibco">
-                                <to>
-                                    <xsl:value-of select="."/>
-                                </to>
-                            </xsl:for-each>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <subject>
-                        <xsl:value-of select="concat(&#xA;local-name($Start/Notify/*[1])&#xA;,' - '&#xA;,$Start/Notify/*[1]/pfx3:DescShort)"/>
-                    </subject>
-                    <!--add location of log file-->
+            <ns3:EMail>
+                <from>
+                    <xsl:value-of select="concat(&#xA;$_globalVariables/ns1:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/pfx21:ProcessContext/EngineName&#xA;,'@chicos.com')"/>
+                </from>
+                <xsl:choose>
+                    <!--Data Issue-->
+                    <xsl:when test="exists($Start/Notify/pfx3:DataInfo)&#xA;or&#xA;exists($Start/Notify/pfx3:DataWarn)">
+                        <xsl:for-each select="$Get-Email-Recipient-List/root/Data">
+                            <to>
+                                <xsl:value-of select="."/>
+                            </to>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <!--Technical Issue-->
+                    <xsl:when test="exists($Start/Notify/pfx3:TechInfo)&#xA;or&#xA;exists($Start/Notify/pfx3:TechWarn)">
+                        <xsl:for-each select="$Get-Email-Recipient-List/root/Tech">
+                            <to>
+                                <xsl:value-of select="."/>
+                            </to>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <!--Unknown Issue (should never go here)-->
+                    <xsl:otherwise>
+                        <xsl:for-each select="$Get-Email-Recipient-List/root/Tibco">
+                            <to>
+                                <xsl:value-of select="."/>
+                            </to>
+                        </xsl:for-each>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <subject>
+                    <xsl:value-of select="concat(&#xA;local-name($Start/Notify/*[1])&#xA;,' - '&#xA;,$Start/Notify/*[1]/pfx3:DescShort)"/>
+                </subject>
+                <!--add location of log file-->
+                <bodyText>
+                    <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;&#xA;,&quot;&#xD;&#xA;&quot;&#xA;,'Log File: '&#xA;,'\\',$ServerInfo/ServerInfo/HostName, '\', $_globalVariables/ns1:GlobalVariables/DirTrace,'\', $_processContext/pfx21:ProcessContext/EngineName,'.log')"/>
+                </bodyText>
+                <xsl:for-each select="$Start/Notify//pfx3:DescLong">
                     <bodyText>
-                        <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;&#xA;,&quot;&#xD;&#xA;&quot;&#xA;,'Log File: '&#xA;,'\\',$ServerInfo/ServerInfo/HostName, '\', $_globalVariables/ns1:GlobalVariables/DirTrace,'\', $_processContext/pfx21:ProcessContext/EngineName,'.log')"/>
+                        <xsl:value-of select="."/>
                     </bodyText>
-                    <xsl:for-each select="$Start/Notify//pfx3:DescLong">
+                </xsl:for-each>
+                <!--Seperate from main error text with a blank line-->
+                <xsl:if test="count($Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc/ErrorReportDesc)>0">
+                    <bodyText>
+                        <xsl:value-of select="''"/>
+                    </bodyText>
+                    <bodyText>
+                        <xsl:value-of select="'Biz Works ErrorReport'"/>
+                    </bodyText>
+                    <bodyText>
+                        <xsl:value-of select="'---------------------'"/>
+                    </bodyText>
+                    <xsl:for-each select="$Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc/ErrorReportDesc">
                         <bodyText>
                             <xsl:value-of select="."/>
                         </bodyText>
                     </xsl:for-each>
-                    <!--Seperate from main error text with a blank line-->
-                    <xsl:if test="count($Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc/ErrorReportDesc)>0">
-                        <bodyText>
-                            <xsl:value-of select="''"/>
-                        </bodyText>
-                        <bodyText>
-                            <xsl:value-of select="'Biz Works ErrorReport'"/>
-                        </bodyText>
-                        <bodyText>
-                            <xsl:value-of select="'---------------------'"/>
-                        </bodyText>
-                        <xsl:for-each select="$Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc/ErrorReportDesc">
-                            <bodyText>
-                                <xsl:value-of select="."/>
-                            </bodyText>
-                        </xsl:for-each>
-                    </xsl:if>
-                    <!--ErrorReport-->
-                    <xsl:if test="exists($Start/Notify//pfx3:ErrorReport)">
-                        <XMLAttachment>
+                </xsl:if>
+                <!--ErrorReport-->
+                <xsl:if test="exists($Start/Notify//pfx3:ErrorReport)">
+                    <XMLAttachment>
+                        <xsl:attribute name="description">
+                            <xsl:value-of select="'ErrorReport'"/>
+                        </xsl:attribute>
+                        <xsl:copy-of select="$Start/Notify/pfx3:DataWarn/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:TechWarn/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:DataError/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:TechError/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:Error/pfx3:ErrorReport"/>
+                    </XMLAttachment>
+                </xsl:if>
+                <!--Turn all Context info into XML attachments-->
+                <xsl:for-each select="$Map-Context-Into-XML-Attachments/XMLAttachments/pfx2:UntypedData">
+                    <XMLAttachment>
+                        <xsl:if test="@description">
                             <xsl:attribute name="description">
-                                <xsl:value-of select="'ErrorReport'"/>
+                                <xsl:value-of select="@description"/>
                             </xsl:attribute>
-                            <xsl:copy-of select="$Start/Notify/pfx3:DataWarn/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:TechWarn/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:DataError/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:TechError/pfx3:ErrorReport&#xA;| $Start/Notify/pfx3:Error/pfx3:ErrorReport"/>
-                        </XMLAttachment>
-                    </xsl:if>
-                    <!--Turn all Context info into XML attachments-->
-                    <xsl:for-each select="$Map-Context-Into-XML-Attachments/XMLAttachments/pfx2:UntypedData">
-                        <XMLAttachment>
-                            <xsl:if test="@description">
-                                <xsl:attribute name="description">
-                                    <xsl:value-of select="@description"/>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:copy-of select="*"/>
-                        </XMLAttachment>
-                    </xsl:for-each>
-                    <!--Global Vars-->
-                    <xsl:if test="exists($Get-GlobalVars-Minus-Passwords/GetGlobalVarsMinusPasswords)">
-                        <XMLAttachment>
-                            <xsl:attribute name="description">
-                                <xsl:value-of select="'GlobalVars'"/>
-                            </xsl:attribute>
-                            <xsl:copy-of select="$Get-GlobalVars-Minus-Passwords/GetGlobalVarsMinusPasswords"/>
-                        </XMLAttachment>
-                    </xsl:if>
-                </ns:MailActivity>
-                <pfx3:RetryOptions>
-                    <pfx3:TryForever/>
-                </pfx3:RetryOptions>
-            </SendMail>
+                        </xsl:if>
+                        <xsl:copy-of select="*"/>
+                    </XMLAttachment>
+                </xsl:for-each>
+                <!--Global Vars-->
+                <xsl:if test="exists($Get-GlobalVars-Minus-Passwords/GetGlobalVarsMinusPasswords)">
+                    <XMLAttachment>
+                        <xsl:attribute name="description">
+                            <xsl:value-of select="'GlobalVars'"/>
+                        </xsl:attribute>
+                        <xsl:copy-of select="$Get-GlobalVars-Minus-Passwords/GetGlobalVarsMinusPasswords"/>
+                    </XMLAttachment>
+                </xsl:if>
+            </ns3:EMail>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Get Email Recipient List">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>267</pd:x>
-        <pd:y>103</pd:y>
+        <pd:y>124</pd:y>
         <config>
             <processName>/Common/Functions/Subprocesses/Notify/GetEMailRecipientList.process</processName>
         </config>
@@ -186,7 +181,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>94</pd:x>
-        <pd:y>473</pd:y>
+        <pd:y>492</pd:y>
         <config>
             <processName>/Common/Functions/Subprocesses/Notify/GetGlobalVarsMinusPasswords.process</processName>
         </config>
@@ -196,7 +191,7 @@
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
         <pd:x>267</pd:x>
-        <pd:y>293</pd:y>
+        <pd:y>312</pd:y>
         <config>
             <element>
                 <xsd:element name="XMLAttachments">
@@ -255,7 +250,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>368</pd:x>
-        <pd:y>195</pd:y>
+        <pd:y>214</pd:y>
         <config>
             <processName>/Common/Functions/Subprocesses/Notify/MapErrorReportToDesc.process</processName>
         </config>
@@ -305,7 +300,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>267</pd:x>
-        <pd:y>375</pd:y>
+        <pd:y>394</pd:y>
         <config>
             <processName>/Common/Functions/ServerInfo.process</processName>
         </config>
@@ -393,27 +388,15 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:label>
-        <pd:name>Label</pd:name>
-        <pd:description>Common/Functions/Subprocesses/Notify/Notify</pd:description>
-        <pd:x>211</pd:x>
-        <pd:y>18</pd:y>
-        <pd:width>421</pd:width>
-        <pd:height>34</pd:height>
-        <pd:fontName>Arial-bold-14</pd:fontName>
-        <pd:fontColor>-16777216</pd:fontColor>
-        <pd:color>-1</pd:color>
-        <pd:type>solid</pd:type>
-        <pd:thickness>0</pd:thickness>
-        <pd:fade>true</pd:fade>
-    </pd:label>
-    <pd:label>
         <pd:name>Label (1)</pd:name>
         <pd:description>This is a private process and should NOT be directly called
-by a BizService app.</pd:description>
+by a Business Service app and should only rarely called by
+core Technical Services when there is a special requirement
+that can not be met by the /Common/Functions/Notify process.</pd:description>
         <pd:x>199</pd:x>
-        <pd:y>54</pd:y>
+        <pd:y>41</pd:y>
         <pd:width>397</pd:width>
-        <pd:height>51</pd:height>
+        <pd:height>80</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>
         <pd:color>-1</pd:color>
         <pd:type>solid</pd:type>

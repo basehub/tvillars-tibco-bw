@@ -17,7 +17,7 @@ import java.util.Random;
  * This source borrows <b>heavily</b> from <a href="http://www.javaexchange.com/aboutRandomGUID.html">RandomGUID</a>.
  * <p/>
  * TODO For java usage examples please refer to the test case XXX 
- * TODO For BizWorks usage examples please refer to XXX
+ * For BizWorks usage examples please refer to Common/Functions/UnitTest/GUIDTestForLib
  *
  * @author Tom Villars 21-March-07
  */
@@ -57,12 +57,14 @@ public class GUID implements Comparable<GUID> {
    * @return Global Unique Identifier
    */
   static final public String makeGUID() {
-    try {
+
+	try {
       return new GUID().toString();
     } catch (NoSuchAlgorithmException e) {
       // should never reach here, would have already logged the underlying exception
       return null;
     }
+    
   }
 
   private GUID() throws NoSuchAlgorithmException {

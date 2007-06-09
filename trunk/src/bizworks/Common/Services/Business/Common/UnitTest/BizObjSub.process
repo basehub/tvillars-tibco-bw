@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <pd:name>Services/Business/Common/UnitTest/BizObjSub.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>74</pd:startX>

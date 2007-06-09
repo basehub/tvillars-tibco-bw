@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://www.chicos.com/eai/Common/Functions/MailSend" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH">
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns4="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH">
     <pd:name>Services/Technical/EMSHeartbeat/Services/HeartbeatPub.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>39</pd:startX>

@@ -65,10 +65,10 @@
                                     </xsd:sequence>
                                 </xsd:complexType>
                             </xsd:element>
-                            <xsd:element name="Services">
+                            <xsd:element name="Common">
                                 <xsd:complexType>
                                     <xsd:sequence>
-                                        <xsd:element name="Technical">
+                                        <xsd:element name="Resources">
                                             <xsd:complexType>
                                                 <xsd:sequence>
                                                     <xsd:element name="JMS">
@@ -150,27 +150,27 @@
                         </WebPagePort>
                     </Technical>
                 </Constants>
-                <Services>
-                    <Technical>
+                <Common>
+                    <Resources>
                         <JMS>
                             <JNDIContextURL>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/Technical/JMS/JNDIContextURL"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Resources/JMS/JNDIContextURL"/>
                             </JNDIContextURL>
                             <Password>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/Technical/JMS/Password"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Resources/JMS/Password"/>
                             </Password>
                             <QueueConnectionFactory>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/Technical/JMS/QueueConnectionFactory"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Resources/JMS/QueueConnectionFactory"/>
                             </QueueConnectionFactory>
                             <TopicConnectionFactory>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/Technical/JMS/TopicConnectionFactory"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Resources/JMS/TopicConnectionFactory"/>
                             </TopicConnectionFactory>
                             <UserName>
-                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services/Technical/JMS/UserName"/>
+                                <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Resources/JMS/UserName"/>
                             </UserName>
                         </JMS>
-                    </Technical>
-                </Services>
+                    </Resources>
+                </Common>
             </GlobalVars>
         </pd:inputBindings>
     </pd:activity>

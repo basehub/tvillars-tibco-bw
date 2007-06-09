@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.chicos.com/eai/Common/Functions/GEH" xmlns:pfx2="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://www.chicos.com/eai/Common/Schemas/Common" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:guid="java://com.chicos.eai.common.functions.GUID">
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Schemas/BizObjEnvelope" schemaLocation="/Common/Schemas/BizObjEnvelope.xsd"/>
-    <xsd:import namespace="http://www.chicos.com/eai/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:guid="java://com.chicos.eai.common.functions.GUID">
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope" schemaLocation="/Common/Schemas/BizObjEnvelope.xsd"/>
+    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Services/Business/Common/BizObjPub.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -212,7 +212,7 @@ exists($Start/BizObjPub/MultipleQueues)</pd:xpath>
                         <JMSExpiration>0</JMSExpiration>
                         <JMSPriority>4</JMSPriority>
                     </ConfigurableHeaders>
-                    <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+                    <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
                     <InDataxsdString ref="pfx2:BizObjEnvelope"/>
                 </config>
                 <pd:inputBindings>
@@ -253,12 +253,6 @@ exists($Start/BizObjPub/MultipleQueues)</pd:xpath>
                             <ns3:ProcessInput>
                                 <xsl:copy-of select="$Start/BizObjPub"/>
                             </ns3:ProcessInput>
-                            <ns3:ExternalSystem>
-                                <xsl:attribute name="description">
-                                    <xsl:value-of select="'JMS Connection'"/>
-                                </xsl:attribute>
-                                <xsl:copy-of select="$_globalVariables/ns4:GlobalVariables/Services/Technical/JMS"/>
-                            </ns3:ExternalSystem>
                         </ns3:Context>
                         <Retry>
                             <RetryCount>
@@ -286,7 +280,7 @@ exists($Start/BizObjPub/MultipleQueues)</pd:xpath>
                         <JMSExpiration>0</JMSExpiration>
                         <JMSPriority>4</JMSPriority>
                     </ConfigurableHeaders>
-                    <ConnectionReference>/Services/Technical/JMS/Channel.sharedjmscon</ConnectionReference>
+                    <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
                     <InDataxsdString ref="pfx2:BizObjEnvelope"/>
                 </config>
                 <pd:inputBindings>
