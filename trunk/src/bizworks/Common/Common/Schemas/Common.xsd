@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-	 xmlns:chsCom="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common"
+	 xmlns:chsCom="http://uscis.gov/uscis/xsd/services/common/1.0"
 	 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	 targetNamespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common"
+	 targetNamespace="http://uscis.gov/uscis/xsd/services/common/1.0"
 	 elementFormDefault="qualified"
 	 attributeFormDefault="unqualified">
 	<element name="uuId" type="chsCom:UUId"/>

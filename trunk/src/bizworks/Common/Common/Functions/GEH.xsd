@@ -3,11 +3,11 @@
 <schema xmlns = "http://www.w3.org/2001/XMLSchema"
 	 targetNamespace = "http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH"
 	 xmlns:chsGEH = "http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH"
-	 xmlns:chsCom = "http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common"
+	 xmlns:chsCom = "http://uscis.gov/uscis/xsd/services/common/1.0"
 	 xmlns:xsd = "http://www.w3.org/2001/XMLSchema"
 	 xmlns:tns = "http://www.tibco.com/pe/EngineTypes"
 	 elementFormDefault = "qualified">
-	<import namespace = "http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" schemaLocation = "../Schemas/Common.xsd"/>
+	<import namespace = "http://uscis.gov/uscis/xsd/services/common/1.0" schemaLocation = "../Schemas/Common.xsd"/>
 	<import namespace = "http://www.tibco.com/pe/EngineTypes" schemaLocation = "../Schemas/BizWorks/EngineTypes.xsd"/>
 	<element name = "Error" type = "chsGEH:Error_Type"/>
 	<element name = "TechInfo" type = "chsGEH:Info_Type"/>

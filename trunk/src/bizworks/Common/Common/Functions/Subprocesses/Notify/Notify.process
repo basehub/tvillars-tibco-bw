@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx21="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/TechServices/EMail" xmlns:pfx3="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH">
-    <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/Common" schemaLocation="/Common/Schemas/Common.xsd"/>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx21="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/TechServices/EMail" xmlns:pfx3="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH">
+    <xsd:import namespace="http://uscis.gov/uscis/xsd/services/common/1.0" schemaLocation="/Common/Schemas/Common.xsd"/>
     <xsd:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="/Common/Schemas/BizWorks/EngineTypes.xsd"/>
     <xsd:import namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" schemaLocation="/Common/Functions/GEH.xsd"/>
     <pd:name>Common/Functions/Subprocesses/Notify/Notify.process</pd:name>
@@ -393,9 +393,9 @@
 by a Business Service app and should only rarely called by
 core Technical Services when there is a special requirement
 that can not be met by the /Common/Functions/Notify process.</pd:description>
-        <pd:x>199</pd:x>
+        <pd:x>189</pd:x>
         <pd:y>41</pd:y>
-        <pd:width>397</pd:width>
+        <pd:width>376</pd:width>
         <pd:height>80</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>
         <pd:color>-1</pd:color>

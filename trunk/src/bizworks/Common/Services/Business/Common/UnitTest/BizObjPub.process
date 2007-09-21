@@ -65,7 +65,7 @@
                     <JMSExpiration>0</JMSExpiration>
                     <JMSPriority>4</JMSPriority>
                 </ConfigurableHeaders>
-                <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
+                <ConnectionReference>/Resources/JMS.Queue.sharedjmscon</ConnectionReference>
                 <OutDataxsdString ref="pfx:BizObjEnvelope"/>
             </config>
             <pd:inputBindings>
@@ -307,7 +307,7 @@
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/Resources/JMS.Queue.sharedjmscon</ConnectionReference>
             <OutDataxsdString ref="pfx:BizObjEnvelope"/>
         </config>
         <pd:inputBindings>
@@ -333,7 +333,7 @@
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/Resources/JMS.Queue.sharedjmscon</ConnectionReference>
             <OutDataxsdString ref="pfx:BizObjEnvelope"/>
         </config>
         <pd:inputBindings>
@@ -359,7 +359,7 @@
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/Resources/JMS.Queue.sharedjmscon</ConnectionReference>
             <OutDataxsdString ref="pfx:BizObjEnvelope"/>
         </config>
         <pd:inputBindings>
@@ -385,7 +385,7 @@
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/Resources/JMS.Queue.sharedjmscon</ConnectionReference>
             <OutDataxsdString ref="pfx:BizObjEnvelope"/>
         </config>
         <pd:inputBindings>
@@ -412,7 +412,7 @@
                 <JMSExpiration>0</JMSExpiration>
                 <JMSPriority>4</JMSPriority>
             </ConfigurableHeaders>
-            <ConnectionReference>/Common/Resources/JMS.Connection.sharedjmscon</ConnectionReference>
+            <ConnectionReference>/Resources/JMS.Queue.sharedjmscon</ConnectionReference>
             <OutDataxsdString ref="pfx:BizObjEnvelope"/>
         </config>
         <pd:inputBindings>
