@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="javadoc">
-    <target name="javadoc">
-        <javadoc executable="C:\software\java\jdk1.5.0_09\bin\javadoc.exe" access="public" author="true" classpath="." destdir="../java/api" doctitle="Business Works Java Custom Functions" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="com.google.code.tvillars.tibco.bw.javacustfun" source="1.5" sourcepath="../../test/java;../../src/java" splitindex="true" use="true" version="true">
-            <link href="file:/C:/Documents and Settings/villt1/eclipse/tvillars-tibco-bw/doc/java/api"/>
-        </javadoc>
-    </target>
-</project>
