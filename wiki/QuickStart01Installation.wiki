@@ -1,4 +1,4 @@
-#summary Step-By-Step guide to the minimual configuring requirement to the Project Libs & Services to run all the unit test and examples.
+#summary Step-By-Step Guide to downloading and installing the BWOS Project Libs & Services.
 #labels Featured
 
 = Introduction =
