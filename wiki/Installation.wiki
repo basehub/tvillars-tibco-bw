@@ -1,4 +1,5 @@
 #summary Step-By-Step Guide to downloading and installing the BWOS Project Libs & Services
+#labels Featured
 
 = Introduction =
 
