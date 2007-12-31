@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Step-By-Step guide to the minimual configuration required to run the all the unit test and Service examples.
 #labels Featured
 
 = Introduction =
