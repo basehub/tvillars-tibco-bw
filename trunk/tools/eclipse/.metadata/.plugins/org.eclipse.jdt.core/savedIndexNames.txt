@@ -1,2 +1,0 @@
-INDEX VERSION 1.121+C:\projects\tvillars-tibco-bw\tools\eclipse\.metadata\.plugins\org.eclipse.jdt.core
-1336540079.index
