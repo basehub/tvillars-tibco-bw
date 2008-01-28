@@ -19,7 +19,7 @@ import java.util.Random;
  * TODO For java usage examples please refer to the test case XXX 
  * For bw usage examples please refer to Common/Functions/UnitTest/GUIDTestForLib
  *
- * @author Tom Villars 21-March-07
+ * @author Tom Villars 27-FEB-08
  */
 
 public class GUID implements Comparable<GUID> {
