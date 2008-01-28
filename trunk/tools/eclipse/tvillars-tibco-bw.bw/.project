@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>tvillars-tibco-bw.bw</name>
+	<comment>@key 32303037303632392D31303030207476696C6C6172732D746962636F2D62772E62772F746A76696C6C6172 </comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.omondo.uml.std.Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.omondo.uml.std.Nature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>src.bw</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/src/bw</location>
+		</link>
+		<link>
+			<name>dist.bw</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/dist/bw</location>
+		</link>
+		<link>
+			<name>services.tech/NotifyLogger</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/src/bw/services.tech/NotifyLogger</location>
+		</link>
+		<link>
+			<name>doc/6-User Guide</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/doc/User Guide</location>
+		</link>
+		<link>
+			<name>src.sql</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/src/sql</location>
+		</link>
+		<link>
+			<name>doc/1-Requirements (Why)</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/doc/Requirements</location>
+		</link>
+		<link>
+			<name>doc/2-Analysis (What)</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/doc/Analysis</location>
+		</link>
+		<link>
+			<name>lib.bw</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/lib/bw</location>
+		</link>
+		<link>
+			<name>doc/Templates</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/doc/Templates</location>
+		</link>
+		<link>
+			<name>doc/5-Deployment (Where)</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/doc/Deployment</location>
+		</link>
+		<link>
+			<name>Services.Tech/NotifyLogger</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/src/bw/services.tech/NotifyLogger</location>
+		</link>
+		<link>
+			<name>doc/3-Design (How)</name>
+			<type>2</type>
+			<location>C:/Projects/tvillars-tibco-bw/doc/Design</location>
+		</link>
+	</linkedResources>
+</projectDescription>

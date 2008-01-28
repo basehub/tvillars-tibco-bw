@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Queue</name>
+			<value>Services.Tech.NotifyLogToDB</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1197923601822</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TABLE.CREATE.OnMissing</name>
+			<value>true</value>
+			<description>If true the Notify table is created if the Insert errors because of a missing table error</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Boolean</type>
+			<modTime>1197563291086</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

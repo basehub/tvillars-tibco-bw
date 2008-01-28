@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns22="http://xmlns.tibco.com/encodings/mime" xmlns:ns2="http://xmlns.tibco.com/body" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx3="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Mail.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" xmlns:pfx6="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Mail.xsd" schemaLocation="/Common/Processes/Mail.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <pd:name>Common/Processes/Mail.Send.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Mail.Send.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx3:MailSend"/>
+                    <xsd:element ref="pfx5:RetryOptions"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>388</pd:startX>
+    <pd:startY>69</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>658</pd:endX>
+    <pd:endY>243</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="pfx5:TechError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:group name="if Error then log, pause and retry as specified">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>34</pd:x>
+        <pd:y>117</pd:y>
+        <pd:width>471</pd:width>
+        <pd:height>398</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIdx</pd:indexSlot>
+            <pd:errorCondition>$GEH/GEH.Output/GiveUp = "true"</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send-Mail (authenticate)</pd:to>
+            <pd:xpathDescription>authenticate</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>string-length($_globalVariables/ns4:GlobalVariables/Common/Processes/Mail/UserName) &gt; 0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Send Mail (no authentication)</pd:to>
+            <pd:xpathDescription>no authentication</pd:xpathDescription>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>string-length($_globalVariables/ns4:GlobalVariables/Common/Processes/Mail/UserName) = 0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GEH</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>give up</pd:xpathDescription>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send-Mail (authenticate)</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send Mail (no authentication)</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send Mail (no authentication)</pd:from>
+            <pd:to>GEH</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Send-Mail (authenticate)</pd:from>
+            <pd:to>GEH</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Send Mail (no authentication)">
+            <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+            <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+            <pd:x>266</pd:x>
+            <pd:y>180</pd:y>
+            <config>
+                <newMimeSupport>true</newMimeSupport>
+                <inputOutputVersion>5.2.0</inputOutputVersion>
+                <host>%%Common/Processes/Mail/Host%%</host>
+                <authenticate>false</authenticate>
+                <username>%%Services/Technical/EMail/UserName%%</username>
+                <password>%%Services/Technical/EMail/Password%%</password>
+                <nonRFC822>false</nonRFC822>
+                <InputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </InputHeaders>
+            </config>
+            <pd:inputBindings>
+                <ns1:mailActivityInput>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:from)">
+                            <from>
+                                <xsl:value-of select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:from"/>
+                            </from>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <from>
+                                <xsl:value-of select="concat(&#xA;$_globalVariables/ns4:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/ns:ProcessContext/EngineName&#xA;,'@', $_globalVariables/ns4:GlobalVariables/Domain,'.com')"/>
+                            </from>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:for-each select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:to[string-length(tib:trim(.))>0]">
+                        <to>
+                            <xsl:value-of select="tib:trim(.)"/>
+                        </to>
+                    </xsl:for-each>
+                    <xsl:for-each select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:cc[string-length(tib:trim(.))>0]">
+                        <cc>
+                            <xsl:value-of select="tib:trim(.)"/>
+                        </cc>
+                    </xsl:for-each>
+                    <!--Temporary, will remove once things settle down-->
+                    <bcc>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </bcc>
+                    <!--repalce LF and CR with spaces and limit size to 120-->
+                    <subject>
+                        <xsl:value-of select="substring(translate($Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:subject, &quot;&#xD;&#xA;&quot;, '  '), 1,255)"/>
+                    </subject>
+                    <xsl:if test="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:sentdate">
+                        <sentdate>
+                            <xsl:value-of select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:sentdate"/>
+                        </sentdate>
+                    </xsl:if>
+                    <ns2:bodyElement>
+                        <bodyText>
+                            <xsl:value-of select="tib:concat-sequence-format($Start/Mail.Send.Input/pfx3:MailSend/pfx3:bodyText, &quot;&#xD;&#xA;&quot;)"/>
+                        </bodyText>
+                    </ns2:bodyElement>
+                    <Headers>
+                        <Content-Type>
+                            <xsl:value-of select="'multipart/mixed'"/>
+                        </Content-Type>
+                    </Headers>
+                    <ns22:mimeEnvelopeElement>
+                        <xsl:for-each select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:FileAttachment/pfx3:file">
+                            <xsl:variable name="fileName" select="tib:substring-after-last(current(), '\')"/>
+                            <mimePart>
+                                <mimeHeaders>
+                                    <content-disposition>
+                                        <xsl:value-of select="concat('attachment; filename=&quot;', $fileName,'&quot;')"/>
+                                    </content-disposition>
+                                    <content-type>
+                                        <xsl:value-of select="concat('application/octet-stream; name=&quot;', $fileName,'&quot;')"/>
+                                    </content-type>
+                                    <content-transfer-encoding>
+                                        <xsl:value-of select="'base64'"/>
+                                    </content-transfer-encoding>
+                                </mimeHeaders>
+                                <fileName>
+                                    <xsl:value-of select="current()"/>
+                                </fileName>
+                            </mimePart>
+                        </xsl:for-each>
+                        <xsl:for-each select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:XMLAttachment">
+                            <mimePart>
+                                <mimeHeaders>
+                                    <!--use the root element's local-name for the file name of the attachment-->
+                                    <content-disposition>
+                                        <xsl:value-of select="concat('attachment; filename=&quot;',&#xA;tib:if-absent(@description, local-name(*))&#xA;,'.xml','&quot;')"/>
+                                    </content-disposition>
+                                    <content-type>
+                                        <xsl:value-of select="'text/xml'"/>
+                                    </content-type>
+                                </mimeHeaders>
+                                <textContent>
+                                    <xsl:value-of select="tib:render-xml(*, 0,1)"/>
+                                </textContent>
+                            </mimePart>
+                        </xsl:for-each>
+                        <xsl:for-each select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:TextAttachment">
+                            <mimePart>
+                                <mimeHeaders>
+                                    <!--use the root element's local-name for the file name of the attachment-->
+                                    <content-disposition>
+                                        <xsl:value-of select="concat('attachment; filename=&quot;',pfx3:attachmentName,'&quot;')"/>
+                                    </content-disposition>
+                                    <content-type>
+                                        <xsl:value-of select="'text/xml'"/>
+                                    </content-type>
+                                </mimeHeaders>
+                                <textContent>
+                                    <xsl:value-of select="pfx3:textContent"/>
+                                </textContent>
+                            </mimePart>
+                        </xsl:for-each>
+                    </ns22:mimeEnvelopeElement>
+                </ns1:mailActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GEH">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>268</pd:x>
+            <pd:y>321</pd:y>
+            <config>
+                <processName>/Common/Processes/GEH.process</processName>
+            </config>
+            <pd:inputBindings>
+                <GEH.Input>
+                    <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                    <pfx5:ProcessData>
+                        <pfx5:ProcessInput>
+                            <xsl:copy-of select="$Start/Mail.Send.Input"/>
+                        </pfx5:ProcessInput>
+                        <pfx5:ExternalSystemConnectionInfo>
+                            <xsl:copy-of select="$_globalVariables/ns4:GlobalVariables/Common/Processes/Mail"/>
+                        </pfx5:ExternalSystemConnectionInfo>
+                    </pfx5:ProcessData>
+                    <pfx5:Retry>
+                        <pfx5:RetryIdx>
+                            <xsl:value-of select="$retryIdx"/>
+                        </pfx5:RetryIdx>
+                        <xsl:copy-of select="$Start/Mail.Send.Input/pfx5:RetryOptions"/>
+                    </pfx5:Retry>
+                </GEH.Input>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Send-Mail (authenticate)">
+            <pd:type>com.tibco.plugin.mail.MailPubActivity</pd:type>
+            <pd:resourceType>ae.activities.MailActivityResource</pd:resourceType>
+            <pd:x>267</pd:x>
+            <pd:y>443</pd:y>
+            <config>
+                <newMimeSupport>true</newMimeSupport>
+                <inputOutputVersion>5.2.0</inputOutputVersion>
+                <host>%%Common/Processes/Mail/Host%%</host>
+                <authenticate>true</authenticate>
+                <username>%%Common/Processes/Mail/UserName%%</username>
+                <password>%%Common/Processes/Mail/Password%%</password>
+                <nonRFC822>false</nonRFC822>
+                <InputHeaders>
+                    <xsd:element name="root">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </InputHeaders>
+            </config>
+            <pd:inputBindings>
+                <ns1:mailActivityInput>
+                    <xsl:choose xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:when test="exists($Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:from)">
+                            <from>
+                                <xsl:value-of select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:from"/>
+                            </from>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <from>
+                                <xsl:value-of select="concat(&#xA;$_globalVariables/ns4:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/ns:ProcessContext/EngineName&#xA;,'@', $_globalVariables/ns4:GlobalVariables/Domain,'.com')"/>
+                            </from>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:to[string-length(tib:trim(.))>0]">
+                        <to>
+                            <xsl:value-of select="tib:trim(.)"/>
+                        </to>
+                    </xsl:for-each>
+                    <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:cc[string-length(tib:trim(.))>0]">
+                        <cc>
+                            <xsl:value-of select="tib:trim(.)"/>
+                        </cc>
+                    </xsl:for-each>
+                    <!--Temporary, will remove once things settle down-->
+                    <bcc>
+                        <xsl:value-of select="'tvillars@gmail.com'"/>
+                    </bcc>
+                    <!--repalce LF and CR with spaces and limit size to 120-->
+                    <subject>
+                        <xsl:value-of select="substring(translate($Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:subject, &quot;&#xD;&#xA;&quot;, '  '), 1,255)"/>
+                    </subject>
+                    <xsl:if test="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:sentdate">
+                        <sentdate>
+                            <xsl:value-of select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:sentdate"/>
+                        </sentdate>
+                    </xsl:if>
+                    <ns2:bodyElement>
+                        <bodyText>
+                            <xsl:value-of select="tib:concat-sequence-format($Start/Mail.Send.Input/pfx3:MailSend/pfx3:bodyText, &quot;&#xD;&#xA;&quot;)"/>
+                        </bodyText>
+                    </ns2:bodyElement>
+                    <Headers>
+                        <Content-Type>
+                            <xsl:value-of select="'multipart/mixed'"/>
+                        </Content-Type>
+                    </Headers>
+                    <ns22:mimeEnvelopeElement>
+                        <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:FileAttachment/pfx3:file">
+                            <xsl:variable name="fileName" select="tib:substring-after-last(current(), '\')"/>
+                            <mimePart>
+                                <mimeHeaders>
+                                    <content-disposition>
+                                        <xsl:value-of select="concat('attachment; filename=&quot;', $fileName,'&quot;')"/>
+                                    </content-disposition>
+                                    <content-type>
+                                        <xsl:value-of select="concat('application/octet-stream; name=&quot;', $fileName,'&quot;')"/>
+                                    </content-type>
+                                    <content-transfer-encoding>
+                                        <xsl:value-of select="'base64'"/>
+                                    </content-transfer-encoding>
+                                </mimeHeaders>
+                                <fileName>
+                                    <xsl:value-of select="current()"/>
+                                </fileName>
+                            </mimePart>
+                        </xsl:for-each>
+                        <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:XMLAttachment">
+                            <mimePart>
+                                <mimeHeaders>
+                                    <!--use the root element's local-name for the file name of the attachment-->
+                                    <content-disposition>
+                                        <xsl:value-of select="concat('attachment; filename=&quot;',&#xA;tib:if-absent(@description, local-name(*))&#xA;,'.xml','&quot;')"/>
+                                    </content-disposition>
+                                    <content-type>
+                                        <xsl:value-of select="'text/xml'"/>
+                                    </content-type>
+                                </mimeHeaders>
+                                <textContent>
+                                    <xsl:value-of select="tib:render-xml(*, 0,1)"/>
+                                </textContent>
+                            </mimePart>
+                        </xsl:for-each>
+                        <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:TextAttachment">
+                            <mimePart>
+                                <mimeHeaders>
+                                    <!--use the root element's local-name for the file name of the attachment-->
+                                    <content-disposition>
+                                        <xsl:value-of select="concat('attachment; filename=&quot;',pfx3:attachmentName,'&quot;')"/>
+                                    </content-disposition>
+                                    <content-type>
+                                        <xsl:value-of select="'text/xml'"/>
+                                    </content-type>
+                                </mimeHeaders>
+                                <textContent>
+                                    <xsl:value-of select="pfx3:textContent"/>
+                                </textContent>
+                            </mimePart>
+                        </xsl:for-each>
+                    </ns22:mimeEnvelopeElement>
+                </ns1:mailActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>502</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Info%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Start/Mail.Send.Input/pfx3:MailSend/pfx3:Header/pfx3:subject"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Constants/Logging/MsgCodes/Start"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="TechError (GaveUp)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>658</pd:x>
+        <pd:y>414</pd:y>
+        <config>
+            <faultName>TechError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <xsl:copy-of select="$GEH/GEH.Output/pfx6:Notify.private/pfx5:TechError"/>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>if Error then log, pause and retry as specified</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>sucess</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>if Error then log, pause and retry as specified</pd:from>
+        <pd:to>TechError (GaveUp)</pd:to>
+        <pd:xpathDescription>gave up</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GEH/GEH.Output/GiveUp = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>if Error then log, pause and retry as specified</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>This is a simple wrapper for the Send Mail activity.  It greatly
+simplifies the API for sending an email that contains
+attachments, but can also send emails without attachments.
+
+Configuration: GV Comm/Processes/Mail/*</pd:description>
+        <pd:x>182</pd:x>
+        <pd:y>48</pd:y>
+        <pd:width>362</pd:width>
+        <pd:height>94</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (2)</pd:name>
+        <pd:description>WARNING!!!
+
+If this process is called directly, it couples that process to 
+email system.  Therefore if the email system is down, the
+calling process gets stuck in a loop until the service is
+restored.
+
+To send an email asynchronously, use the Email service
+at Services.Tech/eMail/Public/eMail</pd:description>
+        <pd:x>737</pd:x>
+        <pd:y>78</pd:y>
+        <pd:width>358</pd:width>
+        <pd:height>154</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-52</pd:color>
+        <pd:type>dash</pd:type>
+        <pd:thickness>2</pd:thickness>
+        <pd:fade>false</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <name name="Patterns">
+        <version>1</version>
+        <author>tjvillar</author>
+        <fileLocation>C:\Projects\tvillars-tibco-bw\lib\bw\Patterns.projlib</fileLocation>
+        <resources>/Patterns/Queue Receiver/Queue Receiver (With Checkpoint).process,/Patterns/Queue Receiver/Queue Receiver (Without Checkpoint &amp; PreValidated).process,/Patterns/Queue Receiver/Queue Receiver (Without Checkpoint).process,/Patterns/Queue Receiver/UnitTest/Queue Receiver - Invalid XML.process,/Patterns/Queue Receiver/UnitTest/Queue Receiver - Not Well Formed XML.process,/Patterns/Queue Receiver/UnitTest/Queue Receiver - Valid XML But Handler Throws Unhandled Exception.process,/Patterns/Queue Receiver/UnitTest/Queue Receiver - Valid XML.process</resources>
+    </name>
+</Repository:repository>

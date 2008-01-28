@@ -1,0 +1,48 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ContextURL</name>
+			<value>tcp://localhost:7222</value>
+			<description>EMS default install doesn't require a user id or password</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189194724744</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value></value>
+			<description>change type to Password once your done playing around</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189194724759</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>QueueConnectionFactory</name>
+			<value>QueueConnectionFactory</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189195221370</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TopicConnectionFactory</name>
+			<value>TopicConnectionFactory</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189195221354</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value></value>
+			<description>EMS default install doesn't require a user id or password</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189194724775</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

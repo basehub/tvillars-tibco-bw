@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Dummy FTP Connection</name>
+    <resourceType>ae.shared.FTPuserChannel</resourceType>
+    <description>Some of the FTP activities require an FTP connection, but this connection never gets used as the connection paramters are always overridden by the FTP activity.</description>
+    <config>
+        <Timeout>60000</Timeout>
+        <Port>21</Port>
+        <Encoding>Cp1252</Encoding>
+        <FireWall>false</FireWall>
+        <Mode>Passive</Mode>
+        <Host>ftp.chicos.com</Host>
+        <UserName>test</UserName>
+        <Password>#!pxoNKk1bDDTm3G6nFCBhHoXkfCvut5Ui</Password>
+    </config>
+</BWSharedResource>

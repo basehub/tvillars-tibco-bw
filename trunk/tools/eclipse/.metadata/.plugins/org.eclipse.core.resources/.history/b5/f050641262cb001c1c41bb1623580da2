@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:ns22="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns12="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <pd:name>Common/Processes/FTP.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="FTP.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:choice>
+                        <xsd:element name="Dir">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="DirParameter" type="xsd:string" minOccurs="0"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Get">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="RemoteFileName" type="xsd:string" minOccurs="0"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Put">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="Data" type="xsd:string" minOccurs="0"/>
+                                    <xsd:element name="RemoteFileName" type="xsd:string"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Rename">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="OldRemoteDirectory" type="xsd:string" minOccurs="0"/>
+                                    <xsd:element name="OldRemoteFileName" type="xsd:string"/>
+                                    <xsd:element name="NewRemoteDirectory" type="xsd:string" minOccurs="0"/>
+                                    <xsd:element name="NewRemoteFileName" type="xsd:string"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:element name="Host" type="xsd:string"/>
+                    <xsd:element name="Port" type="xsd:string"/>
+                    <xsd:element name="Username" type="xsd:string"/>
+                    <xsd:element name="Password" type="xsd:string"/>
+                    <xsd:element ref="pfx:RetryOptions"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>324</pd:startX>
+    <pd:startY>37</pd:startY>
+    <pd:returnBindings>
+        <FTP.Output>
+            <xsl:choose>
+                <xsl:when test="exists($Start/FTP.Input/Dir)">
+                    <DirOutput>
+                        <ItemCount>
+                            <xsl:value-of select="$FTP-Dir/Output/ItemCount"/>
+                        </ItemCount>
+                        <xsl:for-each select="$FTP-Dir/Output/DirectoryItems">
+                            <DirectoryItems>
+                                <xsl:value-of select="."/>
+                            </DirectoryItems>
+                        </xsl:for-each>
+                    </DirOutput>
+                </xsl:when>
+                <xsl:when test="exists($Start/FTP.Input/Get)">
+                    <GetOutput>
+                        <FTPGetOutputASCII>
+                            <ASCIIData>
+                                <xsl:value-of select="$FTP-Get/FTPGetOutputASCII/ASCIIData"/>
+                            </ASCIIData>
+                        </FTPGetOutputASCII>
+                        <xsl:copy-of select="$FTP-Get/FTPGetOutputASCII/FileTransferred"/>
+                    </GetOutput>
+                </xsl:when>
+                <xsl:otherwise>
+                    <PutOutput>
+                        <xsl:copy-of select="$FTP-Put/FTPPutOutputFile/FileTransferred"/>
+                    </PutOutput>
+                </xsl:otherwise>
+            </xsl:choose>
+        </FTP.Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="FTP.Output">
+            <xsd:complexType>
+                <xsd:choice minOccurs="0">
+                    <xsd:element name="DirOutput">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="ItemCount" type="xsd:int"/>
+                                <xsd:element name="DirectoryItems" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="GetOutput">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="FTPGetOutputASCII">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="ASCIIData" type="xsd:string"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="FileTransferred" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="NumOfBytes" type="xsd:int" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="PutOutput">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="FileTransferred" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Name" type="xsd:string" minOccurs="0"/>
+                                            <xsd:element name="NumOfBytes" type="xsd:int" minOccurs="0"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>675</pd:endX>
+    <pd:endY>459</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="pfx:TechError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:group name="FTP Operation Retry Loop">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>42</pd:x>
+        <pd:y>91</pd:y>
+        <pd:width>467</pd:width>
+        <pd:height>437</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIdx</pd:indexSlot>
+            <pd:errorCondition>false()</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>FTP Operation</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Operation</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GEH - FTP Error</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>give up</pd:xpathDescription>
+            <pd:lineType>Straight</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>FTP Operation</pd:from>
+            <pd:to>GEH - FTP Error</pd:to>
+            <pd:lineType>Curved</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:group name="FTP Operation">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>100</pd:x>
+            <pd:y>123</pd:y>
+            <pd:width>227</pd:width>
+            <pd:height>373</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>simpleGroup</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>FTP Dir</pd:to>
+                <pd:xpathDescription>DIR</pd:xpathDescription>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Start/FTP.Input/Dir)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>FTP Put</pd:to>
+                <pd:xpathDescription>PUT</pd:xpathDescription>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Start/FTP.Input/Put)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>FTP Rename</pd:to>
+                <pd:xpathDescription>RENAME</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Start/FTP.Input/Rename)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>FTP Get</pd:to>
+                <pd:xpathDescription>GET</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Start/FTP.Input/Get)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>FTP Get</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>FTP Put</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>FTP Rename</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>FTP Dir</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="FTP Dir">
+                <pd:type>com.tibco.plugin.ftp.FTPDirActivity</pd:type>
+                <pd:resourceType>ae.activities.FTPDirActivityUI</pd:resourceType>
+                <pd:x>213</pd:x>
+                <pd:y>200</pd:y>
+                <config>
+                    <SharedUserData>/Common/Processes/Dummy FTP Connection.sharedftp</SharedUserData>
+                    <NLST>true</NLST>
+                </config>
+                <pd:inputBindings>
+                    <Input>
+                        <Host>
+                            <xsl:value-of select="$Start/FTP.Input/Host"/>
+                        </Host>
+                        <Port>
+                            <xsl:value-of select="$Start/FTP.Input/Port"/>
+                        </Port>
+                        <UserName>
+                            <xsl:value-of select="$Start/FTP.Input/Username"/>
+                        </UserName>
+                        <Password>
+                            <xsl:value-of select="$Start/FTP.Input/Password"/>
+                        </Password>
+                        <DirParameters>
+                            <xsl:value-of select="$Start/FTP.Input/Dir/DirParameter"/>
+                        </DirParameters>
+                    </Input>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="FTP Get">
+                <pd:type>com.tibco.plugin.ftp.FTPGetActivity</pd:type>
+                <pd:resourceType>ae.activities.FTPGetActivityUI</pd:resourceType>
+                <pd:x>213</pd:x>
+                <pd:y>278</pd:y>
+                <config>
+                    <Timeout>120000</Timeout>
+                    <isBinary>false</isBinary>
+                    <Overwrite>false</Overwrite>
+                    <useProcessData>true</useProcessData>
+                    <SharedUserData>/Common/Processes/Dummy FTP Connection.sharedftp</SharedUserData>
+                </config>
+                <pd:inputBindings>
+                    <FTPGetInputData>
+                        <RemoteFileName>
+                            <xsl:value-of select="$Start/FTP.Input/Get/RemoteFileName"/>
+                        </RemoteFileName>
+                        <Host>
+                            <xsl:value-of select="$Start/FTP.Input/Host"/>
+                        </Host>
+                        <Port>
+                            <xsl:value-of select="$Start/FTP.Input/Port"/>
+                        </Port>
+                        <UserName>
+                            <xsl:value-of select="$Start/FTP.Input/Username"/>
+                        </UserName>
+                        <Password>
+                            <xsl:value-of select="$Start/FTP.Input/Password"/>
+                        </Password>
+                    </FTPGetInputData>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="FTP Put">
+                <pd:type>com.tibco.plugin.ftp.FTPPutActivity</pd:type>
+                <pd:resourceType>ae.activities.FTPPutActivityUI</pd:resourceType>
+                <pd:x>213</pd:x>
+                <pd:y>356</pd:y>
+                <config>
+                    <Timeout>120000</Timeout>
+                    <FireWall>false</FireWall>
+                    <isBinary>false</isBinary>
+                    <Append>false</Append>
+                    <useProcessData>true</useProcessData>
+                    <Overwrite>true</Overwrite>
+                    <SharedUserData>/Common/Processes/Dummy FTP Connection.sharedftp</SharedUserData>
+                </config>
+                <pd:inputBindings>
+                    <FTPPutInputDataASCII>
+                        <RemoteFileName>
+                            <xsl:value-of select="$Start/FTP.Input/Put/RemoteFileName"/>
+                        </RemoteFileName>
+                        <Data>
+                            <xsl:value-of select="$Start/FTP.Input/Put/Data"/>
+                        </Data>
+                        <Host>
+                            <xsl:value-of select="$Start/FTP.Input/Host"/>
+                        </Host>
+                        <Port>
+                            <xsl:value-of select="$Start/FTP.Input/Port"/>
+                        </Port>
+                        <UserName>
+                            <xsl:value-of select="$Start/FTP.Input/Username"/>
+                        </UserName>
+                        <Password>
+                            <xsl:value-of select="$Start/FTP.Input/Password"/>
+                        </Password>
+                    </FTPPutInputDataASCII>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="FTP Rename">
+                <pd:type>com.tibco.plugin.ftp.FTPRenameActivity</pd:type>
+                <pd:resourceType>ae.activities.FTPRenameActivityUI</pd:resourceType>
+                <pd:x>213</pd:x>
+                <pd:y>432</pd:y>
+                <config>
+                    <SharedUserData>/Common/Processes/Dummy FTP Connection.sharedftp</SharedUserData>
+                </config>
+                <pd:inputBindings>
+                    <Input>
+                        <Host>
+                            <xsl:value-of select="$Start/FTP.Input/Host"/>
+                        </Host>
+                        <Port>
+                            <xsl:value-of select="$Start/FTP.Input/Port"/>
+                        </Port>
+                        <UserName>
+                            <xsl:value-of select="$Start/FTP.Input/Username"/>
+                        </UserName>
+                        <Password>
+                            <xsl:value-of select="$Start/FTP.Input/Password"/>
+                        </Password>
+                        <xsl:if test="$Start/FTP.Input/Rename/OldRemoteDirectory">
+                            <OldRemoteDirectory>
+                                <xsl:value-of select="$Start/FTP.Input/Rename/OldRemoteDirectory"/>
+                            </OldRemoteDirectory>
+                        </xsl:if>
+                        <OldRemoteFileName>
+                            <xsl:value-of select="$Start/FTP.Input/Rename/OldRemoteFileName"/>
+                        </OldRemoteFileName>
+                        <xsl:if test="$Start/FTP.Input/Rename/NewRemoteDirectory">
+                            <NewRemoteDirectory>
+                                <xsl:value-of select="$Start/FTP.Input/Rename/NewRemoteDirectory"/>
+                            </NewRemoteDirectory>
+                        </xsl:if>
+                        <NewRemoteFileName>
+                            <xsl:value-of select="$Start/FTP.Input/Rename/NewRemoteFileName"/>
+                        </NewRemoteFileName>
+                    </Input>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="GEH - FTP Error">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>430</pd:x>
+            <pd:y>409</pd:y>
+            <config>
+                <processName>/Common/Processes/GEH.process</processName>
+            </config>
+            <pd:inputBindings>
+                <GEH.Input>
+                    <xsl:copy-of select="$_error/ns2:ErrorReport"/>
+                    <pfx:ProcessData>
+                        <pfx:ProcessInput>
+                            <xsl:copy-of select="$Start/FTP.Input"/>
+                        </pfx:ProcessInput>
+                    </pfx:ProcessData>
+                    <pfx:Retry>
+                        <pfx:RetryIdx>
+                            <xsl:value-of select="$retryIdx"/>
+                        </pfx:RetryIdx>
+                        <xsl:copy-of select="$Start/FTP.Input/pfx:RetryOptions"/>
+                    </pfx:Retry>
+                </GEH.Input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Gave Up (TechError)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>675</pd:x>
+        <pd:y>186</pd:y>
+        <config>
+            <faultName>TechError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message/>
+                <data>
+                    <pfx:TechError>
+                        <ns2:ErrorReport>
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/ancestor-or-self::*/namespace::node()"/>
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/@*"/>
+                            <xsl:copy-of select="$_error/ns2:ErrorReport/node()"/>
+                        </ns2:ErrorReport>
+                        <pfx:DescShort>
+                            <xsl:value-of select="$_error/ns2:ErrorReport/Msg"/>
+                        </pfx:DescShort>
+                        <pfx:ProcessData>
+                            <pfx:ProcessInput>
+                                <xsl:copy-of select="$Start/FTP.Input"/>
+                            </pfx:ProcessInput>
+                        </pfx:ProcessData>
+                        <pfx:Retry>
+                            <pfx:RetryIdx>
+                                <xsl:value-of select="$retryIdx"/>
+                            </pfx:RetryIdx>
+                            <xsl:copy-of select="$Start/FTP.Input/pfx:RetryOptions"/>
+                        </pfx:Retry>
+                    </pfx:TechError>
+                </data>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Finished">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>675</pd:x>
+        <pd:y>322</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml(($FTP-Dir/Output |$FTP-Get/FTPGetOutputASCII |$FTP-Put/FTPPutOutputFile)[1],1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/MsgCodes/End"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>411</pd:x>
+        <pd:y>37</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="if (exists($Start/FTP.Input/Put))&#xA;  then concat('Put RemoteFileName: ', $Start/FTP.Input/Put/RemoteFileName)&#xA;  else tib:render-xml($Start/FTP.Input, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/MsgCodes/Start"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Finished</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>FTP Operation Retry Loop</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FTP Operation Retry Loop</pd:from>
+        <pd:to>Gave Up (TechError)</pd:to>
+        <pd:xpathDescription>Gave Up</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GEH---FTP-Error/GEH.Output/GiveUp</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FTP Operation Retry Loop</pd:from>
+        <pd:to>Log - Finished</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Allows FTP operations to be performed with the
+specified retry strategy.</pd:description>
+        <pd:x>135</pd:x>
+        <pd:y>28</pd:y>
+        <pd:width>268</pd:width>
+        <pd:height>55</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

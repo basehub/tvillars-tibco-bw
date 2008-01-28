@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://www.tibco.com/pe/EngineTypes"
+	 xmlns:geh="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd"
+	 targetNamespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="../Resources/Schemas.BW/EngineTypes.xsd"/>
+	<xs:element name="Error" type="geh:Error_Type"/>
+	<xs:element name="DataError" type="geh:Error_Type"/>
+	<xs:element name="TechError" type="geh:TechError_Type"/>
+	<xs:complexType name="Error_Type">
+		<xs:sequence>
+			<xs:element ref="tns:ErrorReport" minOccurs="0"/>
+			<xs:element ref="geh:DescShort" minOccurs="0"/>
+			<xs:element ref="geh:DescLong" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="geh:ProcessData" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TechError_Type">
+		<xs:complexContent>
+			<xs:extension base="geh:Error_Type">
+				<xs:sequence>
+					<xs:element ref="geh:Retry" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DescShort" type="xs:string"/>
+	<xs:element name="DescLong" type="xs:string"/>
+	<xs:element name="ProcessData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ProcessInput" type="geh:ActivityData_Type" minOccurs="0"/>
+				<xs:element name="ActivityInput" type="geh:ActivityData_Type" minOccurs="0"/>
+				<xs:element name="ActivityOutputs" type="geh:ActivityData_Type" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="ExternalSystemConnectionInfo" type="geh:ActivityData_Type" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ActivityData" type="geh:ActivityData_Type"/>
+	<xs:complexType name="ActivityData_Type">
+		<xs:sequence>
+			<xs:any namespace="##any" processContents="skip" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="description" type="xs:string"/>
+	</xs:complexType>
+	<xs:element name="Retry" type="geh:Retry_Type"/>
+	<xs:complexType name="Retry_Type">
+		<xs:sequence>
+			<xs:element name="RetryIdx" type="xs:int"/>
+			<xs:element name="RetryOptions" type="geh:RetryOptions_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RetryOptions" type="geh:RetryOptions_Type"/>
+	<xs:complexType name="RetryOptions_Type">
+		<xs:choice>
+			<xs:element name="TryForever" type="geh:TryForever_Type"/>
+			<xs:element name="TryXTimes" type="geh:TryXTimes_Type"/>
+			<xs:element name="TryXTimesAndSuspend" type="geh:TryXTimes_Type"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="TryForever" type="geh:TryForever_Type"/>
+	<xs:complexType name="TryForever_Type">
+		<xs:sequence>
+			<xs:element name="FirstError" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SecsToPauseBetweenRetries" type="xs:int" minOccurs="0"/>
+						<xs:element name="RetryCountToLogError" type="xs:int" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SubsequentErrors" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SecsToPauseBetweenRetries" type="xs:int" minOccurs="0"/>
+						<xs:element name="RetryCountToLogError" type="xs:int" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TryXTimes_Type">
+		<xs:sequence>
+			<xs:element name="TimesToTry" type="xs:int"/>
+			<xs:element name="SecsToPauseBetweenRetries" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

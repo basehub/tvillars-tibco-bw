@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>End</name>
+			<value>PL-END</value>
+			<description></description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189450742591</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Inprocess</name>
+			<value>PL-INPROCESS</value>
+			<description></description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189450742606</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Start</name>
+			<value>PL-START</value>
+			<description></description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189450742591</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

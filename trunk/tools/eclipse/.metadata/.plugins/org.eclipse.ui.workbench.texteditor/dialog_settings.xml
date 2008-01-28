@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="243" key="DIALOG_WIDTH"/>
+		<item value="105" key="DIALOG_Y_ORIGIN"/>
+		<item value="1020" key="DIALOG_X_ORIGIN"/>
+		<item value="362" key="DIALOG_HEIGHT"/>
+		<item value="1|Tahoma|8.25|0|WINDOWS|1|-11|0|0|0|400|0|0|0|1|0|0|0|0|Tahoma" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="wrap"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="Extends" key="selection"/>
+		<list key="findhistory">
+			<item value="extends"/>
+			<item value="      &lt;children xsi:type=&quot;editmodel:UseCaseEndEditModel&quot; location=&quot;62,0&quot; attachSource=&quot;true&quot;/&gt;"/>
+			<item value="TIBCO Component"/>
+			<item value="Third-Party Component"/>
+			<item value="cOLOR kEY"/>
+			<item value="test"/>
+			<item value="$Start/pfx6:Envelope.NotifyLogger"/>
+			<item value="$Start/pfx5:Envelope.NotifyLogger"/>
+		</list>
+		<list key="replacehistory">
+		</list>
+	</section>
+</section>

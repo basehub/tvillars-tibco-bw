@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx3="http://www.tibco.com/pe/CheckpointSchema" xmlns:ns5="www.tibco.com/plugin/Sleep" xmlns:ns6="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Mail.xsd" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns7="http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" schemaLocation="/Common/Functions/MailSend.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd" schemaLocation="/Services.Tech/eMail/Client/eMail.xsd"/>
+    <pd:name>Services.Tech/eMail/Server/eMail Receiver.process</pd:name>
+    <pd:startName>Queue</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Queue">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>46</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>2</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Services.Tech/eMail/Queue%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Common/Resources/Queue.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>638</pd:endX>
+    <pd:endY>70</pd:endY>
+    <pd:errorSchemas>
+        <DataError ref="ns6:DataError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>45</pd:x>
+        <pd:y>197</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>499</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <ConfirmEvent>Queue</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm (Error)">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>290</pd:x>
+        <pd:y>197</pd:y>
+        <config>
+            <ConfirmEvent>Queue</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="eMail">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>189</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx2:eMail"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Queue/ns1:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GEH">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>187</pd:x>
+        <pd:y>197</pd:y>
+        <config>
+            <processName>/Common/Processes/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH.Input>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                <ns6:ProcessData>
+                    <ns6:ProcessInput>
+                        <xsl:copy-of select="$Queue/ns1:ActivityOutput"/>
+                    </ns6:ProcessInput>
+                    <ns6:ActivityOutputs>
+                        <xsl:copy-of select="$eMail/pfx2:eMail"/>
+                    </ns6:ActivityOutputs>
+                </ns6:ProcessData>
+            </GEH.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Error (unexpected)">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>45</pd:x>
+        <pd:y>323</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(tib:render-xml($Queue/ns1:ActivityOutput),tib:render-xml($_error/ns:ErrorReport))"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Constants/Logging/MsgCodes/End"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parsing Error (DataError)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>289</pd:x>
+        <pd:y>111</pd:y>
+        <config>
+            <faultName>DataError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <data>
+                    <ns6:DataError>
+                        <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                        <ns6:ProcessData>
+                            <ns6:ProcessInput>
+                                <xsl:copy-of select="$Queue/ns1:ActivityOutput"/>
+                            </ns6:ProcessInput>
+                        </ns6:ProcessData>
+                    </ns6:DataError>
+                </data>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Mail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>390</pd:x>
+        <pd:y>73</pd:y>
+        <config>
+            <processName>/Common/Processes/Mail.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Mail.Send.Input>
+                <pfx5:MailSend>
+                    <xsl:copy-of select="$eMail/pfx2:eMail/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$eMail/pfx2:eMail/@*"/>
+                    <xsl:copy-of select="$eMail/pfx2:eMail/node()"/>
+                </pfx5:MailSend>
+                <ns6:RetryOptions>
+                    <ns6:TryForever/>
+                </ns6:RetryOptions>
+            </Mail.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Sleep 1 Minute">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>187</pd:x>
+        <pd:y>315</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns5:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/Constants/Time/MinInMilliSecs"/>
+                </IntervalInMillisec>
+            </ns5:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Queue</pd:from>
+        <pd:to>eMail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Mail</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log - Error (unexpected)</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Error (unexpected)</pd:from>
+        <pd:to>Sleep 1 Minute</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep 1 Minute</pd:from>
+        <pd:to>Confirm (Error)</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>GEH</pd:to>
+        <pd:xpathDescription>use GEH</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$_globalVariables/ns3:GlobalVariables/Common/Processes/GEH/UseGEHForEMailExceptions = "true"
+or
+exists($_error_Parsing-Error-DataError/ns6:DataError)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH</pd:from>
+        <pd:to>Confirm (Error)</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm (Error)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>eMail</pd:from>
+        <pd:to>Send Mail</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>eMail</pd:from>
+        <pd:to>Parsing Error (DataError)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Normally errors are handled through the GEH, but since the GEH is
+by default dependent on the eMail serice, there is a risk the error
+will be re-thrown and never really handled.  Unless the default
+behavior of emailing GEH exceptions is changed by overriding the
+notification process, then a simple logger with a one minute pause
+is used to handle this exception.</pd:description>
+        <pd:x>487</pd:x>
+        <pd:y>308</pd:y>
+        <pd:width>382</pd:width>
+        <pd:height>106</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Very simple service that decouples sending emails from a process.</pd:description>
+        <pd:x>201</pd:x>
+        <pd:y>18</pd:y>
+        <pd:width>400</pd:width>
+        <pd:height>34</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

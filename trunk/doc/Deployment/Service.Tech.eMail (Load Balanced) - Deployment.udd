@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:DeploymentDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Service.Tech.eMail (Load Balanced) - Deployment" foregroundRGB="255,255,255" metadata="uml2-1.0" initialized="true" scrolledX="-5" scrolledY="-5" tag="1000" key="3230303730363239207476696C6C6172732D746962636F2D62772E62772F746A76696C6C6172">
+  <children xsi:type="editmodel:NodeEditModel" location="0,35" size="466,276" stereotype="" taggedValues="{profile.object.name=Server A}" itemName="Server A" type="" instanceLevel="true">
+    <children xsi:type="editmodel:ComponentEditModel" location="39,166" size="164,79" stereotype="BW Service" taggedValues="{maxJobs=1; profile.object.name=Tech-eMail}" itemName="Tech-eMail">
+      <children xsi:type="editmodel:ResourceLinkEditModel" name="Tech-eMail.ear" foregroundRGB="0,0,255" location="36,33" size="90,16" url="\tvillars-tibco-bw.bw\dist.bw\Tech-eMail.ear"/>
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" source="//@children.0/@children.0" target="//@children.0/@children.1" targetEnd="//@children.0/@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@children.0/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="129,0" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="33,69"/>
+      </sourceConnections>
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" source="//@children.0/@children.0" target="//@children.3" targetEnd="//@children.0/@children.0/@sourceConnections.1/@children.1" sourceEnd="//@children.0/@children.0/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="60,79" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="89,0"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ComponentEditModel" targetConnections="//@children.0/@children.2/@sourceConnections.0 //@children.0/@children.0/@sourceConnections.0 //@children.4/@children.0/@sourceConnections.0" location="135,57" size="163,69" stereotype="infrastructure" taggedValues="{profile.object.name=JMS Server}" itemName="JMS Server"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="206,166" size="218,78" stereotype="application" taggedValues="{profile.object.name=Some Business Service}" itemName="Some Business Service">
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" source="//@children.0/@children.2" target="//@children.0/@children.1" targetEnd="//@children.0/@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="45,0" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="116,69"/>
+      </sourceConnections>
+    </children>
+  </children>
+  <children xsi:type="editmodel:LabelObjectEditModel" name="Load Blanaced Deployment of eMail Technical Service" location="50,0" size="622,29" fontInfo="Arial-18-1"/>
+  <children xsi:type="editmodel:NotepadEditModel" foregroundRGB="91,91,0" location="170,350" size="471,178" fontInfo="Arial-8-0" note="This deployment shows a load balanced deployment of the eMail Service.  This deployment&#xD;&#xA;is also fault tolerant because load balancing allows either Server A or B to service a request&#xD;&#xA;so both servers would have to fail before the eMail Service would be off line.&#xD;&#xA;&#xD;&#xA;Since the order eMails are received in is not that important, load balancing is an acceptable&#xD;&#xA;configuration for ensuring fault tolerance as messages could, although it is very unlikely,&#xD;&#xA;arrive out of order .  When message ordering is important a different configuration using&#xD;&#xA;Business Works built in fault tolerance is required.&#xD;&#xA;&#xD;&#xA;Note:  Only the eMail Service is shown as Fault Tolerant.  Making the JMS Server, Business&#xD;&#xA;Process, and MS Exchange Server Fault Tolerant is outside the scope of this deployment&#xD;&#xA;diagram."/>
+  <children xsi:type="editmodel:NodeEditModel" targetConnections="//@children.4/@children.0/@sourceConnections.1 //@children.0/@children.0/@sourceConnections.1" location="10,330" size="151,111" stereotype="" taggedValues="{profile.object.name=MS Exchange Server}" itemName="MS Exchange Server" type="" instanceLevel="true"/>
+  <children xsi:type="editmodel:NodeEditModel" location="480,35" size="221,276" stereotype="" taggedValues="{profile.object.name=Server B}" itemName="Server B" type="" instanceLevel="true">
+    <children xsi:type="editmodel:ComponentEditModel" location="19,163" size="160,74" stereotype="BW Service" taggedValues="{profile.object.name=Tech-eMail.ear}" itemName="Tech-eMail.ear">
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" source="//@children.4/@children.0" target="//@children.0/@children.1" targetEnd="//@children.4/@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@children.0/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="90,0" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="163,38"/>
+      </sourceConnections>
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" source="//@children.4/@children.0" target="//@children.3" targetEnd="//@children.4/@children.0/@sourceConnections.1/@children.1" sourceEnd="//@children.4/@children.0/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="93,74" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="151,12"/>
+      </sourceConnections>
+    </children>
+  </children>
+  <diagramOptions xsi:type="options:DeploymentDiagramOptions" level="0" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+</editmodel:DeploymentDiagramEditModel>

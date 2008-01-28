@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns11="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx21="http://www.tibco.com/pe/EngineTypes" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/TechServices/EMail" xmlns:pfx3="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Mail.xsd" xmlns:ns2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Services.Tech/eMail/Public/eMail.xsd" xmlns:ns4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd">
+    <xsd:import namespace="http://uscis.gov/uscis/xsd/services/common/1.0"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/pe/WriteToLogActivitySchema" schemaLocation="/Common/Schemas/BW.Internal/WriteToLog.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Mail.xsd" schemaLocation="/Common/Processes/Mail.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="/Common/Schemas.ThirdParty/BW.Internal/EngineTypes.xsd"/>
+    <pd:name>Common/Processes/Subprocesses/Notify/Notify Handler.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Notify.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx4:Notify.private"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>57</pd:startX>
+    <pd:startY>206</pd:startY>
+    <pd:returnBindings>
+        <Notify.output>
+            <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private"/>
+        </Notify.output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Notify.output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx4:Notify.private"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>544</pd:endX>
+    <pd:endY>318</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="eMail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>543</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <processName>/Services.Tech/eMail/Client/eMail.process</processName>
+        </config>
+        <pd:inputBindings>
+            <eMail.Input>
+                <ns4:eMail>
+                    <pfx5:Header>
+                        <pfx5:from>
+                            <xsl:value-of select="concat(&#xA;$_globalVariables/ns1:GlobalVariables/Environment&#xA;,'-'&#xA;,$_processContext/pfx21:ProcessContext/ProjectName,&#xA;'-'&#xA;,$_processContext/pfx21:ProcessContext/EngineName)"/>
+                        </pfx5:from>
+                        <xsl:for-each select="$Get-Email-Recipient-List/GetEMailRecipientList.Output/to">
+                            <pfx5:to>
+                                <xsl:value-of select="."/>
+                            </pfx5:to>
+                        </xsl:for-each>
+                        <pfx5:subject>
+                            <xsl:value-of select="concat(&#xA;local-name($Start/Notify.Input/pfx4:Notify.private/*[1])&#xA;,' - '&#xA;,($Start/Notify.Input/pfx4:Notify.private/*/pfx:DescShort)[1])"/>
+                        </pfx5:subject>
+                        <xsl:if test="$Start/Notify.Input/pfx4:Notify.private/@Created">
+                            <pfx5:sentdate>
+                                <xsl:value-of select="$Start/Notify.Input/pfx4:Notify.private/@Created"/>
+                            </pfx5:sentdate>
+                        </xsl:if>
+                    </pfx5:Header>
+                    <!--add location of log file-->
+                    <pfx5:bodyText>
+                        <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;&#xA;,&quot;&#xD;&#xA;&quot;&#xA;,'Log File: '&#xA;,'\\',$ServerInfo/ServerInfo.Output/HostName, '\', $_globalVariables/ns1:GlobalVariables/DirTrace,'\', $_processContext/pfx21:ProcessContext/EngineName,'.log')"/>
+                    </pfx5:bodyText>
+                    <!--added long description-->
+                    <xsl:for-each select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:DescLong">
+                        <pfx5:bodyText>
+                            <xsl:value-of select="."/>
+                        </pfx5:bodyText>
+                    </xsl:for-each>
+                    <!--check to see if there was an ErrorReport that needs to be appended-->
+                    <xsl:if test="exists($Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc.output/ErrorReportDesc)">
+                        <pfx5:bodyText>
+                            <xsl:value-of select="''"/>
+                        </pfx5:bodyText>
+                        <pfx5:bodyText>
+                            <xsl:value-of select="'Business Works ErrorReport'"/>
+                        </pfx5:bodyText>
+                        <pfx5:bodyText>
+                            <xsl:value-of select="'---------------------'"/>
+                        </pfx5:bodyText>
+                        <xsl:for-each select="$Map-ErrorReport-To-Human-Readable-Description/MapErrorReportToDesc.output/ErrorReportDesc">
+                            <pfx5:bodyText>
+                                <xsl:value-of select="."/>
+                            </pfx5:bodyText>
+                        </xsl:for-each>
+                        <pfx5:XMLAttachment>
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="'ErrorReport'"/>
+                            </xsl:attribute>
+                            <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/pfx4:DataWarn/pfx21:ErrorReport&#xA;|$Start/Notify.Input/pfx4:Notify.private/pfx4:TechWarn/pfx21:ErrorReport&#xA;|$Start/Notify.Input/pfx4:Notify.private/pfx:DataError/pfx21:ErrorReport&#xA;|$Start/Notify.Input/pfx4:Notify.private/pfx:TechError/pfx21:ErrorReport&#xA;|$Start/Notify.Input/pfx4:Notify.private/pfx:Error/pfx21:ErrorReport"/>
+                        </pfx5:XMLAttachment>
+                    </xsl:if>
+                    <!--add all the process data elements as XML attachements-->
+                    <xsl:for-each select="$Map-Context-Into-XML-Attachments/XMLAttachments/pfx5:XMLAttachment">
+                        <xsl:if test="*">
+                            <pfx5:XMLAttachment>
+                                <xsl:if test="@description">
+                                    <xsl:attribute name="description">
+                                        <xsl:value-of select="@description"/>
+                                    </xsl:attribute>
+                                </xsl:if>
+                                <xsl:copy-of select="*"/>
+                            </pfx5:XMLAttachment>
+                        </xsl:if>
+                    </xsl:for-each>
+                </ns4:eMail>
+            </eMail.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Email Recipient List">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>205</pd:x>
+        <pd:y>120</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/GetEMailRecipientList.process</processName>
+            <processNameXPath>$_globalVariables/ns1:GlobalVariables/Common/Processes/Notify/GetEMailRecipientList/ProcessNameDynamicOverride</processNameXPath>
+        </config>
+        <pd:inputBindings>
+            <GetEMailRecipientList.Input>
+                <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private"/>
+            </GetEMailRecipientList.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map Context Into XML Attachments">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>205</pd:x>
+        <pd:y>304</pd:y>
+        <config>
+            <element>
+                <xsd:element name="XMLAttachments">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="pfx5:XMLAttachment" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <XMLAttachments>
+                <pfx5:XMLAttachment>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ProcessInput/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ProcessInput/@*"/>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ProcessInput/node()"/>
+                </pfx5:XMLAttachment>
+                <pfx5:XMLAttachment>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ActivityInput/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ActivityInput/@*"/>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ActivityInput/node()"/>
+                </pfx5:XMLAttachment>
+                <xsl:for-each select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ActivityOutputs">
+                    <pfx5:XMLAttachment>
+                        <xsl:if test="@description">
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="@description"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:copy-of select="*"/>
+                    </pfx5:XMLAttachment>
+                </xsl:for-each>
+                <xsl:for-each select="$Start/Notify.Input/pfx4:Notify.private/*/pfx:ProcessData/pfx:ExternalSystemConnectionInfo">
+                    <pfx5:XMLAttachment>
+                        <xsl:if test="@description">
+                            <xsl:attribute name="description">
+                                <xsl:value-of select="@description"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                        <xsl:copy-of select="*"/>
+                    </pfx5:XMLAttachment>
+                </xsl:for-each>
+            </XMLAttachments>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map ErrorReport To Human Readable Description">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>303</pd:x>
+        <pd:y>221</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/MapErrorReportToDesc.process</processName>
+        </config>
+        <pd:inputBindings>
+            <MapErrorReportToDesc>
+                <xsl:copy-of select="  $Start/Notify.Input/pfx4:Notify.private/pfx4:DataWarn/pfx21:ErrorReport&#xA;| $Start/Notify.Input/pfx4:Notify.private/pfx4:TechWarn/pfx21:ErrorReport&#xA;| $Start/Notify.Input/pfx4:Notify.private/pfx:DataError/pfx21:ErrorReport &#xA;| $Start/Notify.Input/pfx4:Notify.private/pfx:TechError/pfx21:ErrorReport&#xA;| $Start/Notify.Input/pfx4:Notify.private/pfx:Error/pfx21:ErrorReport&#xA;"/>
+            </MapErrorReportToDesc>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ServerInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>203</pd:x>
+        <pd:y>384</pd:y>
+        <config>
+            <processName>/Common/Processes/ServerInfo.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Email Recipient List</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Email Recipient List</pd:from>
+        <pd:to>eMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>eMail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map Context Into XML Attachments</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map ErrorReport To Human Readable Description</pd:to>
+        <pd:xpathDescription>Has ErrorReport</pd:xpathDescription>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/Notify.Input/pfx4:Notify.private//pfx21:ErrorReport)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map ErrorReport To Human Readable Description</pd:from>
+        <pd:to>eMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map Context Into XML Attachments</pd:from>
+        <pd:to>eMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>ServerInfo</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ServerInfo</pd:from>
+        <pd:to>eMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>This is a private process and should NOT be directly called
+by a Business Service app and should only rarely called by
+core Technical Services when there is a special requirement
+that can not be met by the /Common/Functions/Notify process.</pd:description>
+        <pd:x>189</pd:x>
+        <pd:y>41</pd:y>
+        <pd:width>376</pd:width>
+        <pd:height>80</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

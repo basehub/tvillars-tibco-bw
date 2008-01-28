@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <pd:name>Common/Processes/Notify.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Notify.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:Notify.public"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>113</pd:startY>
+    <pd:returnBindings>
+        <Notify.Output>
+            <xsl:copy-of select="$Private-Notify/Notify.output/pfx:Notify.private"/>
+        </Notify.Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Notify.Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:Notify.private"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>265</pd:endX>
+    <pd:endY>113</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Private Notify">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>146</pd:x>
+        <pd:y>114</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify.private.process</processName>
+            <processNameXPath/>
+        </config>
+        <pd:inputBindings>
+            <Notify.Input>
+                <pfx:Notify.private>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx:Notify.public/ancestor-or-self::*/namespace::node()"/>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx:Notify.public/@*"/>
+                    <xsl:copy-of select="$Start/Notify.Input/pfx:Notify.public/node()"/>
+                </pfx:Notify.private>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Private Notify</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Private Notify</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Exposes the API for Info and Warning level notifications. All DataError,
+TechError and Error level notifications should go through the GEH.
+Actual notification is decoupled from this process so issues with
+notification will not interfere with the calling process.</pd:description>
+        <pd:x>197</pd:x>
+        <pd:y>41</pd:y>
+        <pd:width>392</pd:width>
+        <pd:height>81</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

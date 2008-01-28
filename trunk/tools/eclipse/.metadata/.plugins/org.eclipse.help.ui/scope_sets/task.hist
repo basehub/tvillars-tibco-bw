@@ -1,0 +1,4 @@
+#Mon Dec 17 13:00:18 EST 2007
+__DEFAULT__=false
+org.eclipse.help.ui.localSearch.master=true
+expression=task

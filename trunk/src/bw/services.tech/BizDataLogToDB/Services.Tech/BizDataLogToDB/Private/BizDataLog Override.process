@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd" xmlns:pfx3="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/BizDataLog.xsd" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/BizDataLogToDB/Services.Tech/BizDataLogToDB/Private/Envelope.Tech.BizDataLog.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd" schemaLocation="/Services.Tech/NotifyLogToDB/Private/Notify.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/BizDataLogToDB/Services.Tech/BizDataLogToDB/Private/Envelope.Tech.BizDataLog.xsd" schemaLocation="/Services.Tech/BizDataLogToDB/Private/Envelope.Tech.BizDataLog.xsd"/>
+    <pd:name>Services.Tech/BizDataLogToDB/Private/BizDataLog Override.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="BizObjLog.private.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx3:BizDataLog"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>147</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>439</pd:endX>
+    <pd:endY>147</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Envelop BizDataLog">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>151</pd:x>
+        <pd:y>147</pd:y>
+        <config>
+            <element ref="pfx4:Envelop.Tech.BizDataLog"/>
+        </config>
+        <pd:inputBindings>
+            <pfx4:Envelop.Tech.BizDataLog>
+                <xsl:copy-of select="$Start/BizObjLog.private.Input/pfx3:BizDataLog"/>
+                <ns1:ProcessContext>
+                    <ProcessId>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                    </ProcessId>
+                    <ProjectName>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                    </ProjectName>
+                    <EngineName>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/EngineName"/>
+                    </EngineName>
+                    <RestartedFromCheckpoint>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/RestartedFromCheckpoint"/>
+                    </RestartedFromCheckpoint>
+                    <xsl:for-each select="$_processContext/ns1:ProcessContext/TrackingInfo">
+                        <TrackingInfo>
+                            <xsl:value-of select="."/>
+                        </TrackingInfo>
+                    </xsl:for-each>
+                    <xsl:if test="$_processContext/ns1:ProcessContext/CustomId">
+                        <CustomId>
+                            <xsl:value-of select="$_processContext/ns1:ProcessContext/CustomId"/>
+                        </CustomId>
+                    </xsl:if>
+                </ns1:ProcessContext>
+            </pfx4:Envelop.Tech.BizDataLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send BizDataLog XML to the BizDataLogToDB service">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>298</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <processName>/Common/Processes/JMS.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <JMS.Send.Input>
+                <JMSHeader/>
+                <Queue>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services.Tech/BizDataLogToDB/Queue"/>
+                </Queue>
+                <XML>
+                    <xsl:copy-of select="$Envelop-BizDataLog/pfx4:Envelop.Tech.BizDataLog"/>
+                </XML>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </JMS.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Send BizDataLog XML to the BizDataLogToDB service</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Envelop BizDataLog</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Envelop BizDataLog</pd:from>
+        <pd:to>Send BizDataLog XML to the BizDataLogToDB service</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>This process overrides the Common\Processes\Subprocesses\BizDataLog\BizDataLog.private process
+so callers should only access this process indirectly.</pd:description>
+        <pd:x>304</pd:x>
+        <pd:y>64</pd:y>
+        <pd:width>607</pd:width>
+        <pd:height>47</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (2)</pd:name>
+        <pd:description>!!!DO NOT CALL THIS PROCESS DIRECTLY!!!</pd:description>
+        <pd:x>246</pd:x>
+        <pd:y>19</pd:y>
+        <pd:width>375</pd:width>
+        <pd:height>37</pd:height>
+        <pd:fontName>Dialog.bold-plain-16</pd:fontName>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-52378</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>3</pd:thickness>
+        <pd:fade>false</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

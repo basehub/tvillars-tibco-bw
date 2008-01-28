@@ -1,0 +1,13 @@
+package com.google.code.tvillars.tibco.bw.javacustfun;
+
+public class HelloWorld {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

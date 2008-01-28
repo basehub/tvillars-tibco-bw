@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd" schemaLocation="/Services.Tech/NotifyLogToDB/Private/Notify.xsd"/>
+    <pd:name>Services.Tech/NotifyLogToDB/Private/Notify Override.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Notify.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:Notify.private"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>171</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$Notify-via-eMail/Notify.output"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Notify.output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:Notify.private"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>515</pd:endX>
+    <pd:endY>173</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Envelope NotifyLogger">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>201</pd:x>
+        <pd:y>141</pd:y>
+        <config>
+            <element ref="pfx2:NotifyLog"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:NotifyLog>
+                <xsl:copy-of select="$Start/Notify.Input/pfx:Notify.private"/>
+                <ns1:ProcessContext>
+                    <ProcessId>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/ProcessId"/>
+                    </ProcessId>
+                    <ProjectName>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/ProjectName"/>
+                    </ProjectName>
+                    <EngineName>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/EngineName"/>
+                    </EngineName>
+                    <RestartedFromCheckpoint>
+                        <xsl:value-of select="$_processContext/ns1:ProcessContext/RestartedFromCheckpoint"/>
+                    </RestartedFromCheckpoint>
+                    <xsl:for-each select="$_processContext/ns1:ProcessContext/TrackingInfo">
+                        <TrackingInfo>
+                            <xsl:value-of select="."/>
+                        </TrackingInfo>
+                    </xsl:for-each>
+                    <xsl:if test="$_processContext/ns1:ProcessContext/CustomId">
+                        <CustomId>
+                            <xsl:value-of select="$_processContext/ns1:ProcessContext/CustomId"/>
+                        </CustomId>
+                    </xsl:if>
+                </ns1:ProcessContext>
+            </pfx2:NotifyLog>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Notify via eMail">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>254</pd:x>
+        <pd:y>252</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify Handler.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Notify.Input>
+                <xsl:copy-of select="$Start/Notify.Input/pfx:Notify.private"/>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send Notify XML to the NotifyLogToDB service">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>311</pd:x>
+        <pd:y>148</pd:y>
+        <config>
+            <processName>/Common/Processes/JMS.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <JMS.Send.Input>
+                <JMSHeader/>
+                <Queue>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Services.Tech/NotifyLogToDB/Queue"/>
+                </Queue>
+                <XML>
+                    <xsl:copy-of select="$Envelope-NotifyLogger/pfx2:NotifyLog"/>
+                </XML>
+                <ns2:RetryOptions>
+                    <ns2:TryForever/>
+                </ns2:RetryOptions>
+            </JMS.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Notify via eMail</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Notify via eMail</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send Notify XML to the NotifyLogToDB service</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Envelope NotifyLogger</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Envelope NotifyLogger</pd:from>
+        <pd:to>Send Notify XML to the NotifyLogToDB service</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>the default Notify process is still be called allowing
+the emailing of notifications to continue</pd:description>
+        <pd:x>253</pd:x>
+        <pd:y>308</pd:y>
+        <pd:width>300</pd:width>
+        <pd:height>49</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>This process overrides the Common\Processes\Subprocesses\Notify\Notify.private process
+so callers should only access this process indirectly.</pd:description>
+        <pd:x>260</pd:x>
+        <pd:y>66</pd:y>
+        <pd:width>515</pd:width>
+        <pd:height>47</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (2)</pd:name>
+        <pd:description>!!!DO NOT CALL THIS PROCESS DIRECTLY!!!</pd:description>
+        <pd:x>246</pd:x>
+        <pd:y>19</pd:y>
+        <pd:width>375</pd:width>
+        <pd:height>37</pd:height>
+        <pd:fontName>Dialog.bold-plain-16</pd:fontName>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-52378</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>3</pd:thickness>
+        <pd:fade>false</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

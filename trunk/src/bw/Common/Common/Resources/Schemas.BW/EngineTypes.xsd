@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tibco.com/pe/EngineTypes" targetNamespace="http://www.tibco.com/pe/EngineTypes" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:complexType name="ErrorReport">
+        <xs:sequence>
+            <xs:element name="StackTrace" form="unqualified" type="xs:string"/>
+            <xs:element name="Msg" form="unqualified" type="xs:string"/>
+            <xs:element name="FullClass" form="unqualified" type="xs:string"/>
+            <xs:element name="Class" form="unqualified" type="xs:string"/>
+            <xs:element name="ProcessStack" form="unqualified" type="xs:string"/>
+            <xs:element name="MsgCode" form="unqualified" type="xs:string" minOccurs="0"/>
+            <xs:element name="Data" form="unqualified" type="tns:anydata" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ProcessContext">
+        <xs:sequence>
+            <xs:element name="ProcessId" form="unqualified" type="xs:long"/>
+            <xs:element name="ProjectName" form="unqualified" type="xs:string"/>
+            <xs:element name="EngineName" form="unqualified" type="xs:string"/>
+            <xs:element name="RestartedFromCheckpoint" form="unqualified" type="xs:boolean"/>
+            <xs:element name="TrackingInfo" form="unqualified" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="CustomId" form="unqualified" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="anydata">
+        <xs:sequence>
+            <xs:any processContents="lax" namespace="##any"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="ErrorReport" type="tns:ErrorReport"/>
+    <xs:element name="ProcessContext" type="tns:ProcessContext"/>
+</xs:schema>

@@ -1,0 +1,7 @@
+#Mon Dec 17 11:17:37 EST 2007
+UMLClassDiagramPreference.linkProperties.cardinality=0..1
+UMLClassDiagramPreference.linkProperties.type=Asso&ciation
+UMLClassDiagramPreference.linkProperties.directed=&Automatic
+eclipse.preferences.version=1
+UMLClassDiagramPreference.linkProperties.member.visibility=pr&ivate
+UMLPreference.startup.splashscreen=false

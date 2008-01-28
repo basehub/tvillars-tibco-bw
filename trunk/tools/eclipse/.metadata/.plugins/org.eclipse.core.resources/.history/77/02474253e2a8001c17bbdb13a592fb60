@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dateUtil="java://com.chicos.eai.common.functions.DateUtil">
+    <pd:name>Common/Processes/UnitTest/Time Window Check.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>59</pd:startX>
+    <pd:startY>269</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endType/>
+    <pd:endX>703</pd:endX>
+    <pd:endY>274</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Sleep Test Time 12am + 59 minutes and 55 secs Start 1am Stop 2am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>549</pd:x>
+        <pd:y>298</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 0, 59, 55)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(1,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StopTime>
+                <SleepIfOutsideWindow>
+                    <xsl:value-of select="true()"/>
+                </SleepIfOutsideWindow>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Start Time Greater Than Stop Time">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>59</pd:x>
+        <pd:y>395</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Start Time Greater Than Stop Time (result)">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>437</pd:x>
+        <pd:y>402</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Start Time Less Than Stop Time">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>59</pd:x>
+        <pd:y>122</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Start Time Less Than Stop Time (result)">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>437</pd:x>
+        <pd:y>129</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Time 1am Start 2am Stop 4am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 1, 0, 0)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(4,0,0)"/>
+                </StopTime>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Time 1am Start 4am Stop 2am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>311</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 1, 0, 0)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(4,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StopTime>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Time 3am Start 2am Stop 4am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>122</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 3, 0, 0)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(4,0,0)"/>
+                </StopTime>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Time 3am Start 4am Stop 2am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 3, 0, 0)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(4,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StopTime>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Time 5am Start 2am Stop 4am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>217</pd:x>
+        <pd:y>205</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 5, 0, 0)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(4,0,0)"/>
+                </StopTime>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Time 5am Start 4am Stop 2am">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>218</pd:x>
+        <pd:y>480</pd:y>
+        <config>
+            <processName>/Common/Processes/Time Window Check.process</processName>
+        </config>
+        <pd:inputBindings>
+            <TimeWindowCheck.Input>
+                <DateTimeToTest>
+                    <xsl:value-of select="tib:create-dateTime(2000, 1, 1, 5, 0, 0)"/>
+                </DateTimeToTest>
+                <StartDate>
+                    <xsl:value-of select="tib:create-date(2000, 1, 1)"/>
+                </StartDate>
+                <StartTime>
+                    <xsl:value-of select="tib:create-time(4,0,0)"/>
+                </StartTime>
+                <StopTime>
+                    <xsl:value-of select="tib:create-time(2,0,0)"/>
+                </StopTime>
+            </TimeWindowCheck.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Track DateTime">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>439</pd:x>
+        <pd:y>272</pd:y>
+        <config>
+            <element>
+                <xsd:element name="DateTime" type="xsd:dateTime"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <DateTime>
+                <xsl:value-of select="current-dateTime()"/>
+            </DateTime>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Time 1am Start 2am Stop 4am</pd:from>
+        <pd:to>Start Time Less Than Stop Time (result)</pd:to>
+        <pd:xpathDescription>not in window</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Time-1am-Start-2am-Stop-4am/TimeWindowCheck.Output/InRunningTimeWindow = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Start Time Less Than Stop Time</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Time 3am Start 2am Stop 4am</pd:from>
+        <pd:to>Start Time Less Than Stop Time (result)</pd:to>
+        <pd:xpathDescription>in window</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Time-3am-Start-2am-Stop-4am/TimeWindowCheck.Output/InRunningTimeWindow = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Time 5am Start 2am Stop 4am</pd:from>
+        <pd:to>Start Time Less Than Stop Time (result)</pd:to>
+        <pd:xpathDescription>not in window</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Time-5am-Start-2am-Stop-4am/TimeWindowCheck.Output/InRunningTimeWindow = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Less Than Stop Time</pd:from>
+        <pd:to>Time 1am Start 2am Stop 4am</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Less Than Stop Time</pd:from>
+        <pd:to>Time 3am Start 2am Stop 4am</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Less Than Stop Time</pd:from>
+        <pd:to>Time 5am Start 2am Stop 4am</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Start Time Greater Than Stop Time</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Greater Than Stop Time</pd:from>
+        <pd:to>Time 1am Start 4am Stop 2am</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Greater Than Stop Time</pd:from>
+        <pd:to>Time 3am Start 4am Stop 2am</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Greater Than Stop Time</pd:from>
+        <pd:to>Time 5am Start 4am Stop 2am</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Time 5am Start 4am Stop 2am</pd:from>
+        <pd:to>Start Time Greater Than Stop Time (result)</pd:to>
+        <pd:xpathDescription>in window</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Time-5am-Start-4am-Stop-2am/TimeWindowCheck.Output/InRunningTimeWindow = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Time 3am Start 4am Stop 2am</pd:from>
+        <pd:to>Start Time Greater Than Stop Time (result)</pd:to>
+        <pd:xpathDescription>outside window</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Time-3am-Start-4am-Stop-2am/TimeWindowCheck.Output/InRunningTimeWindow = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Time 1am Start 4am Stop 2am</pd:from>
+        <pd:to>Start Time Greater Than Stop Time (result)</pd:to>
+        <pd:xpathDescription>in window</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Time-1am-Start-4am-Stop-2am/TimeWindowCheck.Output/InRunningTimeWindow = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Sleep Test Time 12am + 59 minutes and 55 secs Start 1am Stop 2am</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>waited 5 secs</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>(dateUtil:getTimestamp(current-dateTime()) - dateUtil:getTimestamp($Track-DateTime/DateTime)) div 1000 = 5</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Less Than Stop Time (result)</pd:from>
+        <pd:to>Track DateTime</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start Time Greater Than Stop Time (result)</pd:from>
+        <pd:to>Track DateTime</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Track DateTime</pd:from>
+        <pd:to>Sleep Test Time 12am + 59 minutes and 55 secs Start 1am Stop 2am</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

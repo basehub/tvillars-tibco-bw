@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns3="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:ns4="http://www.tibco.com/pe/DeployedVarsType" xmlns:guid="java://com.chicos.eai.common.functions.GUID" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Envelope.BizObj.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" xmlns:ns5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" xmlns:pfx6="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Envelope.BizObj.xsd" xmlns:pfx7="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Resources/Schemas/Envelope.BizObj.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Envelope.BizObj.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" schemaLocation="/Common/Resources/Schemas/Envelope.BizObj.xsd"/>
+    <pd:name>Common/Processes/JMS.Send.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="JMS.Send.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="JMSHeader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="JMSCorrelationID" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:choice>
+                        <xsd:element name="Topic" type="xsd:string"/>
+                        <xsd:element name="Queue" type="xsd:string"/>
+                        <xsd:element name="MultipleQueues">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="prefix" type="xsd:string" minOccurs="0"/>
+                                    <xsd:choice>
+                                        <xsd:element name="Queue" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="QueueCommaSep" type="xsd:string"/>
+                                    </xsd:choice>
+                                    <xsd:element name="suffix" type="xsd:string" minOccurs="0"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:choice>
+                    <xsd:choice>
+                        <xsd:element ref="pfx7:Envelope.BizObj"/>
+                        <xsd:element name="XML">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:any/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="Text" type="xsd:string"/>
+                    </xsd:choice>
+                    <xsd:element ref="pfx5:RetryOptions"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>323</pd:startX>
+    <pd:startY>72</pd:startY>
+    <pd:returnBindings>
+        <JMS.Send.Output>
+            <xsl:for-each select="$MessageIds/MessageIds/MessageID">
+                <MessageID>
+                    <xsl:value-of select="."/>
+                </MessageID>
+            </xsl:for-each>
+        </JMS.Send.Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JMS.Send.Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="MessageID" type="xsd:string" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>787</pd:endX>
+    <pd:endY>368</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="pfx5:TechError"/>
+        <DataError ref="pfx5:DataError"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <MessageIds>
+            <xsd:element name="MessageIds">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="MessageID" type="xsd:string" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </MessageIds>
+    </pd:processVariables>
+    <pd:group name="send all">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>42</pd:x>
+        <pd:y>130</pd:y>
+        <pd:width>674</pd:width>
+        <pd:height>458</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Calc-Destinations/Destinations/Destination</pd:over>
+            <pd:iterationElementSlot>destination</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Publish Biz Object Envelope</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Track MessageId</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Publish Biz Object Envelope</pd:from>
+            <pd:to>Log - Sucess</pd:to>
+            <pd:xpathDescription>sucess</pd:xpathDescription>
+            <pd:lineType>Curved</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Publish Biz Object Envelope</pd:from>
+            <pd:to>Gave Up (TechError)</pd:to>
+            <pd:xpathDescription>gave up</pd:xpathDescription>
+            <pd:lineType>Curved</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$GEH/GEH.Output/GiveUp</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log - Sucess</pd:from>
+            <pd:to>Track MessageId</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Publish Biz Object Envelope">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>83</pd:x>
+            <pd:y>166</pd:y>
+            <pd:width>256</pd:width>
+            <pd:height>386</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>errorLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>retryIdx</pd:indexSlot>
+                <pd:errorCondition>false()</pd:errorCondition>
+                <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>JMS Topic Publisher</pd:to>
+                <pd:xpathDescription>topic</pd:xpathDescription>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>exists($Start/JMS.Send.Input/Topic)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>JMS Queue Sender</pd:to>
+                <pd:xpathDescription>queue</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>JMS Queue Sender</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>JMS Topic Publisher</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Straight</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GEH</pd:from>
+                <pd:to>end</pd:to>
+                <pd:xpathDescription>give up</pd:xpathDescription>
+                <pd:lineType>One Bend</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>JMS Topic Publisher</pd:from>
+                <pd:to>GEH</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-65536</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>JMS Queue Sender</pd:from>
+                <pd:to>GEH</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-65536</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="JMS Topic Publisher">
+                <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
+                <pd:x>201</pd:x>
+                <pd:y>243</pd:y>
+                <config>
+                    <PermittedMessageType>Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/Common/Resources/Topic.sharedjmscon</ConnectionReference>
+                </config>
+                <pd:inputBindings>
+                    <ns2:ActivityInput>
+                        <destinationTopic>
+                            <xsl:value-of select="$destination/Destination"/>
+                        </destinationTopic>
+                        <xsl:if test="$Start/JMS.Send.Input/JMSHeader/JMSCorrelationID">
+                            <JMSCorrelationID>
+                                <xsl:value-of select="$Start/JMS.Send.Input/JMSHeader/JMSCorrelationID"/>
+                            </JMSCorrelationID>
+                        </xsl:if>
+                        <Body>
+                            <xsl:value-of select="$Body/Body"/>
+                        </Body>
+                    </ns2:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="GEH">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>206</pd:x>
+                <pd:y>366</pd:y>
+                <config>
+                    <processName>/Common/Processes/GEH.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <GEH.Input>
+                        <xsl:copy-of select="$_error/ns1:ErrorReport"/>
+                        <DescShortPrefix>
+                            <xsl:value-of select="concat(&#xA;if (exists($Start/JMS.Send.Input/Topic))&#xA;  then 'Topic: '&#xA;  else 'Queue: ', &#xA;$destination/Destination )"/>
+                        </DescShortPrefix>
+                        <pfx5:ProcessData>
+                            <pfx5:ProcessInput>
+                                <xsl:copy-of select="$Start/JMS.Send.Input"/>
+                            </pfx5:ProcessInput>
+                            <pfx5:ActivityOutputs>
+                                <xsl:copy-of select="$Calc-Destinations/Destinations"/>
+                            </pfx5:ActivityOutputs>
+                            <pfx5:ExternalSystemConnectionInfo>
+                                <xsl:copy-of select="$_globalVariables/ns4:GlobalVariables/Common/Resources/JMS"/>
+                            </pfx5:ExternalSystemConnectionInfo>
+                        </pfx5:ProcessData>
+                        <pfx5:Retry>
+                            <pfx5:RetryIdx>
+                                <xsl:value-of select="$retryIdx"/>
+                            </pfx5:RetryIdx>
+                            <xsl:copy-of select="$Start/JMS.Send.Input/pfx5:RetryOptions"/>
+                        </pfx5:Retry>
+                    </GEH.Input>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="JMS Queue Sender">
+                <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+                <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+                <pd:x>207</pd:x>
+                <pd:y>473</pd:y>
+                <config>
+                    <PermittedMessageType>Text</PermittedMessageType>
+                    <SessionAttributes>
+                        <transacted>false</transacted>
+                        <acknowledgeMode>1</acknowledgeMode>
+                        <maxSessions>1</maxSessions>
+                    </SessionAttributes>
+                    <ConfigurableHeaders>
+                        <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                        <JMSExpiration>0</JMSExpiration>
+                        <JMSPriority>4</JMSPriority>
+                    </ConfigurableHeaders>
+                    <ConnectionReference>/Common/Resources/Queue.sharedjmscon</ConnectionReference>
+                </config>
+                <pd:inputBindings>
+                    <ns2:ActivityInput>
+                        <destinationQueue>
+                            <xsl:value-of select="$destination/Destination"/>
+                        </destinationQueue>
+                        <xsl:if test="$Start/JMS.Send.Input/JMSHeader/JMSCorrelationID">
+                            <JMSCorrelationID>
+                                <xsl:value-of select="$Start/JMS.Send.Input/JMSHeader/JMSCorrelationID"/>
+                            </JMSCorrelationID>
+                        </xsl:if>
+                        <Body>
+                            <xsl:value-of select="$Body/Body"/>
+                        </Body>
+                    </ns2:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+        <pd:activity name="Gave Up (TechError)">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>464</pd:x>
+            <pd:y>473</pd:y>
+            <config>
+                <faultName>TechError</faultName>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$GEH/GEH.Output/ns5:Notify.private/pfx5:TechError/ns1:ErrorReport/Msg"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="$GEH/GEH.Output/ns5:Notify.private/pfx5:TechError/ns1:ErrorReport/MsgCode"/>
+                    </messageCode>
+                    <data>
+                        <pfx5:TechError>
+                            <xsl:copy-of select="$_error/ns1:ErrorReport"/>
+                            <pfx5:ProcessData>
+                                <pfx5:ProcessInput>
+                                    <xsl:copy-of select="$Start/JMS.Send.Input"/>
+                                </pfx5:ProcessInput>
+                            </pfx5:ProcessData>
+                        </pfx5:TechError>
+                    </data>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Log - Sucess">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>457</pd:x>
+            <pd:y>261</pd:y>
+            <config>
+                <role>%%Constants/Logging/Roles/Info%%</role>
+            </config>
+            <pd:inputBindings>
+                <pfx3:ActivityInput>
+                    <message>
+                        <xsl:value-of select="tib:render-xml($Start/JMS.Send.Input/pfx7:Envelope.BizObj/pfx7:Envelope.BizObj.Header, 1,0)"/>
+                    </message>
+                    <msgCode>
+                        <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Constants/Logging/MsgCodes/End"/>
+                    </msgCode>
+                </pfx3:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Track MessageId">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>577</pd:x>
+            <pd:y>261</pd:y>
+            <config>
+                <variableName>MessageIds</variableName>
+            </config>
+            <pd:inputBindings>
+                <MessageIds>
+                    <xsl:for-each select="$MessageIds/MessageIds/MessageID">
+                        <MessageID>
+                            <xsl:value-of select="."/>
+                        </MessageID>
+                    </xsl:for-each>
+                    <MessageID>
+                        <xsl:value-of select="$JMS-Topic-Publisher/ns2:aEmptyOutputClass/ns2:MessageID"/>
+                    </MessageID>
+                    <MessageID>
+                        <xsl:value-of select="$JMS-Queue-Sender/ns2:aEmptyOutputClass/ns2:MessageID"/>
+                    </MessageID>
+                </MessageIds>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Body">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>426</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Body" type="xsd:string"/>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <xsl:choose>
+                <xsl:when test="$Start/JMS.Send.Input/pfx7:Envelope.BizObj">
+                    <Body>
+                        <xsl:value-of select="tib:render-xml($Start/JMS.Send.Input/pfx7:Envelope.BizObj, 1,0)"/>
+                    </Body>
+                </xsl:when>
+                <xsl:when test="$Start/JMS.Send.Input/XML">
+                    <Body>
+                        <xsl:value-of select="tib:render-xml($Start/JMS.Send.Input/XML/*, 1,0)"/>
+                    </Body>
+                </xsl:when>
+                <xsl:when test="$Start/JMS.Send.Input/Text">
+                    <Body>
+                        <xsl:value-of select="$Start/JMS.Send.Input/Text"/>
+                    </Body>
+                </xsl:when>
+                <xsl:otherwise>
+                    <Body>
+                        <xsl:value-of select="'Error'"/>
+                    </Body>
+                </xsl:otherwise>
+            </xsl:choose>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Cal Destinations (Preliminary)">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>546</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Destinations">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Destination" type="xsd:string" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Destinations>
+                <xsl:choose>
+                    <xsl:when test="$Start/JMS.Send.Input/Topic">
+                        <Destination>
+                            <xsl:value-of select="$Start/JMS.Send.Input/Topic"/>
+                        </Destination>
+                    </xsl:when>
+                    <xsl:when test="$Start/JMS.Send.Input/Queue">
+                        <Destination>
+                            <xsl:value-of select="$Start/JMS.Send.Input/Queue"/>
+                        </Destination>
+                    </xsl:when>
+                    <xsl:when test="$Start/JMS.Send.Input/MultipleQueues/Queue">
+                        <xsl:for-each select="$Start/JMS.Send.Input/MultipleQueues/Queue">
+                            <Destination>
+                                <xsl:value-of select="concat(&#xA;if ($Start/JMS.Send.Input/MultipleQueues/prefix  !='')&#xA;  then concat($Start/JMS.Send.Input/MultipleQueues/prefix, '.')&#xA;  else ''&#xA;,.,&#xA;if ($Start/JMS.Send.Input/MultipleQueues/suffix  !='')&#xA;  then concat('.',$Start/JMS.Send.Input/MultipleQueues/suffix)&#xA;  else ''&#xA;)"/>
+                            </Destination>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="$Start/JMS.Send.Input/MultipleQueues/QueueCommaSep">
+                        <xsl:for-each select="tib:tokenize($Start/JMS.Send.Input/MultipleQueues/QueueCommaSep, ',')">
+                            <Destination>
+                                <xsl:value-of select="concat(&#xA;if ($Start/JMS.Send.Input/MultipleQueues/prefix  !='')&#xA;  then concat($Start/JMS.Send.Input/MultipleQueues/prefix, '.')&#xA;  else ''&#xA;,.,&#xA;if ($Start/JMS.Send.Input/MultipleQueues/suffix  !='')&#xA;  then concat('.',$Start/JMS.Send.Input/MultipleQueues/suffix)&#xA;  else ''&#xA;)"/>
+                            </Destination>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <Destination>
+                            <xsl:value-of select="$_globalVariables/ns4:GlobalVariables/Services.Tech/DeadLetter/Queue"/>
+                        </Destination>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </Destinations>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Calc Destinations">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>683</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Destinations">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Destination" type="xsd:string" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <Destinations>
+                <xsl:for-each select="$Cal-Destinations-Preliminary/Destinations/Destination">
+                    <!--adds the Environment and Domain prefixes if the GV in Common/Processes/SendMsg are set-->
+                    <Destination>
+                        <xsl:value-of select="concat(&#xA;if ($_globalVariables/ns4:GlobalVariables/Common/Processes/JMS.Send/AddEnvironmentAsPrefix = &quot;true&quot;)&#xA;  then concat($_globalVariables/ns4:GlobalVariables/Environment, .) &#xA;  else '',&#xA;if ($_globalVariables/ns4:GlobalVariables/Common/Processes/JMS.Send/AddDomainAsPrefix = &quot;true&quot;)&#xA;  then concat($_globalVariables/ns4:GlobalVariables/Domain, .) &#xA;  else '',&#xA;.&#xA;)"/>
+                    </Destination>
+                </xsl:for-each>
+            </Destinations>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Invalid Destination">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>893</pd:x>
+        <pd:y>80</pd:y>
+        <config>
+            <faultName>DataError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <data>
+                    <pfx5:DataError>
+                        <pfx5:DescShort>
+                            <xsl:value-of select="'Destination Can Not Be Blank'"/>
+                        </pfx5:DescShort>
+                        <pfx5:ProcessData>
+                            <pfx5:ProcessInput>
+                                <xsl:copy-of select="$Start/JMS.Send.Input"/>
+                            </pfx5:ProcessInput>
+                        </pfx5:ProcessData>
+                    </pfx5:DataError>
+                </data>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>send all</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Body</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Cal Destinations (Preliminary)</pd:from>
+        <pd:to>Calc Destinations</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Calc Destinations</pd:from>
+        <pd:to>Invalid Destination</pd:to>
+        <pd:xpathDescription>bad destination(s)</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($Calc-Destinations/Destinations[Destination = '']/Destination) &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Body</pd:from>
+        <pd:to>Cal Destinations (Preliminary)</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Calc Destinations</pd:from>
+        <pd:to>send all</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Gneralization for sending both Tpopic and Queue messages.
+Helps to standardize destination name format.
+
+Configuration: GV Common/Process/JMS.Send/*</pd:description>
+        <pd:x>181</pd:x>
+        <pd:y>43</pd:y>
+        <pd:width>354</pd:width>
+        <pd:height>80</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

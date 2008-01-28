@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns3="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Mail.xsd" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd">
+    <pd:name>Common/Processes/UnitTest/Mail.Send.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>37</pd:startX>
+    <pd:startY>43</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>693</pd:endX>
+    <pd:endY>43</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Send A File and XML Attachment To One Recepient">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>470</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <processName>/Common/Processes/Mail.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Mail.Send.Input>
+                <ns4:MailSend>
+                    <ns4:Header>
+                        <ns4:from>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:from>
+                        <ns4:to>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:to>
+                        <ns4:subject>
+                            <xsl:value-of select="'MailSend Unit Test XML &amp; File Attachment'"/>
+                        </ns4:subject>
+                    </ns4:Header>
+                    <ns4:bodyText>
+                        <xsl:value-of select="'Test3'"/>
+                    </ns4:bodyText>
+                    <ns4:XMLAttachment>
+                        <xsl:copy-of select="$_processContext/ns1:ProcessContext"/>
+                    </ns4:XMLAttachment>
+                    <ns4:FileAttachment>
+                        <ns4:file>
+                            <xsl:value-of select="$Write-File/ns2:WriteActivityOutputClass/fileInfo/fullName"/>
+                        </ns4:file>
+                    </ns4:FileAttachment>
+                </ns4:MailSend>
+                <pfx2:RetryOptions>
+                    <pfx2:TryForever/>
+                </pfx2:RetryOptions>
+            </Mail.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send an Email with no attachments">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>127</pd:x>
+        <pd:y>51</pd:y>
+        <config>
+            <processName>/Common/Processes/Mail.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Mail.Send.Input>
+                <ns4:MailSend>
+                    <ns4:Header>
+                        <ns4:from>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:from>
+                        <ns4:to>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:to>
+                        <ns4:subject>
+                            <xsl:value-of select="'MailSend Unit Test No Attachments'"/>
+                        </ns4:subject>
+                    </ns4:Header>
+                    <ns4:bodyText>
+                        <xsl:value-of select="'Test1'"/>
+                    </ns4:bodyText>
+                    <ns4:bodyText>
+                        <xsl:value-of select="'Test2'"/>
+                    </ns4:bodyText>
+                </ns4:MailSend>
+                <pfx2:RetryOptions>
+                    <pfx2:TryForever/>
+                </pfx2:RetryOptions>
+            </Mail.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send an Email with Text Attachment">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>51</pd:y>
+        <config>
+            <processName>/Common/Processes/Mail.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Mail.Send.Input>
+                <ns4:MailSend>
+                    <ns4:Header>
+                        <ns4:from>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:from>
+                        <ns4:to>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:to>
+                        <ns4:subject>
+                            <xsl:value-of select="'MailSend Unit Test Text Attachment'"/>
+                        </ns4:subject>
+                    </ns4:Header>
+                    <ns4:bodyText>
+                        <xsl:value-of select="'Test1'"/>
+                    </ns4:bodyText>
+                    <ns4:bodyText>
+                        <xsl:value-of select="'Test2'"/>
+                    </ns4:bodyText>
+                    <ns4:TextAttachment>
+                        <ns4:attachmentName>
+                            <xsl:value-of select="'test.txt'"/>
+                        </ns4:attachmentName>
+                        <ns4:textContent>
+                            <xsl:value-of select="'Test'"/>
+                        </ns4:textContent>
+                    </ns4:TextAttachment>
+                </ns4:MailSend>
+                <pfx2:RetryOptions>
+                    <pfx2:TryForever/>
+                </pfx2:RetryOptions>
+            </Mail.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send three File Attachments to three recepients">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>584</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <processName>/Common/Processes/Mail.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Mail.Send.Input>
+                <ns4:MailSend>
+                    <ns4:Header>
+                        <ns4:from>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:from>
+                        <!--can use ";" seperated addresses or multiple <to> elements-->
+                        <ns4:to>
+                            <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail,',',$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail)"/>
+                        </ns4:to>
+                        <ns4:to>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:to>
+                        <ns4:cc>
+                            <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Common/Processes/UnitTest/eMail"/>
+                        </ns4:cc>
+                        <ns4:subject>
+                            <xsl:value-of select="'MailSend Unit Test 3  Attachments'"/>
+                        </ns4:subject>
+                    </ns4:Header>
+                    <ns4:bodyText>
+                        <xsl:value-of select="'This is the body of the test message'"/>
+                    </ns4:bodyText>
+                    <ns4:FileAttachment>
+                        <ns4:file>
+                            <xsl:value-of select="$Write-File/ns2:WriteActivityOutputClass/fileInfo/fullName"/>
+                        </ns4:file>
+                        <ns4:file>
+                            <xsl:value-of select="$Write-File/ns2:WriteActivityOutputClass/fileInfo/fullName"/>
+                        </ns4:file>
+                        <ns4:file>
+                            <xsl:value-of select="$Write-File/ns2:WriteActivityOutputClass/fileInfo/fullName"/>
+                        </ns4:file>
+                    </ns4:FileAttachment>
+                </ns4:MailSend>
+                <pfx2:RetryOptions>
+                    <pfx2:TryForever/>
+                </pfx2:RetryOptions>
+            </Mail.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write File">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>221</pd:x>
+        <pd:y>43</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+            <createMissingDirectories>true</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <ns2:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/Common/Resources/TempDir,&#xA;'/Mail.Send.UnitTest.txt')"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="'Test Data'"/>
+                </textContent>
+            </ns2:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Send an Email with no attachments</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send A File and XML Attachment To One Recepient</pd:from>
+        <pd:to>Send three File Attachments to three recepients</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send three File Attachments to three recepients</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send an Email with Text Attachment</pd:from>
+        <pd:to>Send A File and XML Attachment To One Recepient</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send an Email with no attachments</pd:from>
+        <pd:to>Write File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Write File</pd:from>
+        <pd:to>Send an Email with Text Attachment</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

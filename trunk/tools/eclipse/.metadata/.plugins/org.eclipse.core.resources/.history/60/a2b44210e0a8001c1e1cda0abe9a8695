@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas/BizWorks/Cmd.xsd" xmlns:ns0="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas.ThirdParty/BW.Internal/Cmd.xsd" xmlns:ns3="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/Common/Resources/Schemas.BW/Cmd.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Common/Resources/Schemas.BW/Cmd.xsd" schemaLocation="/Common/Resources/Schemas.BW/Cmd.xsd"/>
+    <pd:name>Common/Processes/File.CopyUsingOS.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="File.CopyUsingOS.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="source" type="xsd:string"/>
+                    <xsd:element name="target" type="xsd:string"/>
+                    <xsd:element name="workingDirectory" type="xsd:string" minOccurs="0"/>
+                    <xsd:element ref="pfx2:RetryOptions"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>57</pd:startX>
+    <pd:startY>135</pd:startY>
+    <pd:returnBindings>
+        <File.CopyUsingOS.Output>
+            <xsl:copy-of select="$DOSCopy/CmdOutputWithActivityOutput"/>
+        </File.CopyUsingOS.Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="File.CopyUsingOS.Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx5:CmdOutputWithActivityOutput"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>715</pd:endX>
+    <pd:endY>155</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="pfx2:TechError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:group name="Copy File Using DOS Retry Loop">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>120</pd:x>
+        <pd:y>31</pd:y>
+        <pd:width>323</pd:width>
+        <pd:height>398</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIdx</pd:indexSlot>
+            <pd:errorCondition>false()</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DOSCopy</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>GEH</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>gave up</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DOSCopy</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DOSCopy</pd:from>
+            <pd:to>GEH</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="DOSCopy">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>281</pd:x>
+            <pd:y>155</pd:y>
+            <config>
+                <processName>/Common/Processes/Subprocesses/File.CopyUsingOS/DOSCopy.process</processName>
+            </config>
+            <pd:inputBindings>
+                <DOSCopy>
+                    <source>
+                        <xsl:value-of select="translate($Start/File.CopyUsingOS.Input/source, &quot;/&quot;, &quot;\&quot;)"/>
+                    </source>
+                    <target>
+                        <xsl:value-of select="translate($Start/File.CopyUsingOS.Input/target, &quot;/&quot;, &quot;\&quot;)"/>
+                    </target>
+                    <xsl:if test="$Start/File.CopyUsingOS.Input/workingDirectory">
+                        <workingDirectory>
+                            <xsl:value-of select="translate($Start/File.CopyUsingOS.Input/workingDirectory, &quot;/&quot;,&quot;\&quot;)"/>
+                        </workingDirectory>
+                    </xsl:if>
+                </DOSCopy>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GEH">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>280</pd:x>
+            <pd:y>287</pd:y>
+            <config>
+                <processName>/Common/Processes/GEH.process</processName>
+            </config>
+            <pd:inputBindings>
+                <GEH.Input>
+                    <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                    <pfx2:ProcessData>
+                        <pfx2:ProcessInput>
+                            <xsl:copy-of select="$Start/File.CopyUsingOS.Input"/>
+                        </pfx2:ProcessInput>
+                    </pfx2:ProcessData>
+                    <pfx2:Retry>
+                        <pfx2:RetryIdx>
+                            <xsl:value-of select="$retryIdx"/>
+                        </pfx2:RetryIdx>
+                        <xsl:copy-of select="$Start/File.CopyUsingOS.Input/pfx2:RetryOptions"/>
+                    </pfx2:Retry>
+                </GEH.Input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Log - End">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>616</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($DOSCopy/CmdOutputWithActivityOutput, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Constants/Logging/MsgCodes/End"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>59</pd:x>
+        <pd:y>243</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns12:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Start/File.CopyUsingOS.Input, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns1:GlobalVariables/Constants/Logging/MsgCodes/Start"/>
+                </msgCode>
+            </ns12:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Raise Tech Error (DOS Copy)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>625</pd:x>
+        <pd:y>322</pd:y>
+        <config>
+            <faultName>TechError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <xsl:if test="$_error/ns:ErrorReport/Msg">
+                    <message>
+                        <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                    </message>
+                </xsl:if>
+                <xsl:if test="$_error/ns:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+                <data>
+                    <xsl:copy-of select="$_error_DOSCopy/pfx2:TechError"/>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Copy File Using DOS Retry Loop</pd:from>
+        <pd:to>Log - End</pd:to>
+        <pd:xpathDescription>sucess</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Copy File Using DOS Retry Loop</pd:from>
+        <pd:to>Raise Tech Error (DOS Copy)</pd:to>
+        <pd:xpathDescription>gave up</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GEH/GEH.Output/GiveUp</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>Copy File Using DOS Retry Loop</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Executes a DOS copy command.  Wild carding is allowed</pd:description>
+        <pd:x>179</pd:x>
+        <pd:y>18</pd:y>
+        <pd:width>357</pd:width>
+        <pd:height>34</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

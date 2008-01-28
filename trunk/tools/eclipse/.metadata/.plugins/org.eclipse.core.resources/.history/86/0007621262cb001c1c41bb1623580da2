@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns2="www.tibco.com/plugin/Sleep" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" xmlns:ns3="com/tibco/pe/commands">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="/Common/Schemas.ThirdParty/BW.Internal/EngineTypes.xsd"/>
+    <pd:name>Common/Processes/GEH.process</pd:name>
+    <pd:description>Global Exception Handler</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="GEH.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx:ErrorReport"/>
+                    <xsd:element name="DescShortPrefix" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="DescLongAppend" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element ref="pfx2:ProcessData" minOccurs="0"/>
+                    <xsd:element ref="pfx2:Retry" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>95</pd:startX>
+    <pd:startY>171</pd:startY>
+    <pd:returnBindings>
+        <GEH.Output>
+            <GiveUp>
+                <xsl:value-of select="$Calc-Retry/Retry/retry = &quot;false&quot;"/>
+            </GiveUp>
+            <xsl:copy-of select="($Notify---TechError-embedded/Notify.output/pfx4:Notify.private&#xA;| $Notify---Error-Mapped-To-TechError/Notify.output/pfx4:Notify.private&#xA;| $Notify---DataError/Notify.output/pfx4:Notify.private&#xA;| $Notify---TechError/Notify.output/pfx4:Notify.private&#xA;| $Notify---Error/Notify.output/pfx4:Notify.private)[1]"/>
+        </GEH.Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="GEH.Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="GiveUp" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element ref="pfx4:Notify.private"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>854</pd:endX>
+    <pd:endY>171</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Calc Retry">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>272</pd:x>
+        <pd:y>452</pd:y>
+        <config>
+            <element>
+                <xsd:element name="Retry">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="notify" type="xsd:boolean"/>
+                            <xsd:element name="retry" type="xsd:boolean"/>
+                            <xsd:element name="PauseSecs" type="xsd:int" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <xsl:variable name="Retry" select="exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever)&#xA;or&#xA;exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend)&#xA;or&#xA;($Start/GEH.Input/pfx2:Retry/pfx2:RetryIdx &lt; $Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimes/pfx2:TimesToTry)"/>
+            <Retry>
+                <notify>
+                    <xsl:value-of select="($Retry= false())&#xA;or &#xA;(&#xA;if ((exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever))&#xA;and ($Start/GEH.Input/pfx2:Retry/pfx2:RetryIdx = $Try-Forever/pfx2:TryForever/pfx2:FirstError/pfx2:RetryCountToLogError) )&#xA;  then true()&#xA;  else (($Start/GEH.Input/pfx2:Retry/pfx2:RetryIdx mod $Try-Forever/pfx2:TryForever/pfx2:SubsequentErrors/pfx2:RetryCountToLogError) = 0)&#xA;)&#xA;or &#xA;(      exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend)&#xA;and (($Start/GEH.Input/pfx2:Retry/pfx2:RetryIdx mod $Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend/pfx2:TimesToTry) = 0)&#xA;)"/>
+                </notify>
+                <retry>
+                    <xsl:value-of select="$Retry"/>
+                </retry>
+                <PauseSecs>
+                    <xsl:value-of select="if (exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimes)) &#xA;then $Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimes/pfx2:SecsToPauseBetweenRetries &#xA;else if (exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend)) &#xA;  then $Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend/pfx2:SecsToPauseBetweenRetries &#xA;  else if ($Start/GEH.Input/pfx2:Retry/pfx2:RetryIdx &lt; $Try-Forever/pfx2:TryForever/pfx2:FirstError/pfx2:RetryCountToLogError)&#xA;         then $Try-Forever/pfx2:TryForever/pfx2:FirstError/pfx2:SecsToPauseBetweenRetries &#xA;         else $Try-Forever/pfx2:TryForever/pfx2:SubsequentErrors/pfx2:SecsToPauseBetweenRetries"/>
+                </PauseSecs>
+            </Retry>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Embedded Tech Error Check">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>297</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log - DataError">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>591</pd:x>
+        <pd:y>104</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/DataError%%</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;,tib:render-xml($Notify---DataError/Notify.output/pfx4:Notify.private/*, 1,1))"/>
+                </message>
+                <xsl:if test="$Notify---DataError/Notify.output/pfx4:Notify.private/pfx2:DataError/pfx:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$Notify---DataError/Notify.output/pfx4:Notify.private/pfx2:DataError/pfx:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Error">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>591</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Error%%</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;,tib:render-xml($Notify---Error/Notify.output/pfx4:Notify.private/*, 1,1))"/>
+                </message>
+                <xsl:if test="$Notify---Error/Notify.output/pfx4:Notify.private/pfx2:Error/pfx:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$Notify---Error/Notify.output/pfx4:Notify.private/pfx2:Error/pfx:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - TechError">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>591</pd:x>
+        <pd:y>171</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/TechError%%</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;,tib:render-xml($Notify---TechError/Notify.output/pfx4:Notify.private/*, 1,1))"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="($Notify---TechError/Notify.output/pfx4:Notify.private/pfx2:TechError//MsgCode)[1]"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - TechError (embedded)">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>591</pd:x>
+        <pd:y>254</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/TechError%%</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;,tib:render-xml($Notify---TechError-embedded/Notify.output/pfx4:Notify.private/*, 1,1))"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="($Notify---TechError-embedded/Notify.output/pfx4:Notify.private//MsgCode)[1]"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - TechError (Not Notified)">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>544</pd:x>
+        <pd:y>540</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/TechError%%</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="translate(&#xA;concat(&#xA;'&#x9;','Process Context: ','&#x9;', tib:render-xml($_processContext/pfx:ProcessContext, 1,0)&#xA;,'&#x9;','Retry: ','&#x9;', tib:render-xml($Start/GEH.Input/pfx2:Retry, 1,0)&#xA;,'&#x9;','ErrorReport: ', tib:render-xml($Start/GEH.Input/pfx:ErrorReport, 1,0)&#xA;)&#xA;,'&#xA;&#xD;&#xD;&#xA;'&#xA;,'&#x9;&#x9;&#x9;')"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="($Start/GEH.Input//MsgCode)[last()]"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - TechError (Notified)">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>591</pd:x>
+        <pd:y>348</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/TechError%%</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&#xA;&quot;&#xD;&#xA;&quot;,tib:render-xml($Notify---Error-Mapped-To-TechError/Notify.output/pfx4:Notify.private/*, 1,1))"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="($Notify---Error-Mapped-To-TechError/Notify.output/pfx4:Notify.private//MsgCode)[1]"/>
+                </msgCode>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Notify - DataError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>471</pd:x>
+        <pd:y>103</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify.private.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Start/GEH.Input/pfx:ErrorReport/Data/*" element="pfx2:DataError" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Notify.Input>
+                <pfx4:Notify.private>
+                    <pfx2:DataError>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:DataError/pfx:ErrorReport"/>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="concat(&#xA;$Start/GEH.Input/DescShortPrefix&#xA;,tib:if-absent($Start/GEH.Input/pfx:ErrorReport/Data/pfx2:DataError/pfx2:DescShort, $Start/GEH.Input/pfx:ErrorReport/Data/pfx2:DataError/pfx:ErrorReport/Msg))"/>
+                        </pfx2:DescShort>
+                        <xsl:for-each select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:DataError/pfx2:DescLong">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:for-each select="$Start/GEH.Input/DescLongAppend">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:DataError/pfx2:ProcessData"/>
+                    </pfx2:DataError>
+                </pfx4:Notify.private>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Notify - Error">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>469</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify.private.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Notify.Input>
+                <pfx4:Notify.private>
+                    <pfx2:Error>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport"/>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="concat($Start/GEH.Input/DescShortPrefix,$Start/GEH.Input/pfx:ErrorReport/Msg)"/>
+                        </pfx2:DescShort>
+                        <xsl:for-each select="$Start/GEH.Input/DescLongAppend">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx2:ProcessData"/>
+                    </pfx2:Error>
+                </pfx4:Notify.private>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Notify - Error Mapped To TechError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>471</pd:x>
+        <pd:y>355</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify.private.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Notify.Input>
+                <pfx4:Notify.private>
+                    <pfx2:TechError>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport"/>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="concat($Start/GEH.Input/DescShortPrefix,$Start/GEH.Input/pfx:ErrorReport/Msg)"/>
+                        </pfx2:DescShort>
+                        <xsl:for-each select="$Start/GEH.Input/DescLongAppend">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx2:ProcessData"/>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx2:Retry"/>
+                    </pfx2:TechError>
+                </pfx4:Notify.private>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Notify - TechError">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>472</pd:x>
+        <pd:y>171</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify.private.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Start/GEH.Input/pfx:ErrorReport/Data/*" element="pfx2:TechError" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Notify.Input>
+                <pfx4:Notify.private>
+                    <pfx2:TechError>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx:ErrorReport"/>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="concat($Start/GEH.Input/DescShortPrefix,$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:DescShort)"/>
+                        </pfx2:DescShort>
+                        <xsl:for-each select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:DescLong">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:for-each select="$Start/GEH.Input/DescLongAppend">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:ProcessData"/>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:Retry"/>
+                    </pfx2:TechError>
+                </pfx4:Notify.private>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Notify - TechError (embedded)">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>470</pd:x>
+        <pd:y>254</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/Notify.private.process</processName>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Start/GEH.Input/pfx:ErrorReport/Data/*" element="pfx2:TechError" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <Notify.Input>
+                <pfx4:Notify.private>
+                    <pfx2:TechError>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx:ErrorReport)">
+                                <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx:ErrorReport"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="concat($Start/GEH.Input/DescShortPrefix,$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:DescShort)"/>
+                        </pfx2:DescShort>
+                        <xsl:for-each select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:DescLong">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:for-each select="$Start/GEH.Input/DescLongAppend">
+                            <pfx2:DescLong>
+                                <xsl:value-of select="."/>
+                            </pfx2:DescLong>
+                        </xsl:for-each>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:ProcessData"/>
+                        <xsl:copy-of select="$Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError/pfx2:Retry"/>
+                    </pfx2:TechError>
+                </pfx4:Notify.private>
+            </Notify.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Pause">
+        <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
+        <pd:resourceType>ae.activities.sleep</pd:resourceType>
+        <pd:x>544</pd:x>
+        <pd:y>453</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns2:SleepInputSchema>
+                <IntervalInMillisec>
+                    <xsl:value-of select="$Calc-Retry/Retry/PauseSecs * 1000"/>
+                </IntervalInMillisec>
+            </ns2:SleepInputSchema>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Retry">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>701</pd:x>
+        <pd:y>452</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Start/GEH.Input/pfx:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$Start/GEH.Input/pfx:ErrorReport/MsgCode">
+                    <messageCode>
+                        <xsl:value-of select="$Start/GEH.Input/pfx:ErrorReport/MsgCode"/>
+                    </messageCode>
+                </xsl:if>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Route By Error Type">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>270</pd:x>
+        <pd:y>179</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rtery Check">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>749</pd:x>
+        <pd:y>290</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Suspend">
+        <pd:type>com.tibco.pe.core.EngineCommandActivity</pd:type>
+        <pd:resourceType>ae.activities.enginecommand</pd:resourceType>
+        <pd:x>791</pd:x>
+        <pd:y>451</pd:y>
+        <config>
+            <command>SuspendProcessInstance</command>
+        </config>
+        <pd:inputBindings>
+            <ns3:input>
+                <ProcessId>
+                    <xsl:value-of select="$_processContext/pfx:ProcessContext/ProcessId"/>
+                </ProcessId>
+            </ns3:input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Try Forever">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>95</pd:x>
+        <pd:y>452</pd:y>
+        <config>
+            <element ref="pfx2:TryForever"/>
+        </config>
+        <pd:inputBindings>
+            <pfx2:TryForever>
+                <pfx2:FirstError>
+                    <pfx2:SecsToPauseBetweenRetries>
+                        <xsl:value-of select="tib:if-absent($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever/pfx2:FirstError/pfx2:SecsToPauseBetweenRetries, &#xA;$_globalVariables/ns1:GlobalVariables/Common/Processes/GEH/TryForeverDefaults/BeforeFirstError/SecsToPauseBetweenRetries)"/>
+                    </pfx2:SecsToPauseBetweenRetries>
+                    <pfx2:RetryCountToLogError>
+                        <xsl:value-of select="tib:if-absent($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever/pfx2:FirstError/pfx2:RetryCountToLogError, &#xA;  $_globalVariables/ns1:GlobalVariables/Common/Processes/GEH/TryForeverDefaults/BeforeFirstError/retryCountToLogError)"/>
+                    </pfx2:RetryCountToLogError>
+                </pfx2:FirstError>
+                <pfx2:SubsequentErrors>
+                    <pfx2:SecsToPauseBetweenRetries>
+                        <xsl:value-of select="tib:if-absent($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever/pfx2:SubsequentErrors/pfx2:SecsToPauseBetweenRetries, &#xA;$_globalVariables/ns1:GlobalVariables/Common/Processes/GEH/TryForeverDefaults/SubsequentError/SecsToPauseBetweenRetries)"/>
+                    </pfx2:SecsToPauseBetweenRetries>
+                    <pfx2:RetryCountToLogError>
+                        <xsl:value-of select="tib:if-absent($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever/pfx2:SubsequentErrors/pfx2:RetryCountToLogError,&#xA;$_globalVariables/ns1:GlobalVariables/Common/Processes/GEH/TryForeverDefaults/SubsequentError/retryCountToLogError)"/>
+                    </pfx2:RetryCountToLogError>
+                </pfx2:SubsequentErrors>
+            </pfx2:TryForever>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Notify - DataError</pd:from>
+        <pd:to>Log - DataError</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Route By Error Type</pd:to>
+        <pd:xpathDescription>no retry</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Route By Error Type</pd:from>
+        <pd:to>Notify - DataError</pd:to>
+        <pd:xpathDescription>Data Error</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/GEH.Input/pfx:ErrorReport/Data/pfx2:DataError)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Route By Error Type</pd:from>
+        <pd:to>Notify - TechError</pd:to>
+        <pd:xpathDescription>TechError</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/GEH.Input/pfx:ErrorReport/Data/pfx2:TechError)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Route By Error Type</pd:from>
+        <pd:to>Notify - Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Notify - Error Mapped To TechError</pd:from>
+        <pd:to>Log - TechError (Notified)</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Notify - Error</pd:from>
+        <pd:to>Log - Error</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Pause</pd:from>
+        <pd:to>Retry</pd:to>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Try Forever</pd:to>
+        <pd:xpathDescription>TryForever</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryForever)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - DataError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Error</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - TechError (Notified)</pd:from>
+        <pd:to>Rtery Check</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Calc Retry</pd:to>
+        <pd:xpathDescription>TryXTimes</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimes)
+or
+exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Embedded Tech Error Check</pd:from>
+        <pd:to>Notify - Error Mapped To TechError</pd:to>
+        <pd:xpathDescription>otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Embedded Tech Error Check</pd:from>
+        <pd:to>Notify - TechError (embedded)</pd:to>
+        <pd:xpathDescription>embedded TechError</pd:xpathDescription>
+        <pd:lineType>Straight</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/GEH.Input/pfx:ErrorReport/Data/pfx:TechError)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Notify - TechError</pd:from>
+        <pd:to>Log - TechError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - TechError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Notify - TechError (embedded)</pd:from>
+        <pd:to>Log - TechError (embedded)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - TechError (embedded)</pd:from>
+        <pd:to>Rtery Check</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - TechError (Not Notified)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription> </pd:xpathDescription>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Try Forever</pd:from>
+        <pd:to>Calc Retry</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rtery Check</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>gave up</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rtery Check</pd:from>
+        <pd:to>Retry</pd:to>
+        <pd:xpathDescription>retry</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Calc-Retry/Retry/retry = "true"
+and (not (exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend)) )</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Calc Retry</pd:from>
+        <pd:to>Log - TechError (Not Notified)</pd:to>
+        <pd:xpathDescription>not notified</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Calc-Retry/Retry/notify = "false"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Calc Retry</pd:from>
+        <pd:to>Pause</pd:to>
+        <pd:xpathDescription>retry</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Calc-Retry/Retry/retry = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Calc Retry</pd:from>
+        <pd:to>Embedded Tech Error Check</pd:to>
+        <pd:xpathDescription>notify</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Calc-Retry/Retry/notify = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - TechError (Not Notified)</pd:from>
+        <pd:to>Retry</pd:to>
+        <pd:xpathDescription>retry</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Calc-Retry/Retry/retry = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Suspend</pd:from>
+        <pd:to>Retry</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rtery Check</pd:from>
+        <pd:to>Suspend</pd:to>
+        <pd:xpathDescription>suspend</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Start/GEH.Input/pfx2:Retry/pfx2:RetryOptions/pfx2:TryXTimesAndSuspend)</pd:xpath>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Global Exception Handler (GEH)</pd:description>
+        <pd:x>157</pd:x>
+        <pd:y>17</pd:y>
+        <pd:width>312</pd:width>
+        <pd:height>33</pd:height>
+        <pd:fontName>Times New Roman-bold-16</pd:fontName>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>All Errors, DataErrors, and Tech Errors should be handled by
+this GEH.  For examples on how to config and use the GEH,
+please refer to the UnitTest in Common under:
+
+\Common\Common\Processes\UnitTest\GEH</pd:description>
+        <pd:x>184</pd:x>
+        <pd:y>78</pd:y>
+        <pd:width>366</pd:width>
+        <pd:height>92</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

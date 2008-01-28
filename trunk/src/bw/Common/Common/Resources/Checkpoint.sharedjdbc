@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Checkpoint</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <description>JDBC Connection for checkpointing.  This can be removed if you 
+don't plan to use checkpointing.</description>
+    <config>
+        <driver>%%Common/Resources/Checkpoint/JDBCDriver%%</driver>
+        <maxConnections>%%Constants/Databases/MaxConnections_Default%%</maxConnections>
+        <loginTimeout>%%Constants/Databases/LoginTimeOutsSecs_Default%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <password>%%Common/Resources/Checkpoint/Password%%</password>
+        <user>%%Common/Resources/Checkpoint/Password%%</user>
+        <location>%%Common/Resources/Checkpoint/DatabaseURL%%</location>
+        <ContextFactory/>
+        <xaDsClass/>
+    </config>
+</BWSharedResource>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/EngineTypes" xmlns:ns21="http://xmlns.tibco.com/body" xmlns:ns22="http://xmlns.tibco.com/encodings/mime" xmlns:ns11="http://www.tibco.com/namespaces/tnt/plugins/mail" xmlns:ns3="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx2="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns4="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:ns5="http://schemas.tibco.com/bw/plugins/file/5.0/fileExceptions" xmlns:ns6="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd" xmlns:ns7="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/namespaces/tnt/plugins/file" schemaLocation="/Common/Resources/Schemas.BW/TNT Plug Ins.xsd"/>
+    <pd:name>Common/Processes/File.Mover.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="File.Mover.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="FilesToMove" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="fromFileName" type="xsd:string"/>
+                                <xsd:element name="toFileName" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="ns7:RetryOptions"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>293</pd:startX>
+    <pd:startY>47</pd:startY>
+    <pd:returnBindings>
+        <File.Mover.Output>
+            <xsl:copy-of select="$RenameActivityOutput/RenameActivityOutput_Accumlated/ns0:RenameActivityOutput"/>
+        </File.Mover.Output>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="File.Mover.Output">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="ns0:RenameActivityOutput" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>595</pd:endX>
+    <pd:endY>138</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="ns7:TechError"/>
+    </pd:errorSchemas>
+    <pd:processVariables>
+        <RenameActivityOutput>
+            <xsd:element name="RenameActivityOutput_Accumlated">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="ns0:RenameActivityOutput" minOccurs="0" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </RenameActivityOutput>
+    </pd:processVariables>
+    <pd:group name="loop through each file and move it">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>36</pd:x>
+        <pd:y>104</pd:y>
+        <pd:width>432</pd:width>
+        <pd:height>361</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>repeat</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>fileIndex</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:repeatCondition>($fileIndex = count($Start/File.Mover.Input/FilesToMove))
+or
+($GEH/GEH.Output/GiveUp = "true")</pd:repeatCondition>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Rename File Retry Loop</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Rename File Retry Loop</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Rename File Retry Loop">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>84</pd:x>
+            <pd:y>150</pd:y>
+            <pd:width>334</pd:width>
+            <pd:height>266</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>errorLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>retryIdx</pd:indexSlot>
+                <pd:errorCondition>$GEH/GEH.Output/GiveUp</pd:errorCondition>
+                <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Rename File</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>GEH</pd:from>
+                <pd:to>end</pd:to>
+                <pd:xpathDescription>give up</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$GEH/GEH.Output/GiveUp</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Track Renaming</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Rename File</pd:from>
+                <pd:to>GEH</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-65536</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Rename File</pd:from>
+                <pd:to>Track Renaming</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Rename File">
+                <pd:type>com.tibco.plugin.file.FileRenameActivity</pd:type>
+                <pd:resourceType>ae.activities.FileRenameActivity</pd:resourceType>
+                <pd:x>176</pd:x>
+                <pd:y>253</pd:y>
+                <config>
+                    <overwrite>true</overwrite>
+                    <createMissingDirectories>true</createMissingDirectories>
+                </config>
+                <pd:inputBindings>
+                    <ns0:RenameActivityConfig>
+                        <fromFileName>
+                            <xsl:value-of select="$Start/File.Mover.Input/FilesToMove[$fileIndex]/fromFileName"/>
+                        </fromFileName>
+                        <toFileName>
+                            <xsl:value-of select="$Start/File.Mover.Input/FilesToMove[$fileIndex]/toFileName"/>
+                        </toFileName>
+                    </ns0:RenameActivityConfig>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="GEH">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>270</pd:x>
+                <pd:y>358</pd:y>
+                <config>
+                    <processName>/Common/Processes/GEH.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <GEH.Input>
+                        <xsl:copy-of select="$_error/ns2:ErrorReport"/>
+                        <ns7:ProcessData>
+                            <ns7:ProcessInput>
+                                <xsl:copy-of select="$Start/File.Mover.Input"/>
+                            </ns7:ProcessInput>
+                        </ns7:ProcessData>
+                        <ns7:Retry>
+                            <ns7:RetryIdx>
+                                <xsl:value-of select="$retryIdx"/>
+                            </ns7:RetryIdx>
+                            <xsl:copy-of select="$Start/File.Mover.Input/ns7:RetryOptions"/>
+                        </ns7:Retry>
+                    </GEH.Input>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Track Renaming">
+                <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+                <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+                <pd:x>290</pd:x>
+                <pd:y>254</pd:y>
+                <config>
+                    <variableName>RenameActivityOutput</variableName>
+                </config>
+                <pd:inputBindings>
+                    <RenameActivityOutput_Accumlated>
+                        <xsl:copy-of select="$Rename-File/ns0:RenameActivityOutput"/>
+                        <xsl:copy-of select="$RenameActivityOutput/RenameActivityOutput_Accumlated/ns0:RenameActivityOutput"/>
+                    </RenameActivityOutput_Accumlated>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Log - End">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Rename-File/ns0:RenameActivityOutput, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/MsgCodes/End"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log - Start">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>385</pd:x>
+        <pd:y>47</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Debug%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <message>
+                    <xsl:value-of select="tib:render-xml($Start/File.Mover.Input, 1,0)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Constants/Logging/MsgCodes/Start"/>
+                </msgCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="TechError">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>357</pd:y>
+        <config>
+            <faultName>TechError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns3:ActivityInput>
+                <data>
+                    <ns7:TechError>
+                        <xsl:copy-of select="$GEH/GEH.Output/ns6:Notify.private/ns7:TechError/ancestor-or-self::*/namespace::node()"/>
+                        <xsl:copy-of select="$GEH/GEH.Output/ns6:Notify.private/ns7:TechError/@*"/>
+                        <xsl:copy-of select="$GEH/GEH.Output/ns6:Notify.private/ns7:TechError/node()"/>
+                    </ns7:TechError>
+                </data>
+            </ns3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>loop through each file and move it</pd:from>
+        <pd:to>Log - End</pd:to>
+        <pd:xpathDescription>sucess</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>loop through each file and move it</pd:from>
+        <pd:to>TechError</pd:to>
+        <pd:xpathDescription>gave up</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$GEH/GEH.Output/GiveUp = "true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Log - Start</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - Start</pd:from>
+        <pd:to>loop through each file and move it</pd:to>
+        <pd:lineType>Multiple Bends</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>Simple wrapper around the Rename File
+activity to make it a multiple file mover.
+
+Files will be overwritten and destination
+directories will automatically be created.</pd:description>
+        <pd:x>123</pd:x>
+        <pd:y>49</pd:y>
+        <pd:width>245</pd:width>
+        <pd:height>96</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

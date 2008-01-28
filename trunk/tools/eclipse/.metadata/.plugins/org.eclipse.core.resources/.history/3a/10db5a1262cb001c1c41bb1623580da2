@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns2="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:ns3="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd">
+    <pd:name>Common/Processes/UnitTest/GEH/Unexpected Error.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Unhandled-Error">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>67</pd:startX>
+    <pd:startY>96</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>485</pd:endX>
+    <pd:endY>96</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <Schema0>
+            <xsd:element name="root">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="x" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </Schema0>
+    </pd:processVariables>
+    <pd:activity name="Catch All">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>258</pd:x>
+        <pd:y>219</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH - Unexpected">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>485</pd:x>
+        <pd:y>219</pd:y>
+        <config>
+            <processName>/Common/Processes/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH.Input>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                <ns3:ProcessData>
+                    <ns3:ProcessInput>
+                        <xsl:copy-of select="$Start/Unhandled-Error"/>
+                    </ns3:ProcessInput>
+                </ns3:ProcessData>
+            </GEH.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Negative Number">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>350</pd:x>
+        <pd:y>165</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Positive Number">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>350</pd:x>
+        <pd:y>35</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="X = 0">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <variableName>Schema0</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <x>
+                    <xsl:value-of select="0"/>
+                </x>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>X = 0</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH - Unexpected</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch All</pd:from>
+        <pd:to>GEH - Unexpected</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>X = 0</pd:from>
+        <pd:to>Negative Number</pd:to>
+        <pd:xpathDescription>negative</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Schema0/root/x &lt; -1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>X = 0</pd:from>
+        <pd:to>Positive Number</pd:to>
+        <pd:xpathDescription>postive</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Schema0/root/x &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Negative Number</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Positive Number</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>If x is zero, then there is no transistion
+for the flow to take and an unexpected
+error is raised and caught by the
+Catch All activity.</pd:description>
+        <pd:x>124</pd:x>
+        <pd:y>171</pd:y>
+        <pd:width>228</pd:width>
+        <pd:height>81</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

@@ -1,0 +1,4 @@
+#Thu Dec 13 09:03:46 EST 2007
+__DEFAULT__=false
+org.eclipse.help.ui.localSearch.master=true
+expression=manhattan

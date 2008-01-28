@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:tns="http://www.tibco.com/pe/EngineTypes"
+	 xmlns:geh="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd"
+	 xmlns:notify="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd"
+	 targetNamespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Notify.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="../Resources/Schemas.BW/EngineTypes.xsd"/>
+	<xs:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="GEH.xsd"/>
+	<xs:element name="Notify.public" type="notify:Notify.public_Type"/>
+	<xs:element name="Notify.private" type="notify:Notify.private_Type"/>
+	<xs:element name="TechInfo" type="notify:Info_Type"/>
+	<xs:element name="TechWarn" type="notify:Warn_Type"/>
+	<xs:element name="DataInfo" type="notify:Info_Type"/>
+	<xs:element name="DataWarn" type="notify:Warn_Type"/>
+	<xs:complexType name="Notify.public_Type">
+		<xs:choice>
+			<xs:element ref="notify:DataInfo"/>
+			<xs:element ref="notify:DataWarn"/>
+			<xs:element ref="notify:TechInfo"/>
+			<xs:element ref="notify:TechWarn"/>
+		</xs:choice>
+		<xs:attribute name="Created" type="xs:dateTime"/>
+	</xs:complexType>
+	<xs:complexType name="Notify.private_Type">
+		<xs:choice>
+			<xs:element ref="notify:DataInfo"/>
+			<xs:element ref="notify:DataWarn"/>
+			<xs:element ref="notify:TechInfo"/>
+			<xs:element ref="notify:TechWarn"/>
+			<xs:element ref="geh:DataError"/>
+			<xs:element ref="geh:TechError"/>
+			<xs:element ref="geh:Error"/>
+		</xs:choice>
+		<xs:attribute name="Created" type="xs:dateTime"/>
+	</xs:complexType>
+	<xs:complexType name="Info_Type">
+		<xs:sequence>
+			<xs:element ref="geh:DescShort"/>
+			<xs:element ref="geh:DescLong" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="geh:ProcessData" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Warn_Type">
+		<xs:sequence>
+			<xs:element ref="tns:ErrorReport" minOccurs="0"/>
+			<xs:element ref="geh:DescShort"/>
+			<xs:element ref="geh:DescLong" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="geh:ProcessData" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

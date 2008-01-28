@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Patterns/Patterns/Queue Receiver/SomeSchema.xsd" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" schemaLocation="/Common/Resources/Schemas/Envelope.BizObj.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Patterns/Patterns/Queue Receiver/SomeSchema.xsd" schemaLocation="/Patterns/Queue Receiver/SomeSchema.xsd"/>
+    <pd:name>Patterns/Queue Receiver/UnitTest/Queue Receiver - Valid XML But Handler Throws Unhandled Exception.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>27</pd:startX>
+    <pd:startY>129</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>467</pd:endX>
+    <pd:endY>129</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Biz Obj Envelope">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>245</pd:x>
+        <pd:y>129</pd:y>
+        <config>
+            <element ref="ns2:Envelope.BizObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:Envelope.BizObj>
+                <ns2:Envelope.BizObj.Header>
+                    <ns2:System>
+                        <xsl:value-of select="'Patterns'"/>
+                    </ns2:System>
+                    <ns2:Version>
+                        <xsl:value-of select="'1.0'"/>
+                    </ns2:Version>
+                    <ns2:Type>
+                        <xsl:value-of select="'UnitTest'"/>
+                    </ns2:Type>
+                    <ns2:Id>
+                        <xsl:value-of select="'Valid XML But Handler Throws Unhandled Exception'"/>
+                    </ns2:Id>
+                </ns2:Envelope.BizObj.Header>
+                <ns2:Payload>
+                    <xsl:copy-of select="$Some-Data/pfx:root"/>
+                </ns2:Payload>
+            </ns2:Envelope.BizObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JMS.Send">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>357</pd:x>
+        <pd:y>129</pd:y>
+        <config>
+            <processName>/Common/Processes/JMS.Send.process</processName>
+        </config>
+        <pd:inputBindings>
+            <JMS.Send.Input>
+                <JMSHeader/>
+                <MultipleQueues>
+                    <Queue>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/Queue.Receiver.WithCheckpoint"/>
+                    </Queue>
+                    <Queue>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/Queue.Receiver.WithoutCheckpoint"/>
+                    </Queue>
+                    <Queue>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/Queue.Receiver.WithoutCheckpointAndValidated"/>
+                    </Queue>
+                </MultipleQueues>
+                <ns2:Envelope.BizObj>
+                    <xsl:copy-of select="$Biz-Obj-Envelope/ns2:Envelope.BizObj/ns2:Envelope.BizObj.Header"/>
+                    <xsl:copy-of select="$Biz-Obj-Envelope/ns2:Envelope.BizObj/ns2:Payload"/>
+                </ns2:Envelope.BizObj>
+                <pfx2:RetryOptions>
+                    <pfx2:TryForever/>
+                </pfx2:RetryOptions>
+            </JMS.Send.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Some Data">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>125</pd:x>
+        <pd:y>129</pd:y>
+        <config>
+            <element ref="pfx:root"/>
+        </config>
+        <pd:inputBindings>
+            <pfx:root>
+                <pfx:param>
+                    <xsl:value-of select="'Data'"/>
+                </pfx:param>
+            </pfx:root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Some Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JMS.Send</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Some Data</pd:from>
+        <pd:to>Biz Obj Envelope</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Biz Obj Envelope</pd:from>
+        <pd:to>JMS.Send</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Running this UnitTest will cause an infinite loop in the "Patterns/UnitTest/Queue Receiver (Without Checkpoint)"
+process.  You'll need to purge the queue before running any other UnitTest for this process.
+
+As mentioned in the CONS section of this pattern, this is by design and demonstrates why this pattern shouldn't
+be used if there is chance the source for the XML is buggy.</pd:description>
+        <pd:x>326</pd:x>
+        <pd:y>48</pd:y>
+        <pd:width>650</pd:width>
+        <pd:height>95</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

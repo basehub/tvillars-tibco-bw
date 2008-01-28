@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx3="http://www.tibco.com/pe/CheckpointSchema" xmlns:ns5="www.tibco.com/plugin/Sleep" xmlns:ns6="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/Mail.xsd" xmlns:ns4="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns7="http://schemas.tibco.com/bw/plugins/xml/5.0/xmlExceptions" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Patterns/Patterns/Queue Receiver/SomeSchema.xsd" xmlns:ns8="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Resources/Schemas/Envelope.BizObj.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://code.google.com/tvillars/tibco/bw/Common/Functions/MailSend" schemaLocation="/Common/Functions/MailSend.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd" schemaLocation="/Services.Tech/eMail/Client/eMail.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bizworks/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" schemaLocation="/Common/Resources/Schemas/Envelope.BizObj.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Patterns/Patterns/Queue Receiver/SomeSchema.xsd" schemaLocation="/Patterns/Queue Receiver/SomeSchema.xsd"/>
+    <pd:name>Patterns/Queue Receiver/Queue Receiver (Without Checkpoint &amp; PreValidated).process</pd:name>
+    <pd:startName>Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>51</pd:x>
+        <pd:y>310</pd:y>
+        <config>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>2</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>%%Patterns/Queue.Receiver.WithoutCheckpointAndValidated%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Common/Resources/Queue.sharedjmscon</ConnectionReference>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>643</pd:endX>
+    <pd:endY>310</pd:endY>
+    <pd:errorSchemas>
+        <DataError ref="ns6:DataError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>361</pd:x>
+        <pd:y>470</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>504</pd:x>
+        <pd:y>310</pd:y>
+        <config>
+            <ConfirmEvent>Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm (Error)">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>556</pd:x>
+        <pd:y>470</pd:y>
+        <config>
+            <ConfirmEvent>Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>455</pd:x>
+        <pd:y>470</pd:y>
+        <config>
+            <processName>/Common/Processes/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH.Input>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                <ns6:ProcessData>
+                    <ns6:ProcessInput>
+                        <xsl:copy-of select="$Queue-Receiver/ns1:ActivityOutput"/>
+                    </ns6:ProcessInput>
+                    <ns6:ActivityOutputs>
+                        <xsl:copy-of select="$Parse-Biz-Obj-Envelope/ns8:Envelope.BizObj"/>
+                    </ns6:ActivityOutputs>
+                    <ns6:ActivityOutputs>
+                        <xsl:copy-of select="$Validate-Payload/pfx4:root"/>
+                    </ns6:ActivityOutputs>
+                </ns6:ProcessData>
+            </GEH.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse Biz Obj Envelope">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>154</pd:x>
+        <pd:y>318</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="ns8:Envelope.BizObj"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Queue-Receiver/ns1:ActivityOutput/Body"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parsing Error (DataError)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>154</pd:x>
+        <pd:y>439</pd:y>
+        <config>
+            <faultName>DataError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <data>
+                    <ns6:DataError>
+                        <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                        <ns6:ProcessData>
+                            <ns6:ProcessInput>
+                                <xsl:copy-of select="$Queue-Receiver/ns1:ActivityOutput"/>
+                            </ns6:ProcessInput>
+                        </ns6:ProcessData>
+                    </ns6:DataError>
+                </data>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Message Handler">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>379</pd:x>
+        <pd:y>310</pd:y>
+        <config>
+            <processName>/Patterns/Queue Receiver/Message Handler.process</processName>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-Biz-Obj-Envelope/ns8:Envelope.BizObj"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Validatation Error (DataError)">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>265</pd:x>
+        <pd:y>439</pd:y>
+        <config>
+            <faultName>DataError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns4:ActivityInput>
+                <data>
+                    <ns6:DataError>
+                        <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                        <ns6:ProcessData>
+                            <ns6:ProcessInput>
+                                <xsl:copy-of select="$Queue-Receiver/ns1:ActivityOutput"/>
+                            </ns6:ProcessInput>
+                            <ns6:ActivityOutputs>
+                                <xsl:copy-of select="$Parse-Biz-Obj-Envelope/ns8:Envelope.BizObj"/>
+                            </ns6:ActivityOutputs>
+                        </ns6:ProcessData>
+                    </ns6:DataError>
+                </data>
+            </ns4:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Validate Payload">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>265</pd:x>
+        <pd:y>310</pd:y>
+        <config>
+            <element ref="pfx4:root"/>
+        </config>
+        <pd:coercions>
+            <pd:coercion xpath="$Parse-Biz-Obj-Envelope/ns8:Envelope.BizObj/ns8:Payload/*" element="pfx4:root" cardinality=""/>
+        </pd:coercions>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Parse-Biz-Obj-Envelope/ns8:Envelope.BizObj/ns8:Payload/pfx4:root"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Queue Receiver</pd:from>
+        <pd:to>Parse Biz Obj Envelope</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Message Handler</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>GEH</pd:to>
+        <pd:xpathDescription/>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH</pd:from>
+        <pd:to>Confirm (Error)</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm (Error)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Biz Obj Envelope</pd:from>
+        <pd:to>Validate Payload</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse Biz Obj Envelope</pd:from>
+        <pd:to>Parsing Error (DataError)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Payload</pd:from>
+        <pd:to>Message Handler</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Validate Payload</pd:from>
+        <pd:to>Validatation Error (DataError)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>The follow pattern is similar to a recommended TIBCO patterns, but includes a pre-parsing step.  The distinguishing characteristic is the XML message is validated before
+being sent for further processing.
+
+PROS
+  - Same PROS as the TIBCO recommended Queue Receiver (Without Checkpoint) pattern.
+  - Ensures the XML is valid before calling the processing logic.  Run "Patterns/UnitTest/Queue Receiver - Invalid XML" to see how this pattern handles invalid XMLs
+    much better than the two recommended TIBCO patterns.
+
+CONS
+  - Same CONS as the TIBCO recommended Queue Receiver (Without Checkpoint) pattern.
+
+PERSONAL OBSERVATION
+I like this pattern the most for simple processing of messages that may be coming from an outside source.  I often run into .NET and Oracle applications that don’t use
+an XML schema to validate the XML before putting it on the ESB and therefore the Queue Receiver can get bombarded by invalid messages.  This pattern handles this
+scenario about as gracefully as possible and still retains much of the simplicity of the TIBCO pattern.
+
+Note: Only queues are supported because of fail-over issues with EMS topics.  If the publisher is using topics, use EMS bridging to map the messages to a queue.</pd:description>
+        <pd:x>483</pd:x>
+        <pd:y>137</pd:y>
+        <pd:width>964</pd:width>
+        <pd:height>272</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

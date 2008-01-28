@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:email="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd"
+	 xmlns:mail="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Mail.xsd"
+	 targetNamespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Services.Tech/eMail/Client/eMail.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Mail.xsd" schemaLocation="../../../Common/Processes/Mail.xsd"/>
+	<xs:element name="eMail" type="email:eMail_Type"/>
+	<xs:complexType name="eMail_Type">
+		<xs:sequence>
+			<xs:element ref="mail:Header"/>
+			<xs:element ref="mail:bodyText" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="mail:XMLAttachment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="mail:TextAttachment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
