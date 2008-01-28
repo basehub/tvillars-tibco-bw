@@ -1,0 +1,14 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>ProcessNameDynamicOverride</name>
+			<value>/Services.Tech/NotifyLogToDB/Private/Notify Override.process</value>
+			<description>To override the default notify process, replace with a the process name that will handle notifications</description>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1200579669156</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="ASCII"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_6W3YoKyfEdy7hrnnWqOgmg" name="tvillars-tibco-bw.bw">
+  <packageImport xmi:id="_6YWmYKyfEdy7hrnnWqOgmg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_5G2QQK1lEdyTw-2GraG8mQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_n8Bu8K2lEdy7-vW1Zg5b0g">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_Z7xdcLevEdywvNrCEq8jcg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_vEcgULevEdyHB6ITcYWS4w">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_MLK-4LewEdysLYKjcPfITA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_4677MK1lEdyTw-2GraG8mQ" name="Me"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_CJD3oK1mEdyTw-2GraG8mQ" name="You &amp; Your Company"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_IN2PIK1nEdyTw-2GraG8mQ" name="Open Source">
+    <extensionPoint xmi:id="_Ev4MEK1qEdyTw-2GraG8mQ" name="ExtensionPoint"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Component" xmi:id="_LTkYAK1pEdyTw-2GraG8mQ" name="New System"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_OBw04K1vEdyTw-2GraG8mQ" name="hires" memberEnd="_RjHbwK1vEdyTw-2GraG8mQ _RjQlsK1vEdyTw-2GraG8mQ">
+    <ownedEnd xmi:id="_RjHbwK1vEdyTw-2GraG8mQ" name="You" type="_CJD3oK1mEdyTw-2GraG8mQ" association="_OBw04K1vEdyTw-2GraG8mQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RjHbwq1vEdyTw-2GraG8mQ" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RjHbwa1vEdyTw-2GraG8mQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_RjQlsK1vEdyTw-2GraG8mQ" name="Me" type="_4677MK1lEdyTw-2GraG8mQ" association="_OBw04K1vEdyTw-2GraG8mQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RjQlsq1vEdyTw-2GraG8mQ" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RjQlsa1vEdyTw-2GraG8mQ"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_xjSMoK1vEdyTw-2GraG8mQ" name="uses" memberEnd="_0sNscK1vEdyTw-2GraG8mQ _0sNsc61vEdyTw-2GraG8mQ">
+    <ownedEnd xmi:id="_0sNscK1vEdyTw-2GraG8mQ" name="Open Source Product" type="_IN2PIK1nEdyTw-2GraG8mQ" association="_xjSMoK1vEdyTw-2GraG8mQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0sNscq1vEdyTw-2GraG8mQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0sNsca1vEdyTw-2GraG8mQ"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_0sNsc61vEdyTw-2GraG8mQ" name="New System" type="_LTkYAK1pEdyTw-2GraG8mQ" association="_xjSMoK1vEdyTw-2GraG8mQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0sNsda1vEdyTw-2GraG8mQ" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0sNsdK1vEdyTw-2GraG8mQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_CBrRsK1wEdyTw-2GraG8mQ" name="builds" memberEnd="_EI6rAK1wEdyTw-2GraG8mQ _EI6rA61wEdyTw-2GraG8mQ">
+    <ownedEnd xmi:id="_EI6rAK1wEdyTw-2GraG8mQ" name="You" type="_CJD3oK1mEdyTw-2GraG8mQ" association="_CBrRsK1wEdyTw-2GraG8mQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EI6rAq1wEdyTw-2GraG8mQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EI6rAa1wEdyTw-2GraG8mQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_EI6rA61wEdyTw-2GraG8mQ" name="New System" type="_LTkYAK1pEdyTw-2GraG8mQ" association="_CBrRsK1wEdyTw-2GraG8mQ">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EJEcAK1wEdyTw-2GraG8mQ" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EI6rBK1wEdyTw-2GraG8mQ" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_v5XgsLewEdysLYKjcPfITA" name="uses" memberEnd="_zxKRoLewEdysLYKjcPfITA _zxKRo7ewEdysLYKjcPfITA" navigableOwnedEnd="_zxKRo7ewEdysLYKjcPfITA">
+    <ownedEnd xmi:id="_zxKRoLewEdysLYKjcPfITA" name="New System" type="_LTkYAK1pEdyTw-2GraG8mQ" association="_v5XgsLewEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zxKRorewEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zxKRobewEdysLYKjcPfITA"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_zxKRo7ewEdysLYKjcPfITA" name="Open Source" type="_IN2PIK1nEdyTw-2GraG8mQ" association="_v5XgsLewEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zxUCobewEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zxUCoLewEdysLYKjcPfITA"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_9Sv8oLewEdysLYKjcPfITA" name="builds" memberEnd="__yofcLewEdysLYKjcPfITA __yxpYrewEdysLYKjcPfITA" navigableOwnedEnd="__yxpYrewEdysLYKjcPfITA">
+    <ownedEnd xmi:id="__yofcLewEdysLYKjcPfITA" name="You &amp; Your Company" type="_CJD3oK1mEdyTw-2GraG8mQ" association="_9Sv8oLewEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__yxpYbewEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__yxpYLewEdysLYKjcPfITA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="__yxpYrewEdysLYKjcPfITA" name="New System" type="_LTkYAK1pEdyTw-2GraG8mQ" association="_9Sv8oLewEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__yxpZLewEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__yxpY7ewEdysLYKjcPfITA"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_VOFUYLexEdysLYKjcPfITA" name="hires" memberEnd="_aBxs4LexEdysLYKjcPfITA _aBxs47exEdysLYKjcPfITA" navigableOwnedEnd="_aBxs47exEdysLYKjcPfITA">
+    <ownedEnd xmi:id="_aBxs4LexEdysLYKjcPfITA" name="You &amp; Your Company" type="_CJD3oK1mEdyTw-2GraG8mQ" association="_VOFUYLexEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aBxs4rexEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aBxs4bexEdysLYKjcPfITA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_aBxs47exEdysLYKjcPfITA" name="Me" type="_4677MK1lEdyTw-2GraG8mQ" association="_VOFUYLexEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aBxs5bexEdysLYKjcPfITA" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aBxs5LexEdysLYKjcPfITA"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_j65uILexEdysLYKjcPfITA" name="writes" memberEnd="_kuUIELexEdysLYKjcPfITA _kuUIE7exEdysLYKjcPfITA" navigableOwnedEnd="_kuUIE7exEdysLYKjcPfITA">
+    <ownedEnd xmi:id="_kuUIELexEdysLYKjcPfITA" name="Me" type="_4677MK1lEdyTw-2GraG8mQ" association="_j65uILexEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kuUIErexEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kuUIEbexEdysLYKjcPfITA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kuUIE7exEdysLYKjcPfITA" name="Open Source" type="_IN2PIK1nEdyTw-2GraG8mQ" association="_j65uILexEdysLYKjcPfITA">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kuUIFbexEdysLYKjcPfITA" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kuUIFLexEdysLYKjcPfITA"/>
+    </ownedEnd>
+  </packagedElement>
+  <profileApplication xmi:id="_6cXjzqyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6chUsKyfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6c0PoKyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6c0PoayfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6c-ApqyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6c-Ap6yfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6c-AyqyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6c-Ay6yfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6dHxoKyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6dHxoayfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6dQ7kKyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6dQ7kayfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6dtn0qyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6dtn06yfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+    </eAnnotations>
+    <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6ewJUKyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6ewJUayfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6e56U6yfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6e56VKyfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6fM1SqyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6fM1S6yfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6fWmS6yfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6fWmTKyfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6fWmV6yfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6fWmWKyfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6iVBwKyfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6iVBwayfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_6iey06yfEdy7hrnnWqOgmg">
+    <eAnnotations xmi:id="_6iey1KyfEdy7hrnnWqOgmg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_dhEUENSUEdqN9tnr0j3PAQ"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5KRXyK1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5KbIsK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5KbIsa1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5sK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_dhEUENSUEdqN9tnr0j3PAQ"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5sa1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5sq1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+    </eAnnotations>
+    <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5s61lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5tK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5ta1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5tq1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5t61lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5uK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5ua1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5uq1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5u61lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5vK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5va1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5vq1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5v61lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5wK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5wa1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5wq1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5w61lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5xK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5xa1lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5xq1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_5Kk5x61lEdyTw-2GraG8mQ">
+    <eAnnotations xmi:id="_5Kk5yK1lEdyTw-2GraG8mQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oDxVxK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oDxVxa2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oDxVxq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oDxVx62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7GsK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gsa2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7Gsq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gs62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7GtK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gta2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7Gtq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gt62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7GuK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gua2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7Guq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gu62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7GvK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gva2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_dhEUENSUEdqN9tnr0j3PAQ"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oD7Gvq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oD7Gv62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oEE3sK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oEE3sa2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+    </eAnnotations>
+    <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oEE3sq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oEE3s62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oEE3tK2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oEE3ta2lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_oEE3tq2lEdy7-vW1Zg5b0g">
+    <eAnnotations xmi:id="_oEE3t62lEdy7-vW1Zg5b0g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_Mk9LevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_WV4LevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_dhEUENSUEdqN9tnr0j3PAQ"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_WV4bevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_WV4revEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_WV47evEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_WV5LevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_WV5bevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_WV5revEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_WV57evEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff0LevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_ff0bevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff0revEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_ff07evEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff1LevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_ff1bevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff1revEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_ff17evEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff2LevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_ff2bevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff2revEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_ff27evEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_ff3LevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_pQ0LevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_pQ0bevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_pQ0revEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_pQ07evEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_Z_pQ1LevEdywvNrCEq8jcg">
+    <eAnnotations xmi:id="_Z_pQ1bevEdywvNrCEq8jcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+    </eAnnotations>
+    <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vHud0LevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vHud0bevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vHud0revEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vHud07evEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vHud1LevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vHud1bevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_dhEUENSUEdqN9tnr0j3PAQ"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vHud1revEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vHud17evEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vHud2LevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vH3nwLevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vH3nwbevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vH3nwrevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vH3nw7evEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vH3nxLevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vH3nxbevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vH3nxrevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vIBYwLevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vIBYwbevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vIBYwrevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vIBYw7evEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vIBYxLevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vIBYxbevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vIBYxrevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vIBYx7evEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vIBYyLevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vIBYybevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_vIBYyrevEdyHB6ITcYWS4w">
+    <eAnnotations xmi:id="_vILJwLevEdyHB6ITcYWS4w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+    </eAnnotations>
+    <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOTLcLewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOTLcbewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/Standard.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOcVULewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOcVUbewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_f6v3QOROEduiB7qvAtFfTA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Archetype.profile.uml#_j-cLoORNEduiB7qvAtFfTA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOcVUrewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOcVU7ewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_4Um1wCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Presentation_3.2_SN.profile.uml#_RgVcjiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOcVVLewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOcVVbewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_7hMtlSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Common_3.2_SN.profile.uml#_RgfPHCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOcVVrewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOcVV7ewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_kycnUIE4EduiecUdqhZMrw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Meta.profile.uml#_EJn30IE0EduiecUdqhZMrw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOcVWLewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOmGULewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_7sFH4CK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Meta_3.2_SN.profile.uml#_RgVcYiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOmGUbewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOmGUrewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_7D2DMCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Process_3.2_SN.profile.uml#_RgfOnSK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOmGU7ewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOmGVLewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_1iUoEdmNXYQzyImvfA"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo.profile.uml#_zrN_0iUoEdmNXYQzyImvfA"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOmGVbewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOmGVrewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_dhEUENSUEdqN9tnr0j3PAQ"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/org.eclipse.uml2.uml.resources/profiles/UML2.profile.uml#_0"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOmGV7ewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOmGWLewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLlH6MEdmbwasWWc4yvw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Java.profile.uml#_aZhLkH6MEdmbwasWWc4yvw"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOv3ULewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOv3UbewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_7JNEVSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Xml_3.2_SN.profile.uml#_RgVfXCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOv3UrewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOv3U7ewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_AevloCK6EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Persistence_3.2_SN.profile.uml#_RgVfdiK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOv3VLewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOv3VbewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_6jgWRSK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Webservice_3.2_SN.profile.uml#_RgVmWCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+  <profileApplication xmi:id="_MOv3VrewEdysLYKjcPfITA">
+    <eAnnotations xmi:id="_MOv3V7ewEdysLYKjcPfITA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_6VpgcCK5EdujMN-Mf6X4Bw"/>
+    </eAnnotations>
+    <appliedProfile href="platform:/plugin/com.omondo.uml.core/profiles/Omondo_Service_3.2_SN.profile.uml#_RgMRQCK2Edu07u_JJk0LDQ"/>
+  </profileApplication>
+</uml:Model>

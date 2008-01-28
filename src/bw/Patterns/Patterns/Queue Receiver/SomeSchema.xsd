@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:ss="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Patterns/Patterns/Queue Receiver/SomeSchema.xsd"
+	 targetNamespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Patterns/Patterns/Queue Receiver/SomeSchema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ss:param"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="param" type="xs:string"/>
+</xs:schema>

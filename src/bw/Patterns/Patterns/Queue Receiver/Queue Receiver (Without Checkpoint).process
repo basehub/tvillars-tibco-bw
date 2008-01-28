@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns12="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx="http://code.google.com/tvillars/tibco/bw/TechServices/SomeService" xmlns:ns3="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:ns0="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:pfx2="http://www.tibco.com/pe/CheckpointSchema" xmlns:pfx3="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope" xmlns:ns4="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" xmlns:ns5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://code.google.com/tvillars/tibco/bw/TechServices/SomeService" schemaLocation="/TechServices/SomeService/Services/SomeService.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://code.google.com/tvillars/tibco/bw/Common/Schemas/BizObjEnvelope" schemaLocation="/Common/Schemas/BizObjEnvelope.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" schemaLocation="/Common/Resources/Schemas/Envelope.BizObj.xsd"/>
+    <pd:name>Patterns/Queue Receiver/Queue Receiver (Without Checkpoint).process</pd:name>
+    <pd:startName>Queue Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Queue Receiver">
+        <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <PermittedMessageType>XML Text</PermittedMessageType>
+            <SessionAttributes>
+                <acknowledgeMode>23</acknowledgeMode>
+                <destination>%%Patterns/Queue.Receiver.WithoutCheckpoint%%</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Common/Resources/Queue.sharedjmscon</ConnectionReference>
+            <OutDataxsdString ref="pfx4:Envelope.BizObj"/>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>417</pd:endX>
+    <pd:endY>339</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>206</pd:x>
+        <pd:y>539</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>286</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <ConfirmEvent>Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm - Error">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>66</pd:x>
+        <pd:y>448</pd:y>
+        <config>
+            <ConfirmEvent>Queue Receiver</ConfirmEvent>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>331</pd:x>
+        <pd:y>538</pd:y>
+        <config>
+            <processName>/Common/Processes/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH.Input>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                <ns5:ProcessData>
+                    <ns5:ProcessInput>
+                        <xsl:copy-of select="$Queue-Receiver/ns1:ActivityOutput"/>
+                    </ns5:ProcessInput>
+                    <ns5:ActivityOutputs/>
+                </ns5:ProcessData>
+            </GEH.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="GEH - Invalid Msg">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>212</pd:x>
+        <pd:y>449</pd:y>
+        <config>
+            <processName>/Common/Processes/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH.Input>
+                <xsl:copy-of select="$_error/ns:ErrorReport"/>
+            </GEH.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Message Handler">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>181</pd:x>
+        <pd:y>339</pd:y>
+        <config>
+            <processName>/Patterns/Queue Receiver/Message Handler.process</processName>
+            <processNameXPath/>
+        </config>
+        <pd:inputBindings>
+            <xsl:copy-of select="$Queue-Receiver/ns1:ActivityOutput/Body/pfx4:Envelope.BizObj"/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Queue Receiver</pd:from>
+        <pd:to>Confirm - Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm - Error</pd:from>
+        <pd:to>GEH - Invalid Msg</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH - Invalid Msg</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Queue Receiver</pd:from>
+        <pd:to>Message Handler</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Confirm</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Message Handler</pd:from>
+        <pd:to>Confirm</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>GEH</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>The follow pattern is one of the recommended TIBCO patterns for a process that receives messages from a Queue.  The distinguishing characteristic is the use of the Confirm
+activity to control retrying the message processing if an unhandled and/or unrecoverable failure occurs in a downstream activity.
+
+PROS  
+  - This is good general purpose pattern as it handles the vast majority of usage scenarios the typical Business Works developer is likely to encounter.
+  - Not using checkpoints greatly simplifies the restart process in the event of a recoverable failure.
+
+CONS
+  - If any of the downstream message processing activities throw an unhandled exception because of an unrecoverable error (bad data or coding error) this process gets stuck in a
+    tight loop and can consumer a large amount of the CPU on the machine hosting the process and will also be a drag on the JMS Server as it will repeated being requesting the
+    same message over and over again.  The UnitTest "Patterns/UnitTest/Queue Receiver - Valid XML But Handler Throws Unhandled Exception" demonstrates this issue.
+  - Not using checkpoints makes it difficult to remove the “bad” message from the process as you’ll need a specialized process that finds the “bad” message on the queue and
+    removes it.  
+
+PERSONAL OBSERVATION
+In general I like this pattern as it is simple and is the most widely used Queue Receiver pattern.  About the only time I don’t recommend using this pattern is when the messages
+being sent are not under your project's control which can lead to indeterminate (flaky) XML messages.  If bad data gets stuck on the queue it’s possible this pattern will get stuck
+in the loop mentioned in the CONS section above.
+
+Note: Only queues are supported because of fail-over issues with EMS topics.  If the publisher is using topics, use EMS bridging to map the messages to a queue.</pd:description>
+        <pd:x>499</pd:x>
+        <pd:y>154</pd:y>
+        <pd:width>991</pd:width>
+        <pd:height>306</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

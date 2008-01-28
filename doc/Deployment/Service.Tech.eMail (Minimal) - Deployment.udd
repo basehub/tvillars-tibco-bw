@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:DeploymentDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Service.Tech.eMail (Minimal) - Deployment" foregroundRGB="255,255,255" metadata="uml2-1.0" initialized="true" tag="1000" key="3230303730363239207476696C6C6172732D746962636F2D62772E62772F746A76696C6C6172">
+  <children xsi:type="editmodel:NodeEditModel" location="15,50" size="511,296" stereotype="" taggedValues="{profile.object.name=Server A}" itemName="Server A" type="" instanceLevel="true">
+    <children xsi:type="editmodel:ComponentEditModel" location="39,166" size="164,79" stereotype="BW Service" taggedValues="{maxJobs=1; profile.object.name=Tech-eMail}" itemName="Tech-eMail">
+      <children xsi:type="editmodel:ResourceLinkEditModel" name="Tech-eMail.ear" foregroundRGB="0,0,255" location="36,33" size="90,16" url="\tvillars-tibco-bw.bw\dist.bw\Tech-eMail.ear"/>
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" source="//@children.0/@children.0" target="//@children.0/@children.1" targetEnd="//@children.0/@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@children.0/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="129,0" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="33,69"/>
+      </sourceConnections>
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" source="//@children.0/@children.0" target="//@children.3" targetEnd="//@children.0/@children.0/@sourceConnections.1/@children.1" sourceEnd="//@children.0/@children.0/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="73,79" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="117,0"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ComponentEditModel" targetConnections="//@children.0/@children.2/@sourceConnections.0 //@children.0/@children.0/@sourceConnections.0" location="135,57" size="163,69" stereotype="infrastructure" taggedValues="{profile.object.name=JMS Server}" itemName="JMS Server"/>
+    <children xsi:type="editmodel:ComponentEditModel" location="238,166" size="218,79" stereotype="application" taggedValues="{profile.object.name=Some Business Service}" itemName="Some Business Service">
+      <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" source="//@children.0/@children.2" target="//@children.0/@children.1" targetEnd="//@children.0/@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+        <children xsi:type="editmodel:ComponentEndEditModel" location="29,0" attachSource="true"/>
+        <children xsi:type="editmodel:ComponentEndEditModel" location="132,69"/>
+      </sourceConnections>
+    </children>
+  </children>
+  <children xsi:type="editmodel:LabelObjectEditModel" name="Minimal Deployment of eMail Technical Service" location="10,10" size="542,29" fontInfo="Arial-18-1"/>
+  <children xsi:type="editmodel:NotepadEditModel" foregroundRGB="91,91,0" location="220,360" size="302,136" fontInfo="Arial-8-0" note="This deployment has no fault tolerance and only shows&#xD;&#xA;a single Business Service.&#xD;&#xA;&#xD;&#xA;Notice while both the eMail Service and Business Service&#xD;&#xA;are dependent on the JMS Server, the Business Service&#xD;&#xA;is not dependent on the eMail Service or thrird-party&#xD;&#xA;eMail Server.  This architecture demonstrates how to&#xD;&#xA;decouple Business Process from components of the&#xD;&#xA;infrastructure."/>
+  <children xsi:type="editmodel:NodeEditModel" targetConnections="//@children.0/@children.0/@sourceConnections.1" location="10,385" size="191,111" stereotype="" taggedValues="{profile.object.name=MS Exchange Server}" itemName="MS Exchange Server" type="" instanceLevel="true"/>
+  <diagramOptions xsi:type="options:DeploymentDiagramOptions" level="0" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+</editmodel:DeploymentDiagramEditModel>

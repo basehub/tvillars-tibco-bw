@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:notify="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd"
+	 xmlns:tns="http://www.tibco.com/pe/EngineTypes"
+	 xmlns:envNotify="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd"
+	 targetNamespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" schemaLocation="../../../Common/Processes/Notify.xsd"/>
+	<xs:import namespace="http://www.tibco.com/pe/EngineTypes" schemaLocation="../../../Common/Resources/Schemas.BW/EngineTypes.xsd"/>
+	<xs:element name="NotifyLog">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="notify:Notify.private"/>
+				<xs:element ref="tns:ProcessContext"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

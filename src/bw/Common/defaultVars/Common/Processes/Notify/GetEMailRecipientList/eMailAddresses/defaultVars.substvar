@@ -1,0 +1,95 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Data</name>
+			<value></value>
+			<description>defaullt for all Data notification, if blank then Default is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1196694803086</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DataError</name>
+			<value></value>
+			<description>sends all DataError notifications to this address, if blank then Data is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211441</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DataInfo</name>
+			<value></value>
+			<description>sends all DataInfo notifications to this address, if blank then Data is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189523267185</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DataWarn</name>
+			<value></value>
+			<description>sends all DataInfo notifications to this address, if blank then Data is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211410</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Default</name>
+			<value>tom.villars@dhs.gov</value>
+			<description>default email address for all notifications</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201286095677</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Error</name>
+			<value></value>
+			<description>defaullt for all Error notification, if blank then Default is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211332</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Tech</name>
+			<value></value>
+			<description>defaullt for all Tech notification, if blank then Default is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211394</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TechError</name>
+			<value></value>
+			<description>sends all TechError notifications to this address, if blank then Tech is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211503</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TechInfo</name>
+			<value></value>
+			<description>sends all TechInfo notifications to this address, if blank then Tech is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211347</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TechWarn</name>
+			<value></value>
+			<description>sends all TechWarn notifications to this address, if blank then Tech is used</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1189521211425</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

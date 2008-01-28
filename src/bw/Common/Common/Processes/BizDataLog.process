@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/namespaces/tnt/plugins/jms" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/JMSLog.xsd" xmlns:pfx3="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/BizDataLog.xsd" xmlns:guid="java://com.google.code.tvillars.tibco.bw.javacustfun.GUID">
+    <xsd:import namespace="http://www.tibco.com/namespaces/tnt/plugins/jms" schemaLocation="/Common/Resources/Schemas.BW/JMS.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" schemaLocation="/Common/Resources/Schemas/Envelope.BizObj.xsd"/>
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/BizDataLog.xsd" schemaLocation="/Common/Processes/BizDataLog.xsd"/>
+    <pd:name>Common/Processes/BizDataLog.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="BizDataLog.Input">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element ref="pfx5:BizDataLog"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>52</pd:startX>
+    <pd:startY>87</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>345</pd:endX>
+    <pd:endY>86</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="BizDataLog.private">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>196</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <processNameXPath>$_globalVariables/pfx3:GlobalVariables/Common/Processes/BizDataLog/ProcessNameDynamicOverride</processNameXPath>
+            <processName>/Common/Processes/Subprocesses/BizObjLog/BizObjLog.private.process</processName>
+        </config>
+        <pd:inputBindings>
+            <BizObjLog.private.Input>
+                <pfx5:BizDataLog>
+                    <xsl:choose>
+                        <xsl:when test="$Start/BizDataLog.Input/pfx5:BizDataLog/@TransactionId">
+                            <xsl:if test="$Start/BizDataLog.Input/pfx5:BizDataLog/@TransactionId">
+                                <xsl:attribute name="TransactionId">
+                                    <xsl:value-of select="$Start/BizDataLog.Input/pfx5:BizDataLog/@TransactionId"/>
+                                </xsl:attribute>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="TransactionId">
+                                <xsl:value-of select="guid:makeGUID()"/>
+                            </xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="$Start/BizDataLog.Input/pfx5:BizDataLog/@TransactionDate">
+                            <xsl:if test="$Start/BizDataLog.Input/pfx5:BizDataLog/@TransactionDate">
+                                <xsl:attribute name="TransactionDate">
+                                    <xsl:value-of select="$Start/BizDataLog.Input/pfx5:BizDataLog/@TransactionDate"/>
+                                </xsl:attribute>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="TransactionDate">
+                                <xsl:value-of select="current-dateTime()"/>
+                            </xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="$Start/BizDataLog.Input/pfx5:BizDataLog/@Description">
+                        <xsl:attribute name="Description">
+                            <xsl:value-of select="$Start/BizDataLog.Input/pfx5:BizDataLog/@Description"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:copy-of select="$Start/BizDataLog.Input/pfx5:BizDataLog/Source"/>
+                    <xsl:copy-of select="$Start/BizDataLog.Input/pfx5:BizDataLog/Target"/>
+                </pfx5:BizDataLog>
+            </BizObjLog.private.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>BizDataLog.private</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizDataLog.private</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>Simple process for logging business data and should probably
+be enhanced for each organizations requirements.</pd:description>
+        <pd:x>193</pd:x>
+        <pd:y>25</pd:y>
+        <pd:width>385</pd:width>
+        <pd:height>49</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>The subprocess being called can be overriden by setting the global var:
+
+      Common\Processes\BizDataLog\ProcessNameDynamicOverride
+
+Use this to invoke a custom logging process such as logging to a database table.</pd:description>
+        <pd:x>242</pd:x>
+        <pd:y>188</pd:y>
+        <pd:width>483</pd:width>
+        <pd:height>102</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

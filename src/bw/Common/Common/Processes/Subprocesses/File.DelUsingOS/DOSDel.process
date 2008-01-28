@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/Schemas/tibco/xsd/bw/Cmd.xsd" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns0="http://code.google.com/tvillars/tibco/bw/Common/Functions/GEH" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns01="http://uscis.gov/uscis/xsd/services/common/1.0" xmlns:pfx2="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/Common/Schemas.ThirdParty/BW.Internal/Cmd.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/Common/Resources/Schemas.BW/Cmd.xsd">
+    <xsd:import namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" schemaLocation="/Common/Processes/GEH.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/Common/Resources/Schemas.BW/Cmd.xsd" schemaLocation="/Common/Resources/Schemas.BW/Cmd.xsd"/>
+    <pd:name>Common/Processes/Subprocesses/File.DelUsingOS/DOSDel.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="DOSDel">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="fileName" type="xsd:string"/>
+                    <xsd:element name="workingDirectory" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>27</pd:startX>
+    <pd:startY>145</pd:startY>
+    <pd:returnBindings>
+        <xsl:copy-of select="$DOS-Del/CmdOutputWithActivityOutput"/>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx4:CmdOutputWithActivityOutput"/>
+    <pd:endX>530</pd:endX>
+    <pd:endY>67</pd:endY>
+    <pd:errorSchemas>
+        <TechError ref="pfx2:TechError"/>
+    </pd:errorSchemas>
+    <pd:processVariables/>
+    <pd:group name="DOS Del Retry Loop">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>80</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>308</pd:width>
+        <pd:height>269</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>errorLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:indexSlot>retryIdx</pd:indexSlot>
+            <pd:errorCondition>false()</pd:errorCondition>
+            <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DOS Del</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DOS Del</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Multiple Bends</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DOS Del</pd:from>
+            <pd:to>GEH</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-65536</pd:lineColor>
+            <pd:conditionType>error</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="DOS Del">
+            <pd:type>com.tibco.plugin.cmdexec.CmdExecActivity</pd:type>
+            <pd:resourceType>ae.activities.CmdExecActivity</pd:resourceType>
+            <pd:x>235</pd:x>
+            <pd:y>62</pd:y>
+            <config>
+                <outputToString>true</outputToString>
+                <lineSplit>None</lineSplit>
+            </config>
+            <pd:inputBindings>
+                <CmdInput>
+                    <command>
+                        <xsl:value-of select="concat('cmd /c del ', $Start/DOSDel/fileName)"/>
+                    </command>
+                    <xsl:if test="$Start/DOSDel/workingDirectory">
+                        <workingDirectory>
+                            <xsl:value-of select="$Start/DOSDel/workingDirectory"/>
+                        </workingDirectory>
+                    </xsl:if>
+                </CmdInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="GEH">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>234</pd:x>
+            <pd:y>194</pd:y>
+            <config>
+                <processName>/Common/Processes/GEH.process</processName>
+            </config>
+            <pd:inputBindings>
+                <GEH.Input>
+                    <xsl:copy-of select="$_error/ns:ErrorReport"/>
+                    <pfx2:ProcessData>
+                        <pfx2:ProcessInput>
+                            <xsl:copy-of select="$Start/DOSDel"/>
+                        </pfx2:ProcessInput>
+                    </pfx2:ProcessData>
+                    <pfx2:Retry>
+                        <pfx2:RetryIdx>
+                            <xsl:value-of select="$retryIdx"/>
+                        </pfx2:RetryIdx>
+                        <pfx2:RetryOptions>
+                            <pfx2:TryForever/>
+                        </pfx2:RetryOptions>
+                    </pfx2:Retry>
+                </GEH.Input>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="DOS Del Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>531</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <faultName>TechError</faultName>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <xsl:if test="count($DOS-Del/CmdOutputWithActivityOutput/error)>0">
+                    <message>
+                        <xsl:value-of select="$DOS-Del/CmdOutputWithActivityOutput/error[1]"/>
+                    </message>
+                </xsl:if>
+                <messageCode>
+                    <xsl:value-of select="concat('DOSDel-', $DOS-Del/CmdOutputWithActivityOutput/returnCode)"/>
+                </messageCode>
+                <data>
+                    <pfx2:TechError>
+                        <pfx2:DescShort>
+                            <xsl:value-of select="concat(&#xA;$Start/DOSDel/workingDirectory&#xA;,if (exists($Start/DOSDel/workingDirectory)) then ' ' else ''&#xA;,'  Del ',$Start/DOSDel/fileName&#xA;,' - '&#xA;,$DOS-Del/CmdOutputWithActivityOutput/error[1])"/>
+                        </pfx2:DescShort>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="'Unable to perform the following DOS Del Command:'"/>
+                        </pfx2:DescLong>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="''"/>
+                        </pfx2:DescLong>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="concat('cmd /c ',  $Start/DOSDel/workingDirectory, ' del &quot;', $Start/DOSDel/fileName,'&quot;')"/>
+                        </pfx2:DescLong>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="''"/>
+                        </pfx2:DescLong>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="concat('Return Code: ',$DOS-Del/CmdOutputWithActivityOutput/returnCode)"/>
+                        </pfx2:DescLong>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="tib:concat-sequence-format($DOS-Del/CmdOutputWithActivityOutput/output,&quot;&#xD;&#xA;&quot;)"/>
+                        </pfx2:DescLong>
+                        <pfx2:DescLong>
+                            <xsl:value-of select="tib:concat-sequence-format($DOS-Del/CmdOutputWithActivityOutput/error,&quot;&#xD;&#xA;&quot;)"/>
+                        </pfx2:DescLong>
+                        <pfx2:ProcessData>
+                            <pfx2:ProcessInput>
+                                <xsl:copy-of select="$Start/DOSDel"/>
+                            </pfx2:ProcessInput>
+                        </pfx2:ProcessData>
+                    </pfx2:TechError>
+                </data>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>DOS Del Retry Loop</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>DOS Del Retry Loop</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>sucess</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>DOS Del Retry Loop</pd:from>
+        <pd:to>DOS Del Error</pd:to>
+        <pd:xpathDescription>error</pd:xpathDescription>
+        <pd:lineType>Curved</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>($DOS-Del/CmdOutputWithActivityOutput/returnCode !=0)
+or
+(string-length($DOS-Del/CmdOutputWithActivityOutput/error[1]) &gt; 0)</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

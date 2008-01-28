@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="com.google.code.tvillars.tibco.bw.javacustfunClassDiagram" foregroundRGB="255,255,255" id="{UMLID=_9N5yDa45Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun}" metadata="uml2-1.0" initialized="true" tag="1000" key="3230303730363239207476696C6C6172732D746962636F2D62772E6A6176612F746A76696C6C6172">
+  <children xsi:type="editmodel:ClassEditModel" name="DateUtil" location="267,50" size="127,119" stereotype="" id="{UMLID=_9Sq9IK45Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/DateUtil}" runTimeClassModel="main([Ljava.lang.String;),HELP_STRINGS,getTimestamp(Ljava.lang.String;),getDate(J)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="104,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="HELP_STRINGS" id="{UMLID=_9TakAK45Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/DateUtil#HELP_STRINGS}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="106,54">
+      <children xsi:type="editmodel:MethodEditModel" name="main" id="{UMLID=_9WY_hq45Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/DateUtil#main([Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTimestamp" id="{UMLID=_9Wiwga45Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/DateUtil#getTimestamp(Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDate" id="{UMLID=_9Wiwhq45Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/DateUtil#getDate(J)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="StringUtil" location="444,50" size="125,101" stereotype="" id="{UMLID=_Gn6OM646Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/StringUtil}" runTimeClassModel="main([Ljava.lang.String;),regex(Ljava.lang.String;Ljava.lang.String;),HELP_STRINGS">
+    <children xsi:type="editmodel:CompartmentEditModel" size="104,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="HELP_STRINGS" id="{UMLID=_GoD_MK46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/StringUtil#HELP_STRINGS}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="68,36">
+      <children xsi:type="editmodel:MethodEditModel" name="main" id="{UMLID=_GoD_Oq46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/StringUtil#main([Ljava.lang.String;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="regex" id="{UMLID=_GoD_M646Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/StringUtil#regex(Ljava.lang.String;Ljava.lang.String;)}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="GUID" location="50,50" size="167,263" stereotype="" id="{UMLID=_Gop1Ea46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID}" runTimeClassModel="valueAfterDigestor,compareTo(Lcom.google.code.tvillars.tibco.bw.javacustfun.GUID;),HELP_STRINGS,equals(Lcom.google.code.tvillars.tibco.bw.javacustfun.GUID;),random,ALGORITHM,valueBeforeDigestor,generateRandomGUID(),GUID(),toString(),makeGUID(),localIPAdress">
+    <children xsi:type="editmodel:CompartmentEditModel" size="128,108">
+      <children xsi:type="editmodel:AttributeEditModel" name="ALGORITHM" id="{UMLID=_GpZb9q46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#ALGORITHM}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="random" id="{UMLID=_GpZb9K46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#random}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="localIPAdress" id="{UMLID=_GpZb-K46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#localIPAdress}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="valueBeforeDigestor" id="{UMLID=_GpZb9646Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#valueBeforeDigestor}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="valueAfterDigestor" id="{UMLID=_GpZb8K46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#valueAfterDigestor}"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="HELP_STRINGS" id="{UMLID=_GpZb8a46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#HELP_STRINGS}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="146,108">
+      <children xsi:type="editmodel:MethodEditModel" name="makeGUID" id="{UMLID=_GpjM9646Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#makeGUID()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="GUID" id="{UMLID=_GpjNAq46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#GUID()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="generateRandomGUID" id="{UMLID=_GpZb-a46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#generateRandomGUID()}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="compareTo" id="{UMLID=_GpjM8q46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#compareTo(Lcom.google.code.tvillars.tibco.bw.javacustfun.GUID;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="{UMLID=_GpjM_a46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#equals(Lcom.google.code.tvillars.tibco.bw.javacustfun.GUID;)}"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="{UMLID=_GpjM-q46Edy7-vW1Zg5b0g,JavaID=com.google.code.tvillars.tibco.bw.javacustfun/GUID#toString()}"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showMethods="true" showAttributes="true" showLiterals="true" ShowInnerEntity="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" innerClassSorter="Natural" showPrivateAttributes="true" showProtectedAttributes="true" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showProtectedInnerClasses="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showPrivateInnerClasses="true" showStaticInnerClasses="true" showInterfaceStereotype="true" showMethods="true" showAttributes="true" showLiterlas="true" showInnerEntity="true"/>
+</editmodel:ClassDiagramEditModel>
