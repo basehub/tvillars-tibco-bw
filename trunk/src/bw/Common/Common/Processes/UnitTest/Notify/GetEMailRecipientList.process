@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd">
+    <pd:name>Common/Processes/UnitTest/Notify/GetEMailRecipientList.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>65</pd:startX>
+    <pd:startY>44</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>468</pd:endX>
+    <pd:endY>44</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="GetEMailRecipientList - DataInfo">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>259</pd:x>
+        <pd:y>52</pd:y>
+        <config>
+            <processName>/Common/Processes/Subprocesses/Notify/GetEMailRecipientList.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GetEMailRecipientList.Input>
+                <ns:Notify.private>
+                    <ns:DataInfo>
+                        <pfx:DescShort>
+                            <xsl:value-of select="'Test'"/>
+                        </pfx:DescShort>
+                    </ns:DataInfo>
+                </ns:Notify.private>
+            </GetEMailRecipientList.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>GetEMailRecipientList - DataInfo</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetEMailRecipientList - DataInfo</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

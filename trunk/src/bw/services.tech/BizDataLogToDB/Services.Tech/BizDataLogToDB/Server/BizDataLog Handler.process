@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" xmlns:pfx2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pfx3="http://schemas.tibco.com/bw/plugins/jdbc/5.0/jdbcExceptions" xmlns:ns="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns0="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pfx7="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Server/Table.Notify.xsd" xmlns:pfx9="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd" xmlns:pfx4="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/BizDataLogToDB/Services.Tech/BizDataLogToDB/Private/Envelope.Tech.BizDataLog.xsd" xmlns:pfx5="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/BizDataLogToDB/Services.Tech/BizDataLogToDB/Server/Table.BizData_Log.xsd" xmlns:ns3="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/BizDataLog.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/Services.Tech/BizDataLogToDB/Server/Table.BizData_Log.xsd">
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/Notify.xsd" schemaLocation="/Common/Processes/Notify.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/NotifyLogToDB/Services.Tech/NotifyLogToDB/Private/Notify.xsd" schemaLocation="/Services.Tech/NotifyLogToDB/Private/Notify.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/BizDataLogToDB/Services.Tech/BizDataLogToDB/Private/Envelope.Tech.BizDataLog.xsd" schemaLocation="/Services.Tech/BizDataLogToDB/Private/Envelope.Tech.BizDataLog.xsd"/>
+    <xs:import xmlns:xs="http://www.w3.org/2001/XMLSchema" namespace="http://www.tibco.com/ns/no_namespace_schema_location/Services.Tech/BizDataLogToDB/Server/Table.BizData_Log.xsd" schemaLocation="/Services.Tech/BizDataLogToDB/Server/Table.BizData_Log.xsd"/>
+    <pd:name>Services.Tech/BizDataLogToDB/Server/BizDataLog Handler.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:Envelop.Tech.BizDataLog"/>
+    <pd:startX>62</pd:startX>
+    <pd:startY>143</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>680</pd:endX>
+    <pd:endY>359</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:group name="Insert one row for each Source and Target">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>133</pd:x>
+        <pd:y>25</pd:y>
+        <pd:width>491</pd:width>
+        <pd:height>459</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Map-BizDataLog-to-BizDataLog-Table/rows/BIZDATA_LOG</pd:over>
+            <pd:iterationElementSlot>row</pd:iterationElementSlot>
+            <pd:indexSlot>rowId</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Log BizData Retry Loop</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log BizData Retry Loop</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>One Bend</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Log BizData Retry Loop">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>193</pd:x>
+            <pd:y>62</pd:y>
+            <pd:width>360</pd:width>
+            <pd:height>380</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>errorLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:indexSlot>retryIdx</pd:indexSlot>
+                <pd:errorCondition>false()</pd:errorCondition>
+                <pd:suspendAfterErrorRetry>false</pd:suspendAfterErrorRetry>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>Insert BizDataLog</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert BizDataLog</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Multiple Bends</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Insert BizDataLog</pd:from>
+                <pd:to>Check</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-65536</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check</pd:from>
+                <pd:to>Create BizData_Log Table</pd:to>
+                <pd:xpathDescription>table missing</pd:xpathDescription>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$_globalVariables/pfx2:GlobalVariables/Services.Tech/BizDataLogToDB/TABLE.CREATE.OnMissing = "true"
+and
+contains( 
+$_error_Insert-BizDataLog/ActivityErrors/pfx3:JDBCSQLException
+,$_globalVariables/pfx2:GlobalVariables/Services.Tech/BizDataLogToDB/BizData_Log.DB/TABLE.NOTFOUND.ERROR)</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Check</pd:from>
+                <pd:to>GEH</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Create BizData_Log Table</pd:from>
+                <pd:to>GEH</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-65536</pd:lineColor>
+                <pd:conditionType>error</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Create BizData_Log Table</pd:from>
+                <pd:to>Retry Insert</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="Insert BizDataLog">
+                <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+                <pd:x>319</pd:x>
+                <pd:y>133</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <commit>false</commit>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Services.Tech/BizDataLogToDB/Server/BizData_Log.sharedjdbc</jdbcSharedConfig>
+                    <statement>INSERT INTO BIZDATA_LOG
+       (TRANSACTION_ID,SOURCE_OR_TARGET,SYSTEM,DESCRIPTION,DATA_AS_XML,DATA_AS_BINARY,TRANSACTION_DATE) 
+VALUES (?             ,?               ,?     ,?          ,?          ,?             ,?)</statement>
+                    <Prepared_Param_DataType>
+                        <parameter>
+                            <parameterName>TRANSACTION_ID</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>SOURCE_OR_TARGET</parameterName>
+                            <dataType>CHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>SYSTEM</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>DESCRIPTION</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>DATA_AS_XML</parameterName>
+                            <dataType>VARCHAR</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>DATA_AS_BINARY</parameterName>
+                            <dataType>BLOB</dataType>
+                        </parameter>
+                        <parameter>
+                            <parameterName>TRANSACTION_DATE</parameterName>
+                            <dataType>TIMESTAMP</dataType>
+                        </parameter>
+                    </Prepared_Param_DataType>
+                </config>
+                <pd:inputBindings>
+                    <jdbcUpdateActivityInput>
+                        <TRANSACTION_ID>
+                            <xsl:copy-of select="$row/BIZDATA_LOG/TRANSACTION_ID/@xsi:nil"/>
+                            <xsl:value-of select="$row/BIZDATA_LOG/TRANSACTION_ID"/>
+                        </TRANSACTION_ID>
+                        <SOURCE_OR_TARGET>
+                            <xsl:value-of select="$row/BIZDATA_LOG/SOURCE_OR_TARGET"/>
+                        </SOURCE_OR_TARGET>
+                        <SYSTEM>
+                            <xsl:copy-of select="$row/BIZDATA_LOG/SYSTEM/@xsi:nil"/>
+                            <xsl:value-of select="$row/BIZDATA_LOG/SYSTEM"/>
+                        </SYSTEM>
+                        <DESCRIPTION>
+                            <xsl:copy-of select="$row/BIZDATA_LOG/DESCRIPTION/@xsi:nil"/>
+                            <xsl:value-of select="$row/BIZDATA_LOG/DESCRIPTION"/>
+                        </DESCRIPTION>
+                        <DATA_AS_XML>
+                            <xsl:copy-of select="$row/BIZDATA_LOG/DATA_AS_XML/@xsi:nil"/>
+                            <xsl:value-of select="$row/BIZDATA_LOG/DATA_AS_XML"/>
+                        </DATA_AS_XML>
+                        <DATA_AS_BINARY>
+                            <xsl:copy-of select="$row/BIZDATA_LOG/DATA_AS_BINARY/@xsi:nil"/>
+                            <xsl:value-of select="$row/BIZDATA_LOG/DATA_AS_BINARY"/>
+                        </DATA_AS_BINARY>
+                        <TRANSACTION_DATE>
+                            <xsl:value-of select="$row/BIZDATA_LOG/TRANSACTION_DATE"/>
+                        </TRANSACTION_DATE>
+                    </jdbcUpdateActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Create BizData_Log Table">
+                <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+                <pd:x>374</pd:x>
+                <pd:y>356</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <commit>false</commit>
+                    <maxRows>1</maxRows>
+                    <jdbcSharedConfig>/Services.Tech/BizDataLogToDB/Server/BizData_Log.sharedjdbc</jdbcSharedConfig>
+                </config>
+                <pd:inputBindings>
+                    <jdbcGeneralActivityInput>
+                        <statement>
+                            <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Services.Tech/BizDataLogToDB/BizData_Log.DB/TABLE.CREATE.SQL"/>
+                        </statement>
+                    </jdbcGeneralActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="GEH">
+                <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+                <pd:resourceType>ae.process.subprocess</pd:resourceType>
+                <pd:x>258</pd:x>
+                <pd:y>347</pd:y>
+                <config>
+                    <processName>/Common/Processes/GEH.process</processName>
+                </config>
+                <pd:inputBindings>
+                    <GEH.Input>
+                        <xsl:copy-of select="$_error/ns1:ErrorReport"/>
+                        <ns:ProcessData>
+                            <ns:ProcessInput>
+                                <xsl:copy-of select="$Start/pfx4:Envelop.Tech.BizDataLog"/>
+                            </ns:ProcessInput>
+                            <ns:ActivityOutputs>
+                                <xsl:copy-of select="$Map-BizDataLog-to-BizDataLog-Table/rows"/>
+                            </ns:ActivityOutputs>
+                            <ns:ExternalSystemConnectionInfo>
+                                <xsl:copy-of select="$_globalVariables/pfx2:GlobalVariables/Services.Tech/BizDataLogToDB/BizData_Log.DB"/>
+                            </ns:ExternalSystemConnectionInfo>
+                        </ns:ProcessData>
+                        <ns:Retry>
+                            <ns:RetryIdx>
+                                <xsl:value-of select="$retryIdx"/>
+                            </ns:RetryIdx>
+                            <ns:RetryOptions>
+                                <ns:TryForever/>
+                            </ns:RetryOptions>
+                        </ns:Retry>
+                    </GEH.Input>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Check">
+                <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+                <pd:resourceType>ae.activities.null</pd:resourceType>
+                <pd:x>321</pd:x>
+                <pd:y>238</pd:y>
+                <config/>
+                <pd:inputBindings/>
+            </pd:activity>
+            <pd:activity name="Retry Insert">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>486</pd:x>
+                <pd:y>347</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns0:ActivityInput>
+                        <message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </message>
+                        <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                            <messageCode>
+                                <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns0:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:activity name="Log - End">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>680</pd:x>
+        <pd:y>261</pd:y>
+        <config>
+            <role>%%Constants/Logging/Roles/Info%%</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($Start/pfx4:Envelop.Tech.BizDataLog/ns3:BizDataLog/@TransactionId&#xA;, ' '&#xA;,$Start/pfx4:Envelop.Tech.BizDataLog/ns3:BizDataLog/Source/@System&#xA;,'-->'&#xA;,tib:concat-sequence-format($Start/pfx4:Envelop.Tech.BizDataLog/ns3:BizDataLog/Target/@System, ',')&#xA;)"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Constants/Logging/MsgCodes/End"/>
+                </msgCode>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Map BizDataLog to BizDataLog Table">
+        <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
+        <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
+        <pd:x>62</pd:x>
+        <pd:y>270</pd:y>
+        <config>
+            <element>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="rows">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="pfx6:BIZDATA_LOG" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </element>
+        </config>
+        <pd:inputBindings>
+            <rows>
+                <xsl:for-each select="$Start/pfx4:Envelop.Tech.BizDataLog/ns3:BizDataLog/Source">
+                    <BIZDATA_LOG>
+                        <TRANSACTION_ID>
+                            <xsl:choose>
+                                <xsl:when test="exists(../@TransactionId)">
+                                    <xsl:value-of select="../@TransactionId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </TRANSACTION_ID>
+                        <SOURCE_OR_TARGET>
+                            <xsl:value-of select="'S'"/>
+                        </SOURCE_OR_TARGET>
+                        <SYSTEM>
+                            <xsl:choose>
+                                <xsl:when test="exists(@System)">
+                                    <xsl:value-of select="@System"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SYSTEM>
+                        <DESCRIPTION>
+                            <xsl:choose>
+                                <xsl:when test="exists(../@Description)">
+                                    <xsl:value-of select="../@Description"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </DESCRIPTION>
+                        <DATA_AS_XML>
+                            <xsl:choose>
+                                <xsl:when test="exists(tib:render-xml(Data/*, 1,0))">
+                                    <xsl:value-of select="tib:render-xml(Data/*, 1,0)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </DATA_AS_XML>
+                        <DATA_AS_BINARY xsi:nil="true"/>
+                        <TRANSACTION_DATE>
+                            <xsl:value-of select="../@TransactionDate"/>
+                        </TRANSACTION_DATE>
+                    </BIZDATA_LOG>
+                </xsl:for-each>
+                <xsl:for-each select="$Start/pfx4:Envelop.Tech.BizDataLog/ns3:BizDataLog/Target">
+                    <BIZDATA_LOG>
+                        <TRANSACTION_ID>
+                            <xsl:choose>
+                                <xsl:when test="exists(../@TransactionId)">
+                                    <xsl:value-of select="../@TransactionId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </TRANSACTION_ID>
+                        <SOURCE_OR_TARGET>
+                            <xsl:value-of select="'T'"/>
+                        </SOURCE_OR_TARGET>
+                        <SYSTEM>
+                            <xsl:choose>
+                                <xsl:when test="exists(@System)">
+                                    <xsl:value-of select="@System"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SYSTEM>
+                        <DESCRIPTION>
+                            <xsl:choose>
+                                <xsl:when test="exists(../@Description)">
+                                    <xsl:value-of select="../@Description"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </DESCRIPTION>
+                        <DATA_AS_XML>
+                            <xsl:value-of select="tib:render-xml(Data/*, 1,0)"/>
+                        </DATA_AS_XML>
+                        <DATA_AS_BINARY xsi:nil="true"/>
+                        <TRANSACTION_DATE>
+                            <xsl:value-of select="../@TransactionDate"/>
+                        </TRANSACTION_DATE>
+                    </BIZDATA_LOG>
+                </xsl:for-each>
+            </rows>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Map BizDataLog to BizDataLog Table</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log - End</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Insert one row for each Source and Target</pd:from>
+        <pd:to>Log - End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Map BizDataLog to BizDataLog Table</pd:from>
+        <pd:to>Insert one row for each Source and Target</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label</pd:name>
+        <pd:description>If the error returned matches the error in the GV
+Services.Tech/NotifyLogging/Notify.DB/Table.Missing.Error
+then attempt to create missing table and retry the insert</pd:description>
+        <pd:x>297</pd:x>
+        <pd:y>1021</pd:y>
+        <pd:width>333</pd:width>
+        <pd:height>65</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>
