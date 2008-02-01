@@ -66,8 +66,8 @@
             <pd:xpath>$_globalVariables/pfx2:GlobalVariables/Services.Tech/NotifyLogToDB/TABLE.CREATE.OnMissing = "true"
 and
 contains( 
-$_error_Insert-Notify/ActivityErrors/pfx3:JDBCSQLException
-,$_globalVariables/pfx2:GlobalVariables/Services.Tech/NotifyLogToDB/Notify_Log.DB/TABLE.NOTFOUND.ERROR)</pd:xpath>
+$_error_Insert-Notify/ActivityErrors/pfx3:JDBCSQLException/detailStr
+,$_globalVariables/pfx2:GlobalVariables/Services.Tech/NotifyLogToDB/Notify_Log.DB/ERROR.NOTFOUND.TABLE)</pd:xpath>
         </pd:transition>
         <pd:transition>
             <pd:from>Check</pd:from>
@@ -93,8 +93,8 @@ $_error_Insert-Notify/ActivityErrors/pfx3:JDBCSQLException
         <pd:activity name="Insert Notify">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>308</pd:x>
-            <pd:y>179</pd:y>
+            <pd:x>306</pd:x>
+            <pd:y>180</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
@@ -307,7 +307,7 @@ VALUES (?          ,?         ,?        ,?           ,?           ,?        ,?  
             <pd:inputBindings>
                 <jdbcGeneralActivityInput>
                     <statement>
-                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Services.Tech/NotifyLogToDB/Notify_Log.DB/TABLE.CREATE.SQL"/>
+                        <xsl:value-of select="$_globalVariables/pfx2:GlobalVariables/Services.Tech/NotifyLogToDB/Notify_Log.DB/SQL.CREATE.TABLE"/>
                     </statement>
                 </jdbcGeneralActivityInput>
             </pd:inputBindings>
@@ -348,7 +348,7 @@ VALUES (?          ,?         ,?        ,?           ,?           ,?        ,?  
         <pd:activity name="Check">
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
-            <pd:x>308</pd:x>
+            <pd:x>309</pd:x>
             <pd:y>283</pd:y>
             <config/>
             <pd:inputBindings/>

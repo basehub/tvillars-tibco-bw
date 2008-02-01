@@ -10,7 +10,7 @@
             <authorProperty>tvillars@gmail.com</authorProperty>
             <processProperty>/Services.Tech/eMail/Server/eMail Receiver.process</processProperty>
         </processArchive>
-        <versionProperty>7</versionProperty>
+        <versionProperty>8</versionProperty>
         <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>Services-Tech-eMail</name>

@@ -111,7 +111,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>386</pd:x>
-        <pd:y>82</pd:y>
+        <pd:y>81</pd:y>
         <config>
             <processName>/Services.Tech/NotifyLogToDB/Server/Notify Handler.process</processName>
         </config>
