@@ -21,7 +21,7 @@
                 <transacted>false</transacted>
                 <acknowledgeMode>2</acknowledgeMode>
                 <maxSessions>1</maxSessions>
-                <destination>%%Patterns/Queue.Receiver.WithoutCheckpointAndValidated%%</destination>
+                <destination>%%Patterns/QueueReceiver/Queue.Receiver.WithoutCheckpointAndValidated%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -261,8 +261,8 @@
     </pd:transition>
     <pd:label>
         <pd:name>Label (1)</pd:name>
-        <pd:description>The follow pattern is similar to a recommended TIBCO patterns, but includes a pre-parsing step.  The distinguishing characteristic is the XML message is validated before
-being sent for further processing.
+        <pd:description>The following pattern is similar to a recommended TIBCO patterns, but includes a pre-parsing step.  The distinguishing characteristic is the XML message is validated
+before being sent for further processing.
 
 PROS
   - Same PROS as the TIBCO recommended Queue Receiver (Without Checkpoint) pattern.
@@ -278,9 +278,9 @@ an XML schema to validate the XML before putting it on the ESB and therefore the
 scenario about as gracefully as possible and still retains much of the simplicity of the TIBCO pattern.
 
 Note: Only queues are supported because of fail-over issues with EMS topics.  If the publisher is using topics, use EMS bridging to map the messages to a queue.</pd:description>
-        <pd:x>483</pd:x>
+        <pd:x>471</pd:x>
         <pd:y>137</pd:y>
-        <pd:width>964</pd:width>
+        <pd:width>940</pd:width>
         <pd:height>272</pd:height>
         <pd:fontColor>-16777216</pd:fontColor>
         <pd:color>-1</pd:color>
