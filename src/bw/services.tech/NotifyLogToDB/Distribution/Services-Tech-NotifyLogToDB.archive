@@ -10,7 +10,7 @@
             <authorProperty>tjvillar</authorProperty>
             <processProperty>/Services.Tech/NotifyLogToDB/Server/Notify Receiver.process</processProperty>
         </processArchive>
-        <versionProperty>7</versionProperty>
+        <versionProperty>8</versionProperty>
         <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>Services-Tech-NotifyLogToDB</name>

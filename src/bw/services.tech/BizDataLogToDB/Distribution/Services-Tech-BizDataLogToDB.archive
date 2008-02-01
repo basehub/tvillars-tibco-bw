@@ -10,7 +10,7 @@
             <authorProperty>tjvillar</authorProperty>
             <processProperty>/Services.Tech/BizDataLogToDB/Server/BizDataLog Receiver.process</processProperty>
         </processArchive>
-        <versionProperty>5</versionProperty>
+        <versionProperty>6</versionProperty>
         <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>Services-Tech-BizDataLogToDB</name>
