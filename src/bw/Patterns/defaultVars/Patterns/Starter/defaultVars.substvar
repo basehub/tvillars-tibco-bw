@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>StartTimeMilliSec</name>
+			<value>946702800000</value>
+			<description>must be a string as the number is to big for an integer, 946702800000 = 01-JAN-2000 00:00:00.000</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201536008407</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>TimeIntervalMilliSec</name>
+			<value>10000</value>
+			<description></description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Integer</type>
+			<modTime>1201536121343</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>

@@ -1,0 +1,67 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>DatabaseURL</name>
+			<value>jdbc:tibcosoftwareinc:oracle://localhost:1521;SID=xe</value>
+			<description>set for Oracle Express, okay to change to any other JDBC driver</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1197563291071</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ERROR.DUPKEY</name>
+			<value>unique constraint</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201551390276</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>ERROR.NOTFOUND.TABLE</name>
+			<value>table or view does not exist</value>
+			<description>If this error message is returned when trying to insert into the Pattern_Database_UnitTest table, then the Table Create SQL is executed and the insert is retried</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201551390291</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>JDBCDriver</name>
+			<value>tibcosoftwareinc.jdbc.oracle.OracleDriver</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1197563291071</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Password</name>
+			<value>#!4467a5MwLBFfmd/yrlpa0mVIBZpVX9KLjJbW2NjFvBWWamTBFBuzgw==</value>
+			<description></description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>Password</type>
+			<modTime>1197563291055</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>SQL.CREATE.TABLE</name>
+			<value>CREATE TABLE PATTERN_DATABASE_UNITTEST ( COLUMN1 NUMBER(*,0) NOT NULL ENABLE, COLUMN2 VARCHAR2(4000 BYTE), COLUMN3 VARCHAR2(4000 BYTE), COLUMN4 VARCHAR2(4000 BYTE), CONSTRAINT "PATTERN_DATABASE_UNITTEST_PK" PRIMARY KEY ("COLUMN1") )</value>
+			<description>SQL Statement for creating the Notify table, default SQL is for an Oracle DB</description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<constraint></constraint>
+			<modTime>1201550281509</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>UserName</name>
+			<value>tibco.logging</value>
+			<description></description>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1197563291102</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
