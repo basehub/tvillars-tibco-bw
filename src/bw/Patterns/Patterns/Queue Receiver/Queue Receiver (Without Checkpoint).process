@@ -17,7 +17,7 @@
             <PermittedMessageType>XML Text</PermittedMessageType>
             <SessionAttributes>
                 <acknowledgeMode>23</acknowledgeMode>
-                <destination>%%Patterns/Queue.Receiver.WithoutCheckpoint%%</destination>
+                <destination>%%Patterns/QueueReceiver/Queue.Receiver.WithoutCheckpoint%%</destination>
             </SessionAttributes>
             <ConfigurableHeaders>
                 <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
@@ -170,7 +170,7 @@
     </pd:transition>
     <pd:label>
         <pd:name>Label (1)</pd:name>
-        <pd:description>The follow pattern is one of the recommended TIBCO patterns for a process that receives messages from a Queue.  The distinguishing characteristic is the use of the Confirm
+        <pd:description>The following pattern is one of the recommended TIBCO patterns for a process that receives messages from a Queue.  The distinguishing characteristic is the use of the Confirm
 activity to control retrying the message processing if an unhandled and/or unrecoverable failure occurs in a downstream activity.
 
 PROS  
@@ -190,7 +190,7 @@ being sent are not under your project's control which can lead to indeterminate 
 in the loop mentioned in the CONS section above.
 
 Note: Only queues are supported because of fail-over issues with EMS topics.  If the publisher is using topics, use EMS bridging to map the messages to a queue.</pd:description>
-        <pd:x>499</pd:x>
+        <pd:x>497</pd:x>
         <pd:y>154</pd:y>
         <pd:width>991</pd:width>
         <pd:height>306</pd:height>

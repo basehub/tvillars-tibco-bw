@@ -10,7 +10,7 @@
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>597</pd:endX>
-    <pd:endY>87</pd:endY>
+    <pd:endY>86</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:activity name="Log - Biz Data">

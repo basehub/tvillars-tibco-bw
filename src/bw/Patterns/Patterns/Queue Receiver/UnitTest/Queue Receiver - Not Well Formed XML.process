@@ -56,13 +56,13 @@
                 <JMSHeader/>
                 <MultipleQueues>
                     <Queue>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/Queue.Receiver.WithCheckpoint"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/QueueReceiver/Queue.Receiver.WithCheckpoint"/>
                     </Queue>
                     <Queue>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/Queue.Receiver.WithoutCheckpoint"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/QueueReceiver/Queue.Receiver.WithoutCheckpoint"/>
                     </Queue>
                     <Queue>
-                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/Queue.Receiver.WithoutCheckpointAndValidated"/>
+                        <xsl:value-of select="$_globalVariables/ns:GlobalVariables/Patterns/QueueReceiver/Queue.Receiver.WithoutCheckpointAndValidated"/>
                     </Queue>
                 </MultipleQueues>
                 <Text>
