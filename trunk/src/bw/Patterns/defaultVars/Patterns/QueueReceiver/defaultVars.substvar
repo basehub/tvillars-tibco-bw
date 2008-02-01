@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>Queue.Receiver.WithCheckpoint</name>
+			<value>Patterns.QueueReceiver.WithCheckpoint</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201029115443</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Queue.Receiver.WithoutCheckpoint</name>
+			<value>Patterns.Queue.Receiver.WithoutCheckpoint</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201028942488</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>Queue.Receiver.WithoutCheckpointAndValidated</name>
+			<value>Patterns.Queue.Receiver.WithoutCheckpointAndValidated</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1201028942488</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
