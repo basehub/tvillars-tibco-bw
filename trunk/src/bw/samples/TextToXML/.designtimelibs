@@ -1,0 +1,5 @@
+#Design time libraries
+#Format: #=File Alias=Description
+#Fri Feb 01 11:58:16 EST 2008
+1=Patterns.projlib\=
+0=Common.Core.projlib\=

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Resources/Schemas/Envelope.BizObj.xsd" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns12="http://tvillars-tibco-bw.googlecode.com/svn/trunk/src/bw/Common/Common/Processes/GEH.xsd">
+    <pd:name>Services.Biz/TextToXML/Poller.process</pd:name>
+    <pd:startName>Timer</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="Timer">
+        <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
+        <pd:resourceType>ae.activities.timer</pd:resourceType>
+        <pd:x>31</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <StartTime>%%Patterns/Starter/StartTimeMilliSec%%</StartTime>
+            <Frequency>false</Frequency>
+            <TimeInterval>%%Patterns/Starter/TimeIntervalMilliSec%%</TimeInterval>
+            <FrequencyIndex>Millisecond</FrequencyIndex>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>266</pd:endX>
+    <pd:endY>86</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>92</pd:x>
+        <pd:y>182</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="GEH">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>202</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <processName>/Common/Processes/GEH.process</processName>
+        </config>
+        <pd:inputBindings>
+            <GEH.Input>
+                <xsl:copy-of select="$_error/ns1:ErrorReport"/>
+                <ns12:ProcessData>
+                    <ns12:ProcessInput/>
+                    <ns12:ActivityOutputs/>
+                </ns12:ProcessData>
+            </GEH.Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Text To XML">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>140</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <processName>/Services.Biz/TextToXML/Text To XML.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:Envelope.BizObj/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Timer</pd:from>
+        <pd:to>Text To XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Text To XML</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GEH</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>GEH</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:label>
+        <pd:name>Label (1)</pd:name>
+        <pd:description>This poller is based on the Timer Pattern found in the Patterns.projlib
+under Patterns/Starters/Timer.</pd:description>
+        <pd:x>212</pd:x>
+        <pd:y>26</pd:y>
+        <pd:width>423</pd:width>
+        <pd:height>50</pd:height>
+        <pd:fontColor>-16777216</pd:fontColor>
+        <pd:color>-1</pd:color>
+        <pd:type>solid</pd:type>
+        <pd:thickness>0</pd:thickness>
+        <pd:fade>true</pd:fade>
+    </pd:label>
+</pd:ProcessDefinition>

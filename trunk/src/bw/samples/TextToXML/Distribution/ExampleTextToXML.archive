@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>tjvillar</authorProperty>
+        </sharedArchive>
+        <processArchive name="TextToXML">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
+            <processProperty>/Services.Biz/TextToXML/Poller.process</processProperty>
+        </processArchive>
+        <processArchive name="WriteFileValid">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
+            <processProperty/>
+        </processArchive>
+        <processArchive name="WriteFileInvalid">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
+            <processProperty/>
+        </processArchive>
+        <processArchive name="DeleteFile">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
+            <processProperty/>
+        </processArchive>
+        <versionProperty>1</versionProperty>
+        <authorProperty>Tom Villars (tvillars@gmail.com)</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>ExampleTextToXML</name>
+        <designer/>
+        <fileLocationProperty>C:\Projects\tvillars-tibco-bw\dist\bw\Example-Biz-TextToXML.ear</fileLocationProperty>
+        <description>This sample services periodically polls a text file, maps it
+to an XML and then writes the XML to a different file.  There
+are three unit test services that allow the FileToXML Service
+to be tested.</description>
+    </enterpriseArchive>
+</Repository:repository>
